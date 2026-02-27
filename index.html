@@ -85,7 +85,8 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 .modal{background:var(--surface);border-radius:24px 24px 0 0;padding:20px 18px 28px;width:100%;max-height:94vh;overflow-y:auto;transform:translateY(40px);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
 @media(min-width:600px){.modal{border-radius:24px;max-width:460px;transform:scale(0.93)}}
 .modal-overlay.open .modal{transform:none!important}
-.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.modal-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;cursor:pointer;transition:background 0.15s}
+.modal-handle:hover{background:var(--accent)}
 @media(min-width:600px){.modal-handle{display:none}}
 .modal-title{font-family:'Baloo 2',cursive;font-size:19px;font-weight:800;margin-bottom:16px}
 .modal-actions{display:flex;gap:10px;margin-top:18px}
@@ -262,14 +263,16 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 .cal-day-dots{display:flex;gap:2px;flex-wrap:wrap;margin-top:3px}
 .cal-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 /* Week grid */
-.cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal-week-day{border-radius:12px;padding:8px 4px;background:var(--surface2);border:1.5px solid transparent;cursor:pointer;transition:all 0.15s;min-height:80px}
+.cal-week-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:6px}
+.cal-week-scroll::-webkit-scrollbar{display:none}
+.cal-week{display:flex;gap:8px;width:max-content;padding:2px 2px 4px}
+.cal-week-day{width:calc((100vw - 80px) / 3);max-width:140px;min-width:90px;border-radius:14px;padding:10px 6px;background:var(--surface2);border:1.5px solid transparent;cursor:pointer;transition:all 0.15s;flex-shrink:0}
 .cal-week-day:hover{border-color:var(--accent)}
 .cal-week-day.today{border-color:var(--accent);background:rgba(245,166,35,0.1)}
 .cal-week-day.has-walks{background:rgba(76,175,125,0.1);border-color:rgba(76,175,125,0.35)}
-.cal-week-dow{font-size:10px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:3px}
-.cal-week-num{font-size:14px;font-weight:800;text-align:center;margin-bottom:4px}
-.cal-week-period{font-size:10px;font-weight:600;padding:2px 6px;border-radius:50px;margin-bottom:2px;text-align:center}
+.cal-week-dow{font-size:11px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:3px}
+.cal-week-num{font-size:16px;font-weight:800;text-align:center;margin-bottom:6px}
+.cal-week-period{font-size:11px;font-weight:600;padding:4px 6px;border-radius:8px;margin-bottom:3px;text-align:center;display:flex;align-items:center;justify-content:center;gap:3px}
 /* Day view */
 .cal-day-view{display:flex;flex-direction:column;gap:10px}
 .cal-period-card{background:var(--surface2);border-radius:var(--radius-sm);padding:13px 14px;cursor:pointer;border:1.5px solid var(--border);transition:all 0.2s}
@@ -283,6 +286,18 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 .day-detail-period:hover{border-color:var(--accent)}
 .day-detail-period.filled{background:rgba(76,175,125,0.08);border-color:rgba(76,175,125,0.4)}
 .day-detail-period.accident{background:rgba(232,84,84,0.07);border-color:rgba(232,84,84,0.3)}
+
+/* ── USER SYSTEM ── */
+#user-setup{position:fixed;inset:0;background:var(--bg);z-index:9998;display:flex;align-items:center;justify-content:center;padding:20px}
+.setup-card{background:var(--surface);border-radius:24px;padding:28px 22px;max-width:380px;width:100%;border:1.5px solid var(--border);box-shadow:0 8px 40px var(--shadow)}
+.user-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;color:white}
+.perm-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1.5px solid var(--border)}
+.perm-row:last-child{border-bottom:none}
+.toggle{width:44px;height:24px;border-radius:50px;background:var(--border);position:relative;cursor:pointer;transition:background 0.2s;flex-shrink:0}
+.toggle.on{background:var(--green)}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:white;top:3px;left:3px;transition:left 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+.toggle.on::after{left:23px}
+.owner-tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:50px;color:white;flex-shrink:0}
 ::-webkit-scrollbar{width:4px;height:4px}
 #pwa-banner{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2d2416;color:white;padding:12px 20px;border-radius:16px;font-size:13px;font-weight:600;z-index:500;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:320px;width:90%}
 #pwa-banner button{background:var(--accent);border:none;border-radius:50px;padding:7px 14px;color:white;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
@@ -309,7 +324,10 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     <span>🐾</span>
     <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם</div></div>
   </div>
-  <button class="invite-btn" onclick="openM('invite')">👥 הזמן שותף/ה</button>
+  <div style="display:flex;gap:8px;align-items:center">
+  <button class="invite-btn" onclick="openM('permissions')" style="padding:7px 10px">⚙️</button>
+  <button class="invite-btn" onclick="openM('invite')">👥 הזמן</button>
+</div>
 </header>
 
 <nav>
@@ -318,7 +336,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <button class="nav-btn" onclick="goSec(this,'routines')">📋 רוטינות</button>
   <button class="nav-btn" onclick="goSec(this,'health')">💊 בריאות</button>
   <button class="nav-btn" onclick="goSec(this,'mydogs')">🐶 הכלבים שלי</button>
-  <button class="nav-btn" id="chat-nav-btn" onclick="goSec(this,'chat')">💬 צ'אט <span id="chat-badge" style="display:none;background:#e85454;color:white;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;line-height:18px;text-align:center;display:inline-block;margin-right:2px">!</span></button>
+  <button class="nav-btn" id="chat-nav-btn" onclick="goSec(this,'chat')">💬 צ'אט <span id="chat-badge" style="display:none;background:#e85454;color:white;border-radius:50px;min-width:18px;height:18px;font-size:10px;font-weight:700;line-height:18px;text-align:center;padding:0 4px;margin-right:2px">0</span></button>
 </nav>
 </div><!-- /sticky-top -->
 
@@ -330,25 +348,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     <div class="sec-title">🚶 יציאות</div>
     <button class="btn" onclick="openM('walk')">+ תעד יציאה</button>
   </div>
-  <!-- CALENDAR TOGGLE -->
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-    <button class="btn btn-ghost btn-sm" id="cal-toggle-btn" onclick="toggleCalendar()">📅 הצג לוח שנה</button>
-  </div>
-  <div id="calendar-wrap" style="display:none"></div>
-
   <div class="stat-row">
     <div class="stat-box"><div class="stat-val" id="stat-walks">0</div><div class="stat-lbl">יציאות היום</div></div>
     <div class="stat-box"><div class="stat-val" id="stat-acc">0</div><div class="stat-lbl">תאונות היום</div></div>
     <div class="stat-box"><div class="stat-val" id="stat-streak">0</div><div class="stat-lbl">ימים רצופים</div></div>
   </div>
-  <div class="period-tabs">
-    <button class="period-tab active" data-p="all" onclick="filterWalks(this,'all')">🐾 הכל</button>
-    <button class="period-tab" data-p="בוקר" onclick="filterWalks(this,'בוקר')">🌅 בוקר</button>
-    <button class="period-tab" data-p="צהריים" onclick="filterWalks(this,'צהריים')">☀️ צהריים</button>
-    <button class="period-tab" data-p="ערב" onclick="filterWalks(this,'ערב')">🌙 ערב</button>
-    <button class="period-tab" data-p="תאונה" onclick="filterWalks(this,'תאונה')">🏠 תאונות</button>
-  </div>
-  <div id="walk-list"></div>
+  <div id="calendar-walks"></div>
+  <div id="walk-list" style="display:none"></div>
 </div>
 
 <!-- TRAINING -->
@@ -357,8 +363,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     <div class="sec-title">🎯 אימונים</div>
     <button class="btn" onclick="openM('skill')">+ הוסף מיומנות</button>
   </div>
-  <div class="dogs-bar" id="train-bar"></div>
-  <div id="skills-container"></div>
+  <div id="calendar-training"></div>
+  <div id="train-bar" class="dogs-bar" style="display:none"></div>
+  <div id="skills-container" style="display:none"></div>
 </div>
 
 <!-- ROUTINES -->
@@ -367,7 +374,8 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     <div class="sec-title">📋 רוטינות</div>
     <button class="btn" onclick="openM('routine')">+ הוסף משימה</button>
   </div>
-  <div id="routines-list"></div>
+  <div id="calendar-routines"></div>
+  <div id="routines-list" style="display:none"></div>
 </div>
 
 <!-- HEALTH -->
@@ -376,12 +384,15 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     <div class="sec-title">💊 בריאות</div>
     <button class="btn btn-sm" onclick="openAddHealth()">+ הוסף</button>
   </div>
-  <div class="period-tabs" id="health-tabs">
-    <button class="period-tab active" data-ht="meds" onclick="switchHealthTab(this,'meds')">💊 תרופות וחיסונים</button>
-    <button class="period-tab" data-ht="treatments" onclick="switchHealthTab(this,'treatments')">🛁 טיפולים</button>
+  <div id="calendar-health"></div>
+  <div id="health-tabs-wrap" style="display:none">
+    <div class="period-tabs" id="health-tabs">
+      <button class="period-tab active" data-ht="meds" onclick="switchHealthTab(this,'meds')">💊 תרופות וחיסונים</button>
+      <button class="period-tab" data-ht="treatments" onclick="switchHealthTab(this,'treatments')">🛁 טיפולים</button>
+    </div>
+    <div class="dogs-bar" id="health-bar"></div>
+    <div id="health-container"></div>
   </div>
-  <div class="dogs-bar" id="health-bar"></div>
-  <div id="health-container"></div>
 </div>
 
 <!-- MY DOGS -->
@@ -672,6 +683,79 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
  </div>
 </div>
 
+
+<!-- USER SETUP SCREEN -->
+<div id="user-setup" style="display:none">
+  <div class="setup-card">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="font-size:48px">🐾</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--accent2)">ברוכה הבאה!</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">בואי נגדיר את הפרופיל שלך</div>
+    </div>
+    <div class="form-row"><label>השם שלי *</label><input id="setup-name" type="text" placeholder="למשל: זוהר, דנה..."></div>
+    <div class="form-row">
+      <label>צבע אישי</label>
+      <div class="color-dots" id="setup-colors" style="flex-wrap:wrap">
+        <div class="color-dot chosen" style="background:#f5a623" data-c="#f5a623" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#e87c3e" data-c="#e87c3e" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#e85454" data-c="#e85454" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#e87ca0" data-c="#e87ca0" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#9b7fde" data-c="#9b7fde" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#4a90d9" data-c="#4a90d9" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#3bbfb0" data-c="#3bbfb0" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#4caf7d" data-c="#4caf7d" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#2d9e65" data-c="#2d9e65" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#f5c842" data-c="#f5c842" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#ff6b6b" data-c="#ff6b6b" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#a8e6cf" data-c="#a8e6cf" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#6c5ce7" data-c="#6c5ce7" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#fd79a8" data-c="#fd79a8" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#00b894" data-c="#00b894" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#e17055" data-c="#e17055" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#74b9ff" data-c="#74b9ff" onclick="pickSetupColor(this)"></div>
+        <div class="color-dot" style="background:#55efc4" data-c="#55efc4" onclick="pickSetupColor(this)"></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>לשוניות גלויות לי</label>
+      <div id="setup-tabs-sel" style="display:flex;flex-direction:column;gap:8px;margin-top:6px"></div>
+    </div>
+    <button class="btn" style="width:100%;justify-content:center;margin-top:8px" onclick="saveUserSetup()">🚀 כניסה לאפליקציה</button>
+  </div>
+</div>
+
+<!-- PERMISSIONS MODAL -->
+<div class="modal-overlay" id="modal-permissions">
+ <div class="modal">
+  <div class="modal-handle"></div>
+  <div class="modal-title">⚙️ ניהול שיתוף</div>
+  <div id="permissions-content"></div>
+  <div class="modal-actions">
+    <button class="btn-ghost" onclick="closeM('permissions')">סגור</button>
+  </div>
+ </div>
+</div>
+
+<!-- SHARE WITH USER MODAL -->
+<div class="modal-overlay" id="modal-share-user">
+ <div class="modal">
+  <div class="modal-handle"></div>
+  <div class="modal-title" id="share-user-title">שתף עם משתמש</div>
+  <div class="form-row">
+    <label>קוד משתמש</label>
+    <input id="share-user-code" type="text" placeholder="הזן קוד של החבר/ה...">
+    <div style="font-size:11px;color:var(--muted);margin-top:5px">הקוד שלך: <strong id="my-share-code"></strong></div>
+  </div>
+  <div class="form-row">
+    <label>לשוניות לשיתוף</label>
+    <div id="share-tabs-sel" style="display:flex;flex-direction:column;gap:6px;margin-top:6px"></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn-ghost" onclick="closeM('share-user')">ביטול</button>
+    <button class="btn" onclick="sendShareRequest()">📨 שלח בקשה</button>
+  </div>
+ </div>
+</div>
 <div class="toast" id="toast"></div>
 <div id="pwa-banner" style="display:none">
   <span>📲 הוסיפי למסך הבית!</span>
@@ -716,36 +800,167 @@ function setSyncStatus(status, text) {
 }
 
 // ── FIREBASE HELPERS ──
+// Convert old path to user-scoped path if needed
+function userPath(path) {
+  if (!currentUser) return path;
+  const userKeys = ['dogs','walks','skills','routines','meds','treatments'];
+  for (const k of userKeys) {
+    if (path.startsWith(k+'/') || path === k) {
+      return 'users/'+currentUser.id+'/'+path;
+    }
+  }
+  return path; // chat, shares, users — stay global
+}
+
 function fbSet(path, data) {
   setSyncStatus('', 'שומר...');
-  return set(ref(db, path), data)
+  return set(ref(db, userPath(path)), data)
     .then(() => setSyncStatus('synced', '✓ מסונכרן'))
     .catch(e => { setSyncStatus('error', '✗ שגיאת שמירה'); console.error(e); });
 }
 function fbRemove(path) {
-  return remove(ref(db, path))
+  return remove(ref(db, userPath(path)))
     .then(() => setSyncStatus('synced', '✓ מסונכרן'))
     .catch(e => setSyncStatus('error', '✗ שגיאה'));
 }
 function fbUpdate(path, data) {
-  return update(ref(db, path), data)
+  return update(ref(db, userPath(path)), data)
     .then(() => setSyncStatus('synced', '✓ מסונכרן'))
     .catch(e => setSyncStatus('error', '✗ שגיאה'));
 }
 
 // ── LISTEN TO ALL DATA ──
+
+// ── Per-user data keys ──
+const USER_KEYS = ['dogs','walks','skills','routines','meds','treatments'];
+
+// S holds merged data from all visible users
+// S_own holds only MY data (for editing/saving)
+let S_own = {dogs:{},walks:{},skills:{},routines:{},meds:{},treatments:{}};
+let _listeners = [];
+
 function listenAll() {
-  ['dogs','walks','skills','routines','meds','members','treatments'].forEach(key => {
-    onValue(ref(db, key), snap => {
-      S[key] = snap.val() || {};
+  if (!currentUser) return;
+  // Clean old listeners
+  _listeners.forEach(unsub => unsub && unsub());
+  _listeners = [];
+
+  // Reset state
+  USER_KEYS.forEach(k => { S[k] = {}; S_own[k] = {}; });
+
+  // Listen to MY data
+  USER_KEYS.forEach(key => {
+    const unsub = onValue(ref(db, 'users/'+currentUser.id+'/'+key), snap => {
+      const myData = snap.val() || {};
+      S_own[key] = myData;
+      // Merge my data into S with owner info
+      USER_KEYS.forEach(k => {
+        if (k === key) {
+          // rebuild S[key] from all visible users
+          rebuildMerged(key);
+        }
+      });
       renderAll();
     });
+    _listeners.push(unsub);
+  });
+
+  // Listen to chat (global)
+  onValue(ref(db,'chat'), snap => { renderChat(snap.val()||{}); });
+
+  // Listen to shares involving me
+  onValue(ref(db,'shares'), snap => {
+    const allShares = snap.val() || {};
+    // Find shares where I'm involved
+    const myShares = Object.values(allShares).filter(s =>
+      s.from === currentUser.id || s.to === currentUser.id
+    );
+    // For each confirmed share, listen to other user's data
+    myShares.forEach(share => {
+      if (!share.confirmed) return;
+      const otherId = share.from === currentUser.id ? share.to : share.from;
+      const sharedTabs = share.tabs || [];
+      const dataKeys = tabsToDataKeys(sharedTabs);
+      dataKeys.forEach(key => {
+        onValue(ref(db, 'users/'+otherId+'/'+key), snap => {
+          rebuildMerged(key);
+          renderAll();
+        });
+      });
+    });
+  });
+
+  // Save my profile
+  fbSet('users/'+currentUser.id+'/profile', {
+    id: currentUser.id,
+    name: currentUser.name,
+    color: currentUser.color,
+    lastSeen: Date.now()
   });
 }
 
+// Which data keys correspond to which tabs
+function tabsToDataKeys(tabs) {
+  const map = {
+    walks: ['walks'],
+    training: ['skills'],
+    routines: ['routines'],
+    health: ['meds','treatments'],
+    mydogs: ['dogs'],
+  };
+  const keys = new Set();
+  (tabs||[]).forEach(tab => (map[tab]||[]).forEach(k => keys.add(k)));
+  return [...keys];
+}
+
+// Get all users whose data I can see for a given key
+async function rebuildMerged(key) {
+  const merged = {...S_own[key]};
+
+  // Get shares
+  const sharesSnap = await new Promise(res => {
+    onValue(ref(db,'shares'), snap => res(snap.val()||{}), {onlyOnce:true});
+  });
+
+  const myShares = Object.values(sharesSnap).filter(s =>
+    (s.from===currentUser.id||s.to===currentUser.id) && s.confirmed
+  );
+
+  for (const share of myShares) {
+    const otherId = share.from===currentUser.id ? share.to : share.from;
+    const sharedTabs = share.tabs||[];
+    const dataKeys = tabsToDataKeys(sharedTabs);
+    if (!dataKeys.includes(key)) continue;
+
+    // Get other user's profile for color
+    const profileSnap = await new Promise(res => {
+      onValue(ref(db,'users/'+otherId+'/profile'), snap => res(snap.val()), {onlyOnce:true});
+    });
+    const otherProfile = profileSnap || {name:'?', color:'#999', id:otherId};
+
+    // Get other user's data for this key
+    const dataSnap = await new Promise(res => {
+      onValue(ref(db,'users/'+otherId+'/'+key), snap => res(snap.val()||{}), {onlyOnce:true});
+    });
+
+    // Add owner info to each item
+    Object.entries(dataSnap).forEach(([id, item]) => {
+      merged[id] = {...item, _ownerId: otherId, _ownerName: otherProfile.name, _ownerColor: otherProfile.color};
+    });
+  }
+
+  // Tag my own items
+  Object.keys(S_own[key]).forEach(id => {
+    merged[id] = {...S_own[key][id], _ownerId: currentUser.id, _ownerName: currentUser.name, _ownerColor: currentUser.color};
+  });
+
+  S[key] = merged;
+}
+
+
 function renderAll() {
   renderDogs(); renderWalks(); updateStats();
-    if(calVisible) renderCalendar();
+    renderCalendar();
   renderBars(); renderSkills(); renderRoutines();
   renderMeds(); renderMembers();
   document.getElementById('loading-screen').style.display = 'none';
@@ -761,9 +976,43 @@ function toast(msg, color) {
 
 window.openM = function(name) { prepM(name); document.getElementById('modal-'+name).classList.add('open'); }
 window.closeM = function(name) { document.getElementById('modal-'+name).classList.remove('open'); }
-document.querySelectorAll('.modal-overlay').forEach(o =>
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); })
-);
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  // Click backdrop to close
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// Handle bar click + swipe down to close
+document.querySelectorAll('.modal-handle').forEach(handle => {
+  const modal = handle.closest('.modal');
+  const overlay = handle.closest('.modal-overlay');
+  
+  // Click handle to close
+  handle.addEventListener('click', () => overlay.classList.remove('open'));
+  
+  // Swipe down to close
+  let startY = 0, isDragging = false;
+  handle.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+    isDragging = true;
+    modal.style.transition = 'none';
+  }, {passive:true});
+  handle.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0) modal.style.transform = `translateY(${dy}px)`;
+  }, {passive:true});
+  handle.addEventListener('touchend', e => {
+    isDragging = false;
+    modal.style.transition = '';
+    const dy = e.changedTouches[0].clientY - startY;
+    if (dy > 80) {
+      overlay.classList.remove('open');
+      modal.style.transform = '';
+    } else {
+      modal.style.transform = '';
+    }
+  });
+});
 window.goSec = function(btn, id) {
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -1091,6 +1340,8 @@ window.saveDog = async function() {
   const dogData = {
     id: editingDogId || uid(),
     name, breed: document.getElementById('d-breed').value.trim(),
+    ownerId: editingDogId ? (S.dogs[editingDogId]?.ownerId || myOwnerId()) : myOwnerId(),
+    ownerName: editingDogId ? (S.dogs[editingDogId]?.ownerName || currentUser?.name||'') : currentUser?.name||'',
     age: document.getElementById('d-age').value.trim(),
     gender: document.getElementById('d-gender').value,
     color: chosenColor,
@@ -1130,6 +1381,7 @@ window.deleteDog = function(id) {
 }
 
 function renderDogs() {
+  if (!canSeeTab('mydogs')) return;
   const dogs = Object.values(S.dogs);
   const g = document.getElementById('dogs-grid');
   const e = document.getElementById('dogs-empty');
@@ -1144,7 +1396,7 @@ function renderDogs() {
       <div style="display:flex;gap:12px;align-items:flex-start">
         ${photoEl}
         <div style="flex:1;min-width:0">
-          <div style="font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:${d.color}">${d.name}</div>
+          <div style="font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:${d.color};display:flex;align-items:center;gap:6px">${d.name} ${ownerTag(d)}</div>
           ${d.breed?`<div style="font-size:12px;color:var(--muted)">${d.breed}</div>`:''}
           ${d.age?`<div style="font-size:12px;color:var(--muted)">${d.age}</div>`:''}
           <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
@@ -1188,7 +1440,9 @@ window.saveWalk = function() {
     id, dogIds, period, events,
     date: document.getElementById('walk-date').value,
     time: document.getElementById('walk-time').value,
-    note: document.getElementById('walk-note').value.trim()
+    note: document.getElementById('walk-note').value.trim(),
+    ownerId: myOwnerId(),
+    ownerName: currentUser?.name||''
   });
   closeM('walk');
   toast(period==='תאונה' ? '🏠 תאונה תועדה' : '🐾 יציאה נשמרה!', period==='תאונה'?'#e85454':'#4caf7d');
@@ -1200,6 +1454,7 @@ window.filterWalks = function(btn, p) {
 }
 
 function renderWalks() {
+  if (!canSeeTab('walks')) return;
   const c = document.getElementById('walk-list');
   let list = Object.values(S.walks).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
   if (walkFilter!=='all') list = walkFilter==='תאונה' ? list.filter(w=>w.period==='תאונה') : list.filter(w=>w.period===walkFilter);
@@ -1210,6 +1465,7 @@ function renderWalks() {
     const isAcc = w.period==='תאונה';
     const div = document.createElement('div'); div.className='walk-item'+(isAcc?' accident':'');
     const dogChips = dogs.map(d=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:${d.color}">${dogAvHTML(d,'mini')} ${d.name}</span>`).join('');
+    const owTag = ownerTag(w);
     const tags = isAcc ? '<span class="tag tag-accident">🏠 תאונה בבית</span>'
       : (w.events?.length ? w.events.map(e=>{
           if(typeof e==='string') return `<span class="tag ${evCls[e]}">${evLabel[e]}</span>`;
@@ -1220,7 +1476,7 @@ function renderWalks() {
     div.innerHTML=`
       <span class="period-badge" style="background:${pColor[w.period]||'var(--accent)'}">${pIcon[w.period]||'🐾'} ${w.period}</span>
       <div class="walk-dog-row">${dogChips}<span style="font-size:11px;color:var(--muted);margin-right:auto">📅 ${fmtDate(w.date)} ⏰ ${w.time||''}</span></div>
-      <div class="tags-row">${tags}${noteTag}</div>
+      <div class="tags-row">${tags}${noteTag}${owTag}</div>
       <div style="position:absolute;top:8px;left:8px;display:flex;gap:4px">
         <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 7px;border-radius:8px" onclick="editWalk('${w.id}')">✏️</button>
         <button class="del-btn" onclick="deleteWalk('${w.id}')">✕</button>
@@ -1784,286 +2040,634 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 
-// ══ CALENDAR ══
-let calView = 'month'; // 'month' | 'week' | 'day'
+// ══ UNIFIED CALENDAR ══
+let calView = 'week';
 let calDate = new Date();
-let calVisible = false;
-let calSelectedDate = null;
 
-window.toggleCalendar = function() {
-  calVisible = !calVisible;
-  document.getElementById('calendar-wrap').style.display = calVisible ? 'block' : 'none';
-  document.getElementById('cal-toggle-btn').textContent = calVisible ? '📅 הסתר לוח שנה' : '📅 הצג לוח שנה';
-  if (calVisible) renderCalendar();
+const CAL_SECTIONS = {
+  walks: {
+    title: 'יציאות',
+    periods: [
+      {key:'בוקר', icon:'🌅', color:'#f5a623'},
+      {key:'צהריים', icon:'☀️', color:'#4a90d9'},
+      {key:'ערב', icon:'🌙', color:'#7b68ee'},
+      {key:'תאונה', icon:'🏠', color:'#e85454'},
+    ],
+    getItems: (ds) => Object.values(S.walks).filter(w=>w.date===ds),
+    getPeriod: (item) => item.period,
+    renderItem: (item) => {
+      const dogs=(item.dogIds||[]).map(id=>S.dogs[id]?.name).filter(Boolean).join(', ');
+      const evs=(item.events||[]).map(e=>{
+        const labels={pee:'💧פיפי',poop:'💩קקי',diarrhea:'⚠️שלשול',vomit:'🤢הקאה',blood:'🩸דם',ok:'✅תקין'};
+        const k=typeof e==='string'?e:e.type; const c=typeof e==='string'?1:(e.count||1);
+        return (labels[k]||k)+(c>1?'×'+c:'');
+      }).join(' · ')||'הכל תקין';
+      return `<div style="font-size:11px;color:var(--muted)">${item.time||''} ${dogs?'· '+dogs:''}</div>
+              <div style="font-size:11px;margin-top:2px">${evs}</div>`;
+    },
+    onEmpty: (ds, period) => openAddWalk(ds, period),
+    onItem: (item) => editWalk(item.id),
+    addBtn: () => openM('walk'),
+  },
+  training: {
+    title: 'אימונים',
+    periods: [
+      {key:'אימון', icon:'🎯', color:'#9b7fde'},
+    ],
+    getItems: (ds) => Object.values(S.skills).filter(s=>s.date===ds),
+    getPeriod: () => 'אימון',
+    renderItem: (item) => {
+      const dog = S.dogs[item.dogId];
+      return `<div style="font-size:11px;color:var(--muted)">${item.name}</div>
+              ${dog?`<div style="font-size:11px;color:${dog.color}">${dog.name}</div>`:''}`;
+    },
+    onEmpty: () => openM('skill'),
+    onItem: (item) => editSkill(item.id),
+    addBtn: () => openM('skill'),
+  },
+  routines: {
+    title: 'רוטינות',
+    periods: [
+      {key:'בוקר', icon:'🌅', color:'#f5a623'},
+      {key:'צהריים', icon:'☀️', color:'#4a90d9'},
+      {key:'ערב', icon:'🌙', color:'#7b68ee'},
+    ],
+    getItems: () => Object.values(S.routines),
+    getPeriod: (item) => item.period,
+    renderItem: (item) => `<div style="font-size:11px;color:var(--muted)">${item.emoji||''} ${item.name}</div>
+                           <div style="font-size:10px;color:var(--muted)">⏰${item.time}</div>`,
+    onEmpty: () => openM('routine'),
+    onItem: (item) => editRoutine(item.id),
+    addBtn: () => openM('routine'),
+  },
+  health: {
+    title: 'בריאות',
+    periods: [
+      {key:'תרופה', icon:'💊', color:'#4a90d9'},
+      {key:'טיפול', icon:'🛁', color:'#3bbfb0'},
+    ],
+    getItems: (ds) => [
+      ...Object.values(S.meds).filter(m=>m.given===ds).map(m=>({...m,_type:'תרופה'})),
+      ...Object.values(S.treatments).filter(t=>t.date===ds).map(t=>({...t,_type:'טיפול'})),
+    ],
+    getPeriod: (item) => item._type,
+    renderItem: (item) => {
+      const dog = S.dogs[item.dogId];
+      return `<div style="font-size:11px;color:var(--muted)">${item.name||item.type||''}</div>
+              ${dog?`<div style="font-size:11px;color:${dog.color}">${dog.name}</div>`:''}`;
+    },
+    onEmpty: () => openAddHealth(),
+    onItem: (item) => item._type==='תרופה' ? editMed(item.id) : editTreatment(item.id),
+    addBtn: () => openAddHealth(),
+  },
+};
+
+function renderAllCalendars() {
+  Object.keys(CAL_SECTIONS).forEach(sec => {
+    const el = document.getElementById('calendar-'+sec);
+    if (el) renderCalendarFor(sec, el);
+  });
 }
 
-function renderCalendar() {
-  const wrap = document.getElementById('calendar-wrap');
-  if (!wrap || !calVisible) return;
-
+function renderCalendarFor(sec, container) {
+  const cfg = CAL_SECTIONS[sec];
   const heb_months = ['ינואר','פברואר','מרץ','אפריל','מאי','יוני','יולי','אוגוסט','ספטמבר','אוקטובר','נובמבר','דצמבר'];
-  const heb_days = ['א','ב','ג','ד','ה','ו','ש'];
 
   let titleStr = '';
-  if (calView === 'month') titleStr = heb_months[calDate.getMonth()] + ' ' + calDate.getFullYear();
+  if (calView === 'month') titleStr = heb_months[calDate.getMonth()]+' '+calDate.getFullYear();
   else if (calView === 'week') {
-    const start = getWeekStart(calDate);
-    const end = new Date(start); end.setDate(end.getDate()+6);
-    titleStr = start.getDate()+'/'+( start.getMonth()+1) + ' — ' + end.getDate()+'/'+(end.getMonth()+1);
+    const s = getWeekStart(calDate), e2 = new Date(s); e2.setDate(e2.getDate()+6);
+    titleStr = s.getDate()+'/'+(s.getMonth()+1)+' — '+e2.getDate()+'/'+(e2.getMonth()+1);
   } else {
     titleStr = calDate.getDate()+'/'+(calDate.getMonth()+1)+'/'+calDate.getFullYear();
   }
 
-  wrap.innerHTML = `
+  container.innerHTML = `
     <div class="cal-wrap">
       <div class="cal-header">
         <div class="cal-nav">
-          <div class="cal-nav-btn" onclick="calNav(-1)">›</div>
-          <div class="cal-nav-btn" onclick="calNav(1)">‹</div>
+          <div class="cal-nav-btn" onclick="calNav(-1,'${sec}')">›</div>
+          <div class="cal-nav-btn" onclick="calNav(1,'${sec}')">‹</div>
         </div>
         <div class="cal-title">${titleStr}</div>
-        <div class="cal-nav-btn" onclick="calToday()" title="היום" style="font-size:11px;width:auto;padding:0 8px;border-radius:50px">היום</div>
+        <div class="cal-nav-btn" onclick="calToday('${sec}')" style="font-size:11px;width:auto;padding:0 10px;border-radius:50px">היום</div>
       </div>
       <div class="cal-view-tabs">
         <button class="cal-view-btn ${calView==='month'?'active':''}" onclick="setCalView('month')">חודש</button>
         <button class="cal-view-btn ${calView==='week'?'active':''}" onclick="setCalView('week')">שבוע</button>
         <button class="cal-view-btn ${calView==='day'?'active':''}" onclick="setCalView('day')">יום</button>
       </div>
-      <div id="cal-body"></div>
+      <div id="cal-body-${sec}"></div>
     </div>`;
 
-  if (calView === 'month') renderMonthView();
-  else if (calView === 'week') renderWeekView();
-  else renderDayView();
+  const body = document.getElementById('cal-body-'+sec);
+  if (calView === 'month') renderMonthFor(sec, body, cfg);
+  else if (calView === 'week') renderWeekFor(sec, body, cfg);
+  else renderDayFor(sec, body, cfg);
 }
 
-window.setCalView = function(v) { calView = v; renderCalendar(); }
-window.calNav = function(dir) {
-  if (calView === 'month') calDate.setMonth(calDate.getMonth() + dir);
-  else if (calView === 'week') calDate.setDate(calDate.getDate() + dir*7);
-  else calDate.setDate(calDate.getDate() + dir);
-  renderCalendar();
+window.setCalView = function(v) { calView = v; renderAllCalendars(); }
+window.calNav = function(dir, sec) {
+  if (calView === 'month') calDate.setMonth(calDate.getMonth()+dir);
+  else if (calView === 'week') calDate.setDate(calDate.getDate()+dir*7);
+  else calDate.setDate(calDate.getDate()+dir);
+  renderAllCalendars();
 }
-window.calToday = function() { calDate = new Date(); renderCalendar(); }
+window.calToday = function() { calDate = new Date(); renderAllCalendars(); }
 
 function getWeekStart(d) {
-  const date = new Date(d);
-  const day = date.getDay(); // 0=Sun
-  date.setDate(date.getDate() - day);
-  return date;
+  const date = new Date(d); date.setDate(date.getDate()-date.getDay()); return date;
 }
-
 function dateStr(d) {
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
 
-function getWalksForDate(ds) {
-  return Object.values(S.walks).filter(w => w.date === ds);
-}
-
-function renderMonthView() {
-  const body = document.getElementById('cal-body');
-  const heb_days = ['א','ב','ג','ד','ה','ו','ש'];
+// ── MONTH VIEW ──
+function renderMonthFor(sec, body, cfg) {
   const today = dateStr(new Date());
   const year = calDate.getFullYear(), month = calDate.getMonth();
-  const first = new Date(year, month, 1);
-  const last = new Date(year, month+1, 0);
-  const startDay = first.getDay();
-
-  let html2 = '<div class="cal-grid">';
-  heb_days.forEach(d => { html2 += `<div class="cal-dow">${d}</div>`; });
-
-  // empty cells before
-  for (let i=0; i<startDay; i++) {
-    const prev = new Date(year, month, -startDay+i+1);
-    const ds = dateStr(prev);
-    const walks = getWalksForDate(ds);
-    html2 += `<div class="cal-day other-month" onclick="openDayDetail('${ds}')">
-      <div class="cal-day-num">${prev.getDate()}</div>
-      ${walks.length ? '<div class="cal-day-dots">'+getDots(walks)+'</div>' : ''}
-    </div>`;
-  }
-
-  for (let d=1; d<=last.getDate(); d++) {
-    const date = new Date(year, month, d);
-    const ds = dateStr(date);
-    const walks = getWalksForDate(ds);
-    const hasAcc = walks.some(w=>w.period==='תאונה');
-    const hasWalks = walks.some(w=>w.period!=='תאונה');
-    const cls = ds===today?' today':'' + (hasAcc?' has-accident':hasWalks?' has-walks':'');
-    html2 += `<div class="cal-day${cls}" onclick="openDayDetail('${ds}')">
-      <div class="cal-day-num">${d}</div>
-      ${walks.length ? '<div class="cal-day-dots">'+getDots(walks)+'</div>' : ''}
-    </div>`;
-  }
-
-  // fill remaining
-  const total = startDay + last.getDate();
-  const remain = total%7===0 ? 0 : 7-(total%7);
-  for (let i=1; i<=remain; i++) {
-    const next = new Date(year, month+1, i);
-    const ds = dateStr(next);
-    html2 += `<div class="cal-day other-month" onclick="openDayDetail('${ds}')">
-      <div class="cal-day-num">${i}</div>
-    </div>`;
-  }
-
-  html2 += '</div>';
-  body.innerHTML = html2;
-}
-
-function getDots(walks) {
-  const colors = {בוקר:'#f5a623',צהריים:'#4a90d9',ערב:'#7b68ee',תאונה:'#e85454'};
-  return walks.slice(0,4).map(w=>`<div class="cal-dot" style="background:${colors[w.period]||'#999'}"></div>`).join('');
-}
-
-function renderWeekView() {
-  const body = document.getElementById('cal-body');
+  const first = new Date(year,month,1), last = new Date(year,month+1,0);
   const heb_days = ['א','ב','ג','ד','ה','ו','ש'];
+  let h = '<div class="cal-grid">';
+  heb_days.forEach(d => h += `<div class="cal-dow">${d}</div>`);
+  const startDay = first.getDay();
+  for (let i=0; i<startDay; i++) {
+    const prev = new Date(year,month,-startDay+i+1);
+    h += monthCell(dateStr(prev), prev.getDate(), cfg, true, today, sec);
+  }
+  for (let d=1; d<=last.getDate(); d++) {
+    const date = new Date(year,month,d);
+    h += monthCell(dateStr(date), d, cfg, false, today, sec);
+  }
+  const total = startDay+last.getDate();
+  const remain = total%7===0?0:7-(total%7);
+  for (let i=1; i<=remain; i++) {
+    const next = new Date(year,month+1,i);
+    h += monthCell(dateStr(next), i, cfg, true, today, sec);
+  }
+  h += '</div>';
+  body.innerHTML = h;
+}
+
+function monthCell(ds, dayNum, cfg, otherMonth, today, sec) {
+  const items = cfg.getItems(ds);
+  const hasItems = items.length > 0;
+  const dots = cfg.periods.map(p => {
+    const has = items.some(it => cfg.getPeriod(it)===p.key);
+    return has ? `<div class="cal-dot" style="background:${p.color}"></div>` : '';
+  }).join('');
+  const cls = (ds===today?' today':'')+(hasItems?' has-walks':'')+(otherMonth?' other-month':'');
+  return `<div class="cal-day${cls}" onclick="openDayModal('${ds}','${sec}')">
+    <div class="cal-day-num">${dayNum}</div>
+    ${dots?`<div class="cal-day-dots">${dots}</div>`:''}
+  </div>`;
+}
+
+// ── WEEK VIEW ──
+function renderWeekFor(sec, body, cfg) {
   const today = dateStr(new Date());
   const start = getWeekStart(calDate);
-  const periods = [{p:'בוקר',icon:'🌅',color:'#f5a623'},{p:'צהריים',icon:'☀️',color:'#4a90d9'},{p:'ערב',icon:'🌙',color:'#7b68ee'}];
-
-  let html2 = '<div class="cal-week">';
+  const heb_days = ['א','ב','ג','ד','ה','ו','ש'];
+  let h = '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px">';
+  h += '<div style="display:flex;gap:8px;padding:2px;width:max-content">';
   for (let i=0; i<7; i++) {
     const date = new Date(start); date.setDate(date.getDate()+i);
     const ds = dateStr(date);
-    const walks = getWalksForDate(ds);
-    const hasWalks = walks.some(w=>w.period!=='תאונה');
-    const hasAcc = walks.some(w=>w.period==='תאונה');
-    const cls = ds===today?' today':'' + (hasAcc?' has-accident':hasWalks?' has-walks':'');
-    html2 += `<div class="cal-week-day${cls}" onclick="openDayDetail('${ds}')">
-      <div class="cal-week-dow">${heb_days[date.getDay()]}</div>
-      <div class="cal-week-num" style="${ds===today?'color:var(--accent2)':''}">${date.getDate()}</div>`;
-    periods.forEach(({p,icon,color})=>{
-      const w = walks.find(w=>w.period===p);
-      html2 += `<div class="cal-week-period" style="background:${w?color+'22':'var(--surface)'};color:${w?color:'var(--muted)'}">${icon}${w?' ✓':''}</div>`;
+    const items = cfg.getItems(ds);
+    const isToday = ds===today;
+    h += `<div style="width:120px;flex-shrink:0;border-radius:14px;border:2px solid ${isToday?'var(--accent)':'var(--border)'};background:${isToday?'rgba(245,166,35,0.08)':'var(--surface)'};padding:10px 8px;cursor:pointer" onclick="openDayModal('${ds}','${sec}')">`;
+    h += `<div style="font-size:11px;font-weight:700;color:var(--muted);text-align:center;margin-bottom:2px">${heb_days[date.getDay()]}</div>`;
+    h += `<div style="font-size:17px;font-weight:800;text-align:center;color:${isToday?'var(--accent2)':'var(--text)'};margin-bottom:8px">${date.getDate()}</div>`;
+    cfg.periods.forEach(p => {
+      const period_items = items.filter(it => cfg.getPeriod(it)===p.key);
+      const has = period_items.length > 0;
+      h += `<div style="display:flex;align-items:center;gap:4px;padding:4px 6px;border-radius:8px;margin-bottom:3px;background:${has?p.color+'22':'var(--surface2)'};min-height:26px">`;
+      h += `<span style="font-size:13px">${p.icon}</span>`;
+      if (has) {
+        h += `<span style="font-size:10px;font-weight:700;color:${p.color};flex:1">${period_items.length>1?'×'+period_items.length:''}</span>`;
+        h += `<span style="font-size:10px">✓</span>`;
+      } else {
+        h += `<span style="font-size:10px;color:var(--muted);opacity:0.5">${p.key.slice(0,3)}</span>`;
+      }
+      h += `</div>`;
     });
-    if (hasAcc) html2 += `<div class="cal-week-period" style="background:#ffe5e5;color:#e85454">🏠</div>`;
-    html2 += '</div>';
+    h += `</div>`;
   }
-  html2 += '</div>';
-  body.innerHTML = html2;
+  h += '</div></div>';
+  body.innerHTML = h;
+  // Scroll to today
+  setTimeout(() => {
+    const scroll = body.querySelector('div');
+    const days = body.querySelectorAll('[onclick*="openDayModal"]');
+    let todayIdx = -1;
+    days.forEach((d,i) => { if(d.style.border.includes('accent')||d.style.borderColor==='var(--accent)') todayIdx=i; });
+    if (scroll && todayIdx >= 0) scroll.scrollLeft = Math.max(0, todayIdx * 128 - 20);
+  }, 50);
 }
 
-function renderDayView() {
-  const body = document.getElementById('cal-body');
+
+// ── DAY VIEW ──
+function renderDayFor(sec, body, cfg) {
   const ds = dateStr(calDate);
-  const walks = getWalksForDate(ds);
-  const periods = [{p:'בוקר',icon:'🌅'},{p:'צהריים',icon:'☀️'},{p:'ערב',icon:'🌙'},{p:'תאונה',icon:'🏠'}];
-  const pColor = {בוקר:'#f5a623',צהריים:'#4a90d9',ערב:'#7b68ee',תאונה:'#e85454'};
-
-  let html2 = '<div class="cal-day-view">';
-  periods.forEach(({p,icon})=>{
-    const pw = walks.filter(w=>w.period===p);
-    const isAcc = p==='תאונה';
-    const cls = pw.length ? (isAcc?'accident':'filled') : '';
-    html2 += `<div class="cal-period-card ${cls}" onclick="openDayDetail('${ds}','${p}')">
-      <div class="cal-period-title"><span>${icon}</span><span style="color:${pColor[p]}">${p}</span>
-      ${pw.length?`<span style="background:${pColor[p]}22;color:${pColor[p]};font-size:11px;padding:2px 8px;border-radius:50px;font-weight:700">${pw.length} יציאות</span>`:'<span style="font-size:12px;color:var(--muted);font-weight:500">לא תועד</span>'}
+  const items = cfg.getItems(ds);
+  let h = '<div style="display:flex;flex-direction:column;gap:10px">';
+  cfg.periods.forEach(p => {
+    const period_items = items.filter(it=>cfg.getPeriod(it)===p.key);
+    const has = period_items.length>0;
+    h += `<div style="border-radius:var(--radius-sm);padding:13px 14px;border:1.5px solid ${has?p.color+'66':'var(--border)'};background:${has?p.color+'11':'var(--surface2)'};cursor:pointer" onclick="openDayModal('${ds}','${sec}','${p.key}')">
+      <div style="font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px;margin-bottom:${has?'8px':'0'}">
+        <span>${p.icon}</span><span style="color:${p.color}">${p.key}</span>
+        ${has?`<span style="background:${p.color}22;color:${p.color};font-size:11px;padding:2px 8px;border-radius:50px">${period_items.length}</span>`:'<span style="font-size:12px;color:var(--muted);font-weight:500">לא תועד</span>'}
       </div>`;
-    if (pw.length) {
-      pw.forEach(w=>{
-        const evTxt = (w.events||[]).map(e=>{
-          const labels={pee:'פיפי',poop:'קקי',diarrhea:'שלשול',vomit:'הקאה',blood:'דם',ok:'הכל תקין'};
-          const k=typeof e==='string'?e:e.type;
-          const cnt=typeof e==='string'?1:(e.count||1);
-          return (labels[k]||k)+(cnt>1?' ×'+cnt:'');
-        }).join(', ')||'הכל תקין';
-        html2 += `<div style="font-size:12px;color:var(--muted);margin-top:3px">⏰ ${w.time||''} — ${evTxt}${w.note?' · '+w.note:''}</div>`;
-      });
-    }
-    html2 += '</div>';
+    period_items.forEach(it => {
+      h += `<div style="padding:6px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:flex-start">
+        <div style="flex:1">${cfg.renderItem(it)}</div>
+        <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 5px" onclick="event.stopPropagation();cfg_editItem('${sec}','${it.id}',${it._type?`'${it._type}'`:'null'})">✏️</button>
+      </div>`;
+    });
+    h += '</div>';
   });
-  html2 += '</div>';
-  body.innerHTML = html2;
+  h += '</div>';
+  body.innerHTML = h;
 }
 
-// ── DAY DETAIL POPUP ──
-let _dayDetailDate = null;
-let _dayDetailPeriod = null;
+// ── DAY MODAL (popup when click on day/period) ──
+let _modalDs = null, _modalSec = null, _modalPeriod = null;
 
-window.openDayDetail = function(ds, period) {
-  _dayDetailDate = ds;
-  _dayDetailPeriod = period || null;
-  const walks = getWalksForDate(ds);
+window.openDayModal = function(ds, sec, period) {
+  _modalDs = ds; _modalSec = sec; _modalPeriod = period||null;
+  const cfg = CAL_SECTIONS[sec];
   const [y,m,d] = ds.split('-');
-  const title = `📅 ${d}/${m}/${y}`;
-  document.getElementById('day-detail-title').textContent = title;
+  document.getElementById('day-detail-title').textContent = `📅 ${d}/${m}/${y} — ${cfg.title}`;
 
-  const periods = [{p:'בוקר',icon:'🌅'},{p:'צהריים',icon:'☀️'},{p:'ערב',icon:'🌙'},{p:'תאונה',icon:'🏠'}];
-  const pColor = {בוקר:'#f5a623',צהריים:'#4a90d9',ערב:'#7b68ee',תאונה:'#e85454'};
-  const evLabels = {pee:'💧 פיפי',poop:'💩 קקי',diarrhea:'⚠️ שלשול',vomit:'🤢 הקאה',blood:'🩸 דם',ok:'✅ הכל תקין'};
+  const items = cfg.getItems(ds);
+  const filterPeriods = period ? cfg.periods.filter(p=>p.key===period) : cfg.periods;
+  let h = '';
 
-  let html2 = '';
-
-  // If specific period clicked
-  const filterPeriods = period ? periods.filter(p=>p.p===period) : periods;
-
-  filterPeriods.forEach(({p,icon})=>{
-    const pw = walks.filter(w=>w.period===p);
-    const isAcc = p==='תאונה';
-    const cls = pw.length?(isAcc?'accident':'filled'):'';
-    html2 += `<div class="day-detail-period ${cls}">
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:${pw.length?'8px':'0'}">
-        <span style="font-size:17px">${icon}</span>
-        <span style="font-weight:800;color:${pColor[p]}">${p}</span>
-        ${pw.length===0?'<span style="font-size:12px;color:var(--muted);margin-right:auto">לא תועד</span>':''}
+  filterPeriods.forEach(p => {
+    const period_items = items.filter(it=>cfg.getPeriod(it)===p.key);
+    const has = period_items.length>0;
+    h += `<div style="border-radius:var(--radius-sm);padding:12px;border:1.5px solid ${has?p.color+'66':'var(--border)'};background:${has?p.color+'0d':'var(--surface2)'};margin-bottom:8px">
+      <div style="font-weight:800;font-size:14px;color:${p.color};margin-bottom:${has?'8px':'0'}">${p.icon} ${p.key}
+        ${!has?'<span style="font-size:12px;color:var(--muted);font-weight:400"> — לא תועד</span>':''}
       </div>`;
-    if (pw.length) {
-      pw.forEach(w=>{
-        const dogs=(w.dogIds||[]).map(id=>S.dogs[id]?.name).filter(Boolean).join(', ');
-        const evs=(w.events||[]).map(e=>{
-          const k=typeof e==='string'?e:e.type;
-          const cnt=typeof e==='string'?1:(e.count||1);
-          return `<span style="font-size:11px;background:var(--surface2);padding:2px 7px;border-radius:50px;font-weight:600">${evLabels[k]||k}${cnt>1?' ×'+cnt:''}</span>`;
-        }).join('');
-        html2 += `<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--border)">
-          <div style="flex:1">
-            <div style="font-size:12px;font-weight:600;color:var(--muted)">⏰ ${w.time||''}${dogs?' · '+dogs:''}</div>
-            ${evs?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">${evs}</div>`:''}
-            ${w.note?`<div style="font-size:12px;color:var(--muted);margin-top:3px">💬 ${w.note}</div>`:''}
-          </div>
-          <div style="display:flex;gap:4px;flex-shrink:0">
-            <button style="background:none;border:none;cursor:pointer;font-size:13px" onclick="editWalk('${w.id}');closeM('day-detail')">✏️</button>
-            <button style="background:none;border:none;cursor:pointer;font-size:13px;color:var(--red)" onclick="deleteWalk('${w.id}');openDayDetail('${ds}')">✕</button>
-          </div>
-        </div>`;
-      });
-    }
-    html2 += '</div>';
+    period_items.forEach(it => {
+      h += `<div style="padding:7px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:flex-start">
+        <div style="flex:1">${cfg.renderItem(it)}</div>
+        <div style="display:flex;gap:4px;flex-shrink:0">
+          <button style="background:none;border:none;cursor:pointer;font-size:13px" onclick="cfg_editItem('${sec}','${it.id}',${it._type?`'${it._type}'`:'null'})">✏️</button>
+          <button style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--red)" onclick="cfg_deleteItem('${sec}','${it.id}')">✕</button>
+        </div>
+      </div>`;
+    });
+    h += '</div>';
   });
 
-  document.getElementById('day-detail-content').innerHTML = html2;
-
-  // Update add button to pre-select period and date
-  document.getElementById('day-detail-add-btn').style.display = '';
+  document.getElementById('day-detail-content').innerHTML = h;
   document.getElementById('modal-day-detail').classList.add('open');
+}
+
+window.cfg_editItem = function(sec, id, type) {
+  closeM('day-detail');
+  if (sec==='walks') editWalk(id);
+  else if (sec==='training') editSkill(id);
+  else if (sec==='routines') editRoutine(id);
+  else if (sec==='health') type==='תרופה' ? editMed(id) : editTreatment(id);
+}
+window.cfg_deleteItem = function(sec, id) {
+  if (!confirm('למחוק?')) return;
+  if (sec==='walks') { fbRemove('walks/'+id); }
+  else if (sec==='training') { fbRemove('skills/'+id); }
+  else if (sec==='routines') { fbRemove('routines/'+id); }
+  else if (sec==='health') { fbRemove('meds/'+id); fbRemove('treatments/'+id); }
+  closeM('day-detail');
 }
 
 window.addWalkForDay = function() {
   closeM('day-detail');
   prepM('walk');
-  // Pre-fill date
-  if (_dayDetailDate) document.getElementById('walk-date').value = _dayDetailDate;
-  // Pre-select period
-  if (_dayDetailPeriod) {
+  if (_modalDs) document.getElementById('walk-date').value = _modalDs;
+  if (_modalPeriod) {
     setTimeout(()=>{
-      const btn = document.querySelector(`#walk-period-sel .period-sel-btn[data-p="${_dayDetailPeriod}"]`);
-      if (btn) {
-        btn.classList.add(_dayDetailPeriod==='תאונה'?'sel-red':'sel');
-        if (_dayDetailPeriod==='תאונה') document.getElementById('walk-events-row').style.display='none';
-      }
-    }, 50);
+      const btn = document.querySelector(`#walk-period-sel .period-sel-btn[data-p="${_modalPeriod}"]`);
+      if (btn) { btn.classList.add(_modalPeriod==='תאונה'?'sel-red':'sel'); if(_modalPeriod==='תאונה') document.getElementById('walk-events-row').style.display='none'; }
+    },50);
   }
   openM('walk');
 }
+
+window.openAddWalk = function(ds, period) {
+  _modalDs=ds; _modalPeriod=period||null;
+  addWalkForDay();
+}
+
+// Replace renderAll calendar call
+function renderCalendar() { renderAllCalendars(); }
+let _dayDetailDate = null, _dayDetailPeriod = null;
+window.openDayDetail = window.openDayModal;
+
+
+// ══ USER SYSTEM ══
+const ALL_TABS = [
+  {id:'walks', label:'🚶 יציאות'},
+  {id:'training', label:'🎯 אימונים'},
+  {id:'routines', label:'📋 רוטינות'},
+  {id:'health', label:'💊 בריאות'},
+  {id:'mydogs', label:'🐶 הכלבים שלי'},
+  {id:'chat', label:'💬 צ\'אט'},
+];
+
+let currentUser = null;
+let setupColor = '#f5a623';
+
+function initUserSystem() {
+  const saved = localStorage.getItem('pt_user');
+  if (saved) {
+    currentUser = JSON.parse(saved);
+    applyUserTabs();
+  } else {
+    showUserSetup();
+  }
+}
+
+function showUserSetup() {
+  document.getElementById('loading-screen').style.display = 'none';
+  const setupEl = document.getElementById('user-setup');
+  setupEl.style.display = 'flex';
+  const sel = document.getElementById('setup-tabs-sel');
+  sel.innerHTML = '';
+  ALL_TABS.forEach(t => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surface2);border-radius:10px';
+    row.innerHTML = `<span style="font-size:14px;font-weight:600">${t.label}</span>
+      <div class="toggle on" id="setup-tab-${t.id}" onclick="this.classList.toggle('on')"></div>`;
+    sel.appendChild(row);
+  });
+}
+
+window.pickSetupColor = function(el) {
+  document.querySelectorAll('#setup-colors .color-dot').forEach(d=>d.classList.remove('chosen'));
+  el.classList.add('chosen'); setupColor=el.dataset.c;
+}
+
+window.saveUserSetup = function() {
+  const name = document.getElementById('setup-name').value.trim();
+  if (!name) { toast('❗ נא להזין שם'); return; }
+  const tabs = ALL_TABS.filter(t=>document.getElementById('setup-tab-'+t.id)?.classList.contains('on')).map(t=>t.id);
+  if (!tabs.length) { toast('❗ בחרי לפחות לשונית אחת'); return; }
+  currentUser = { id: uid(), name, color: setupColor, tabs };
+  localStorage.setItem('pt_user', JSON.stringify(currentUser));
+  document.getElementById('user-setup').style.display = 'none';
+  applyUserTabs();
+  listenAll();
+  initEmail(); initChat(); checkNotifSupport();
+  migrateOldData();
+  toast('👋 ברוכה הבאה, '+name+'!', setupColor);
+}
+
+function applyUserTabs() {
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    const match = btn.getAttribute('onclick')?.match(/'([^']+)'\)/);
+    if (!match) return;
+    const secId = match[1];
+    btn.style.display = currentUser.tabs.includes(secId) ? '' : 'none';
+  });
+  const firstAllowed = currentUser.tabs[0];
+  if (firstAllowed) {
+    const btn = document.querySelector(`.nav-btn[onclick*="'${firstAllowed}'"]`);
+    if (btn) goSec(btn, firstAllowed);
+  }
+  updateHeaderAvatar();
+}
+
+function updateHeaderAvatar() {
+  let av = document.getElementById('user-header-av');
+  if (!av) {
+    av = document.createElement('div');
+    av.id = 'user-header-av';
+    av.onclick = () => { renderPermissions(); openM('permissions'); };
+    document.querySelector('header').querySelector('div:last-child').prepend(av);
+  }
+  av.textContent = currentUser.name[0].toUpperCase();
+  av.style.cssText = `width:34px;height:34px;border-radius:50%;background:${currentUser.color};color:white;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;border:2px solid rgba(255,255,255,0.5)`;
+}
+
+// ── MIGRATION: move old global data to user path ──
+async function migrateOldData() {
+  if (!currentUser) return;
+  const keys = ['dogs','walks','skills','routines','meds','treatments'];
+  let migrated = 0;
+  toast('⏳ מעביר נתונים...', '#4a90d9');
+  for (const key of keys) {
+    try {
+      const snap = await new Promise(res => onValue(ref(db, key), res, {onlyOnce:true}));
+      const data = snap.val();
+      if (data && Object.keys(data).length > 0) {
+        // Merge with existing user data (don't overwrite)
+        const existing = await new Promise(res => onValue(ref(db,'users/'+currentUser.id+'/'+key), res, {onlyOnce:true}));
+        const existingData = existing.val() || {};
+        const merged = {...data, ...existingData};
+        await set(ref(db, 'users/'+currentUser.id+'/'+key), merged);
+        migrated += Object.keys(data).length;
+      }
+    } catch(e) { console.warn('migrate error', key, e); }
+  }
+  localStorage.setItem('pt_migrated_'+currentUser.id, '1');
+  toast('✅ '+migrated+' פריטים הועברו!', '#4caf7d');
+}
+
+window.startMigration = async function() {
+  if (!confirm('להעביר את כל הנתונים הישנים לחשבונך?')) return;
+  await migrateOldData();
+}
+
+// ── OWNER TAG ──
+function ownerTag(item) {
+  if (!item || !item._ownerId) return '';
+  const isMe = item._ownerId === currentUser?.id;
+  const color = item._ownerColor || '#999';
+  const name = isMe ? 'שלי' : (item._ownerName||'');
+  return `<span class="owner-tag" style="background:${color}">${name}</span>`;
+}
+function myOwnerId() { return currentUser?.id||'unknown'; }
+function canSeeTab(tabId) { return !currentUser || currentUser.tabs.includes(tabId); }
+
+// ── SHARES SYSTEM ──
+window.openShareModal = function() {
+  if (!currentUser) return;
+  document.getElementById('my-share-code').textContent = currentUser.id.slice(-6).toUpperCase();
+  // Build tab checkboxes
+  const sel = document.getElementById('share-tabs-sel');
+  sel.innerHTML = '';
+  ALL_TABS.filter(t=>t.id!=='chat').forEach(t => {
+    const on = currentUser.tabs.includes(t.id);
+    if (!on) return;
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--surface2);border-radius:10px';
+    row.innerHTML = `<span style="font-size:13px;font-weight:600">${t.label}</span>
+      <div class="toggle on" id="share-tab-${t.id}" onclick="this.classList.toggle('on')"></div>`;
+    sel.appendChild(row);
+  });
+  document.getElementById('share-user-title').textContent = '🤝 שתף עם משתמש';
+  document.getElementById('share-user-code').value = '';
+  openM('share-user');
+}
+
+window.sendShareRequest = async function() {
+  const code = document.getElementById('share-user-code').value.trim().toUpperCase();
+  if (!code) { toast('❗ נא להזין קוד'); return; }
+  const tabs = ALL_TABS.filter(t=>document.getElementById('share-tab-'+t.id)?.classList.contains('on')).map(t=>t.id);
+  if (!tabs.length) { toast('❗ בחרי לפחות לשונית אחת'); return; }
+
+  // Find user with this code (last 6 chars of id)
+  const usersSnap = await new Promise(res => {
+    onValue(ref(db,'users'), snap => res(snap.val()||{}), {onlyOnce:true});
+  });
+  const targetUser = Object.values(usersSnap).find(u =>
+    u.profile && u.profile.id && u.profile.id.slice(-6).toUpperCase() === code
+  );
+  if (!targetUser?.profile) { toast('❗ משתמש לא נמצא'); return; }
+
+  const shareId = currentUser.id+'_'+targetUser.profile.id;
+  await fbSet('shares/'+shareId, {
+    from: currentUser.id,
+    to: targetUser.profile.id,
+    tabs, confirmed: true,
+    fromName: currentUser.name,
+    toName: targetUser.profile.name,
+    ts: Date.now()
+  });
+
+  closeM('share-user');
+  toast('✅ שיתוף נשלח ל-'+targetUser.profile.name+'!', '#4caf7d');
+}
+
+// ── PERMISSIONS UI ──
+function renderPermissions() {
+  if (!currentUser) return;
+  const c = document.getElementById('permissions-content');
+
+  let h = `
+  <div class="card" style="margin-bottom:12px">
+    <div class="card-title">👤 הפרופיל שלי</div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+      <div class="user-avatar" style="background:${currentUser.color};width:46px;height:46px;font-size:20px">${currentUser.name[0].toUpperCase()}</div>
+      <div style="flex:1">
+        <div style="font-size:16px;font-weight:700">${currentUser.name}</div>
+        <div style="font-size:11px;color:var(--muted)">קוד שיתוף: <strong style="font-size:13px;letter-spacing:1px;color:var(--accent2)">${currentUser.id.slice(-6).toUpperCase()}</strong></div>
+      </div>
+      <button class="btn btn-sm btn-ghost" onclick="toggleEditProfile()" style="font-size:12px">✏️ ערוך</button>
+    </div>
+    <div id="edit-profile-wrap" style="display:none;background:var(--surface2);border-radius:12px;padding:12px;margin-bottom:12px">
+      <div class="form-row"><label>שם</label><input id="edit-profile-name" type="text" value="${currentUser.name}"></div>
+      <div class="form-row">
+        <label>צבע</label>
+        <div class="color-dots" id="edit-profile-colors">
+          ${['#f5a623', '#e87c3e', '#e85454', '#e87ca0', '#9b7fde', '#4a90d9', '#3bbfb0', '#4caf7d', '#2d9e65', '#f5c842', '#ff6b6b', '#a8e6cf', '#6c5ce7', '#fd79a8', '#00b894', '#e17055', '#74b9ff', '#55efc4'].map(c=>
+            `<div class="color-dot${c===currentUser.color?' chosen':''}" style="background:${c}" data-c="${c}" onclick="pickEditColor(this)"></div>`
+          ).join('')}
+        </div>
+      </div>
+      <button class="btn btn-sm btn-green" onclick="saveProfileEdit()" style="width:100%;justify-content:center">💾 שמור</button>
+    </div>
+    <label style="margin-bottom:8px;display:block">הלשוניות שלי</label>`;
+
+  ALL_TABS.forEach(t => {
+    const on = currentUser.tabs.includes(t.id);
+    h += `<div class="perm-row">
+      <span style="font-size:14px;font-weight:600">${t.label}</span>
+      <div class="toggle ${on?'on':''}" onclick="toggleMyTab('${t.id}',this)"></div>
+    </div>`;
+  });
+
+  h += `<button class="btn btn-sm btn-green" style="margin-top:14px;width:100%;justify-content:center" onclick="closeM('permissions');openShareModal()">🤝 שתף עם חבר/ה</button>
+  </div>`;
+
+  // Active shares
+  const shares = Object.values(S.shares||{}).filter(s=>s.from===currentUser.id||s.to===currentUser.id);
+  if (shares.length) {
+    h += `<div class="card"><div class="card-title">🤝 שיתופים פעילים</div>`;
+    shares.forEach(share => {
+      const isFrom = share.from === currentUser.id;
+      const otherName = isFrom ? share.toName : share.fromName;
+      const tabLabels = (share.tabs||[]).map(t=>ALL_TABS.find(x=>x.id===t)?.label||t).join(', ');
+      h += `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1.5px solid var(--border)">
+        <div style="font-size:22px">${isFrom?'📤':'📥'}</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700">${otherName||'?'}</div>
+          <div style="font-size:11px;color:var(--muted)">${tabLabels}</div>
+        </div>
+        <button class="del-btn" onclick="removeShare('${share.from}_${share.to}')">✕</button>
+      </div>`;
+    });
+    h += `</div>`;
+  }
+
+  // Migration button
+  h += `<div class="note-box" style="margin-top:12px">
+    🔄 <strong>העברת נתונים ישנים:</strong>
+    <button class="btn btn-sm" style="margin-top:8px;width:100%;justify-content:center" onclick="startMigration()">העבר נתונים קיימים לחשבוני</button>
+  </div>`;
+
+  c.innerHTML = h;
+}
+
+window.toggleMyTab = function(tabId, toggle) {
+  toggle.classList.toggle('on');
+  const on = toggle.classList.contains('on');
+  if (on) { if(!currentUser.tabs.includes(tabId)) currentUser.tabs.push(tabId); }
+  else { currentUser.tabs = currentUser.tabs.filter(t=>t!==tabId); }
+  localStorage.setItem('pt_user', JSON.stringify(currentUser));
+  applyUserTabs();
+}
+
+
+window.toggleEditProfile = function() {
+  const wrap = document.getElementById('edit-profile-wrap');
+  if (wrap) wrap.style.display = wrap.style.display==='none' ? 'block' : 'none';
+}
+
+let editProfileColor = null;
+window.pickEditColor = function(el) {
+  document.querySelectorAll('#edit-profile-colors .color-dot').forEach(d=>d.classList.remove('chosen'));
+  el.classList.add('chosen');
+  editProfileColor = el.dataset.c;
+}
+
+window.saveProfileEdit = function() {
+  const name = document.getElementById('edit-profile-name')?.value.trim();
+  if (!name) { toast('❗ נא להזין שם'); return; }
+  currentUser.name = name;
+  if (editProfileColor) currentUser.color = editProfileColor;
+  localStorage.setItem('pt_user', JSON.stringify(currentUser));
+  updateHeaderAvatar();
+  // Update profile in Firebase
+  fbSet('users/'+currentUser.id+'/profile', {
+    id: currentUser.id, name: currentUser.name,
+    color: currentUser.color, lastSeen: Date.now()
+  });
+  renderPermissions();
+  toast('✅ פרופיל עודכן!', currentUser.color);
+}
+window.removeShare = function(shareId) {
+  if (!confirm('להסיר שיתוף זה?')) return;
+  fbSet('shares/'+shareId, null);
+  toast('✅ שיתוף הוסר');
+}
+
 // ── INIT ──
 setSyncStatus('', 'מתחבר...');
-listenAll();
-initEmail();
-initChat();
-checkNotifSupport();
+S.shares = {};
+// Listen to shares globally
+onValue(ref(db,'shares'), snap => { S.shares = snap.val()||{}; });
+initUserSystem();
+// If user already exists, start app
+if (localStorage.getItem('pt_user')) {
+  listenAll();
+  initEmail();
+  initChat();
+  checkNotifSupport();
+}
 </script>
 </body>
 </html>
