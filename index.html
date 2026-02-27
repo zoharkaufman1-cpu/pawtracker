@@ -2216,7 +2216,25 @@ window.calNav = function(dir, sec) {
   else calDate.setDate(calDate.getDate()+dir);
   renderAllCalendars();
 }
-window.calToday = function() { calDate = new Date(); renderAllCalendars(); }
+window.calToday = function(sec) { calDate = new Date(); renderAllCalendars(); }
+window.calPrev = function(sec) {
+  if (calView === 'month') { calDate.setMonth(calDate.getMonth()-1); }
+  else if (calView === 'week') { calDate.setDate(calDate.getDate()-7); }
+  else { calDate.setDate(calDate.getDate()-1); }
+  renderAllCalendars();
+}
+window.calNext = function(sec) {
+  if (calView === 'month') { calDate.setMonth(calDate.getMonth()+1); }
+  else if (calView === 'week') { calDate.setDate(calDate.getDate()+7); }
+  else { calDate.setDate(calDate.getDate()+1); }
+  renderAllCalendars();
+}
+window.setCalView = function(view, btn) {
+  calView = view;
+  document.querySelectorAll('.cal-view-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderAllCalendars();
+}
 
 function getWeekStart(d) {
   const date = new Date(d); date.setDate(date.getDate()-date.getDay()); return date;
@@ -2652,6 +2670,7 @@ function renderPermissions() {
   if (!currentUser) { console.warn('renderPermissions: no user'); return; }
   const c = document.getElementById('permissions-content');
   if (!c) return;
+  if (!S_own) { c.innerHTML='<div style="padding:20px;text-align:center;color:var(--muted)">⏳ טוען...</div>'; return; }
 
   // ── Stats ──
   const totalWalks = Object.keys(S_own.walks||{}).length;
