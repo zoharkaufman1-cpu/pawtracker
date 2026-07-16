@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.100</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.101</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.100</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.101</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.100</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.101</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -3448,15 +3448,24 @@ async function onUserLoggedIn(user) {
 }
 
 function initLogin() {
-  // Handle Google redirect result first (iOS PWA)
-  if (localStorage.getItem('pt_google_redirect')) {
-    localStorage.removeItem('pt_google_redirect');
-    getRedirectResult(auth).then(async result => {
-      if (result?.user) {
-        await handleGoogleUser(result.user);
+  // Check for Google redirect result (iOS PWA)
+  getRedirectResult(auth).then(async result => {
+    if (result?.user) {
+      console.log('[GOOGLE] redirect result:', result.user.email);
+      // Make sure user profile exists with homeCode
+      const snap = await get(ref(db, 'users/' + result.user.uid));
+      if (!snap.val()) {
+        const code = prompt('הזן קוד בית 🏠 (קבל מבן/בת הזוג):');
+        if (!code) { await signOut(auth); return; }
+        const homeCode = code.trim().replace(/[^a-zA-Z0-9א-ת_-]/g, '_');
+        await set(ref(db, 'users/' + result.user.uid), {
+          name: result.user.displayName || result.user.email.split('@')[0],
+          email: result.user.email, homeCode, createdAt: Date.now()
+        });
       }
-    }).catch(e => console.warn('redirect result error:', e));
-  }
+      // onAuthStateChanged will fire and call onUserLoggedIn
+    }
+  }).catch(e => console.warn('[GOOGLE] redirect error:', e));
 
   onAuthStateChanged(auth, user => {
     if (user) {
