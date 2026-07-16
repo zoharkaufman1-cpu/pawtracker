@@ -427,13 +427,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.83</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.85</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.83</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.85</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1439,20 +1439,22 @@ function buildDogSelect(sid) {
   });
 }
 
-// Build walker selector from home members + current user
+// Build walker selector from home members
 async function buildWalkerSel() {
   const c = document.getElementById('walk-walker-sel'); if (!c) return;
-  c.innerHTML = '';
-  // Collect all user names in this home from Firebase
+  c.innerHTML = '<span style="font-size:12px;color:var(--muted)">טוען...</span>';
   const walkers = new Set();
-  walkers.add(currentUsername); // always include self
+  walkers.add(currentUsername);
   try {
     const snap = await get(ref(db, 'users'));
     const allUsers = snap.val() || {};
     Object.values(allUsers).forEach(u => {
-      if (u.homeCode === currentHomeCode && u.name) walkers.add(u.name);
+      if (u.homeCode && u.homeCode.replace(/[^a-zA-Z0-9א-ת_-]/g,'_') === currentHomeCode && u.name) {
+        walkers.add(u.name);
+      }
     });
   } catch(e) { console.warn('walker fetch error', e); }
+  c.innerHTML = '';
   walkers.forEach(name => {
     const b = document.createElement('button');
     b.className = 'dog-sel-btn'; b.dataset.walker = name;
@@ -1712,10 +1714,8 @@ function renderWalks() {
     })() : '';
     const energyIcon = {yes:'✅ פרק אנרגיה', no:'❌ לא פרק', partial:'⚡ חלקית'}[w.energy] || '';
     const totalDogs = Object.keys(S.dogs).length;
-    const soloTag = w.dogIds?.length > 1
-      ? (w.dogIds.length >= totalDogs && totalDogs > 1
-          ? '<span class="tag" style="background:#e8f4ff;color:#2b6cb0">🐕 כולם</span>'
-          : '<span class="tag" style="background:#e8f4ff;color:#2b6cb0">👥 יחד</span>')
+    const soloTag = (w.dogIds?.length >= totalDogs && totalDogs > 1)
+      ? '<span class="tag" style="background:#e8f4ff;color:#2b6cb0">🐕 כולם</span>'
       : '';
     const walkerTag = w.walker ? `<span class="tag tag-note">👤 ${w.walker}</span>` : '';
     const durationTag = duration ? `<span class="tag tag-note">⏱️ ${duration}</span>` : '';
@@ -1733,7 +1733,7 @@ function renderWalks() {
   });
 }
 
-window.deleteWalk = function(id) { if(confirm('למחוק?')) fbRemove('walks/'+id); }
+window.deleteWalk = function(id) { if(confirm('למחוק יציאה זו?')) fbRemove('walks/'+id); }
 
 function updateStats() {
   const today = nowDT().date;
@@ -2180,7 +2180,6 @@ window.saveWalk = function() {
   const walker=walkers.join(', ')||currentUsername;
   const returnTime=document.getElementById('walk-return-time').value;
   const energy=document.getElementById('walk-energy').value;
-  const totalDogs=Object.keys(S.dogs).length;
   fbSet('walks/'+editId,{id:editId,dogIds,period,events,
     date:document.getElementById('walk-date').value,
     time:document.getElementById('walk-time').value,
@@ -2658,7 +2657,10 @@ function renderDayFor(sec, body, cfg) {
       h += `<div style="padding:6px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:center">
         ${checkHtml}
         <div style="flex:1;${isDone?'opacity:0.5;text-decoration:line-through':''}">${cfg.renderItem(it)}</div>
-        <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 5px" onclick="event.stopPropagation();cfg_editItem('${sec}','${it.id}',${it._type?`'${it._type}'`:'null'})">✏️</button>
+        <div style="display:flex;gap:4px;flex-shrink:0">
+          <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 5px" onclick="event.stopPropagation();cfg_editItem('${sec}','${it.id}',${it._type?`'${it._type}'`:'null'})">✏️</button>
+          <button style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--red);padding:2px 5px" onclick="event.stopPropagation();cfg_deleteItem('${sec}','${it.id}')">🗑️</button>
+        </div>
       </div>`;
     });
     h += '</div>';
