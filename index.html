@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.96</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.97</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -441,13 +441,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.96</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.97</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.96</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.97</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -3248,6 +3248,9 @@ window.doLogin = async function() {
   try {
     setSyncStatus('', 'מתחבר...');
     await signInWithEmailAndPassword(auth, email, password);
+    // Save for iOS PWA auto-login
+    localStorage.setItem('pt_email', email);
+    localStorage.setItem('pt_pass', btoa(password));
   } catch(e) {
     const msgs = {
       'auth/user-not-found': 'משתמש לא נמצא',
@@ -3309,6 +3312,8 @@ window.doResetPassword = async function() {
 // ══ LOGOUT ══
 window.logoutUser = async function() {
   if (!confirm('להתנתק?')) return;
+  localStorage.removeItem('pt_email');
+  localStorage.removeItem('pt_pass');
   await signOut(auth);
   location.reload();
 };
@@ -3377,9 +3382,23 @@ function initLogin() {
     if (user) {
       onUserLoggedIn(user);
     } else {
-      document.getElementById('loading-screen').style.display = 'none';
-      document.getElementById('login-screen').style.display = 'flex';
-      setTimeout(() => { const el = document.getElementById('login-email'); if(el) el.focus(); }, 300);
+      // Try auto-login from saved credentials (iOS PWA workaround)
+      const savedEmail = localStorage.getItem('pt_email');
+      const savedPass = localStorage.getItem('pt_pass');
+      if (savedEmail && savedPass) {
+        signInWithEmailAndPassword(auth, savedEmail, atob(savedPass))
+          .catch(e => {
+            console.warn('auto-login failed', e.code);
+            localStorage.removeItem('pt_email');
+            localStorage.removeItem('pt_pass');
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'flex';
+          });
+      } else {
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'flex';
+        setTimeout(() => { const el = document.getElementById('login-email'); if(el) el.focus(); }, 300);
+      }
     }
   });
 }
