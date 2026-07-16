@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.91</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.93</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -441,13 +441,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.91</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.93</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.91</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.93</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -3241,14 +3241,23 @@ window.doLogin = async function() {
   const email = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   if (!email || !password) { showAuthError('נא למלא אימייל וסיסמה'); return; }
+  const btn = document.querySelector('#auth-login-form .btn');
+  if (btn) { btn.textContent = '⏳ מתחבר...'; btn.disabled = true; }
   try {
     setSyncStatus('', 'מתחבר...');
     await signInWithEmailAndPassword(auth, email, password);
-    // onAuthStateChanged will handle the rest
   } catch(e) {
-    const msgs = { 'auth/user-not-found':'משתמש לא נמצא', 'auth/wrong-password':'סיסמה שגויה', 'auth/invalid-email':'אימייל לא תקין', 'auth/invalid-credential':'אימייל או סיסמה שגויים' };
-    showAuthError(msgs[e.code] || 'שגיאת כניסה: ' + e.code);
+    const msgs = {
+      'auth/user-not-found': 'משתמש לא נמצא',
+      'auth/wrong-password': 'סיסמה שגויה',
+      'auth/invalid-email': 'אימייל לא תקין',
+      'auth/invalid-credential': 'אימייל או סיסמה שגויים',
+      'auth/too-many-requests': 'יותר מדי ניסיונות — נסה שוב מאוחר יותר',
+      'auth/weak-password': 'הסיסמה חלשה מדי'
+    };
+    showAuthError(msgs[e.code] || 'שגיאה: ' + e.code);
     setSyncStatus('error', '✗ שגיאת כניסה');
+    if (btn) { btn.textContent = 'כניסה 🐾'; btn.disabled = false; }
   }
 };
 
