@@ -427,13 +427,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.82</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.83</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.82</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.83</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -717,8 +717,12 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div class="form-row">
     <div class="datetime-row">
       <div><label>שעת חזרה <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="time" id="walk-return-time"></div>
-      <div><label>מי יצא? 👤</label><input type="text" id="walk-walker" placeholder="שם המטייל/ת..."></div>
     </div>
+  </div>
+  <div class="form-row">
+    <label>מי הוציא? 👤 <span style="font-weight:400;color:var(--muted)">(ניתן לבחור יותר מאחד)</span></label>
+    <div class="dog-selector" id="walk-walker-sel" style="flex-wrap:wrap"></div>
+    <input type="hidden" id="walk-walker" value="">
   </div>
   <div class="form-row">
     <label>פרק אנרגיה לפני? 🏃</label>
@@ -730,17 +734,17 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     <input type="hidden" id="walk-energy" value="">
   </div>
   <div id="walk-events-row" class="form-row">
-    <label data-he="מה קרה?" data-en="What happened?">מה קרה?</label>
+    <label>מה קרה?</label>
     <div class="quick-grid" id="walk-events-grid">
-      <div class="quick-btn" data-v="pee"><span class="icon">💧</span data-he="פיפי" data-en="Pee">פיפי<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'pee',-1)">−</button><span class="qbtn-count" id="cnt-pee">0</span><button class="qbtn-plus" onclick="changeCount(event,'pee',1)">+</button></div></div>
-      <div class="quick-btn" data-v="poop"><span class="icon">💩</span data-he="קקי" data-en="Poop">קקי<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'poop',-1)">−</button><span class="qbtn-count" id="cnt-poop">0</span><button class="qbtn-plus" onclick="changeCount(event,'poop',1)">+</button></div></div>
-      <div class="quick-btn" data-v="diarrhea"><span class="icon">⚠️</span data-he="שלשול" data-en="Diarrhea">שלשול<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'diarrhea',-1)">−</button><span class="qbtn-count" id="cnt-diarrhea">0</span><button class="qbtn-plus" onclick="changeCount(event,'diarrhea',1)">+</button></div></div>
-      <div class="quick-btn" data-v="vomit"><span class="icon">🤢</span data-he="הקאה" data-en="Vomit">הקאה<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'vomit',-1)">−</button><span class="qbtn-count" id="cnt-vomit">0</span><button class="qbtn-plus" onclick="changeCount(event,'vomit',1)">+</button></div></div>
-      <div class="quick-btn" data-v="blood"><span class="icon">🩸</span data-he="דם" data-en="Blood">דם<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'blood',-1)">−</button><span class="qbtn-count" id="cnt-blood">0</span><button class="qbtn-plus" onclick="changeCount(event,'blood',1)">+</button></div></div>
-      <div class="quick-btn" data-v="ok"><span class="icon">✅</span data-he="הכל תקין" data-en="All Good">הכל תקין<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'ok',-1)">−</button><span class="qbtn-count" id="cnt-ok">0</span><button class="qbtn-plus" onclick="changeCount(event,'ok',1)">+</button></div></div>
+      <div class="quick-btn" data-v="pee"><span class="icon">💧</span>פיפי<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'pee',-1)">−</button><span class="qbtn-count" id="cnt-pee">0</span><button class="qbtn-plus" onclick="changeCount(event,'pee',1)">+</button></div></div>
+      <div class="quick-btn" data-v="poop"><span class="icon">💩</span>קקי<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'poop',-1)">−</button><span class="qbtn-count" id="cnt-poop">0</span><button class="qbtn-plus" onclick="changeCount(event,'poop',1)">+</button></div></div>
+      <div class="quick-btn" data-v="diarrhea"><span class="icon">⚠️</span>שלשול<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'diarrhea',-1)">−</button><span class="qbtn-count" id="cnt-diarrhea">0</span><button class="qbtn-plus" onclick="changeCount(event,'diarrhea',1)">+</button></div></div>
+      <div class="quick-btn" data-v="vomit"><span class="icon">🤢</span>הקאה<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'vomit',-1)">−</button><span class="qbtn-count" id="cnt-vomit">0</span><button class="qbtn-plus" onclick="changeCount(event,'vomit',1)">+</button></div></div>
+      <div class="quick-btn" data-v="blood"><span class="icon">🩸</span>דם<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'blood',-1)">−</button><span class="qbtn-count" id="cnt-blood">0</span><button class="qbtn-plus" onclick="changeCount(event,'blood',1)">+</button></div></div>
+      <div class="quick-btn" data-v="ok"><span class="icon">✅</span>הכל תקין<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'ok',-1)">−</button><span class="qbtn-count" id="cnt-ok">0</span><button class="qbtn-plus" onclick="changeCount(event,'ok',1)">+</button></div></div>
     </div>
   </div>
-  <div class="form-row"><label data-he="הערה" data-en="Note">הערה</label><input type="text" id="walk-note" placeholder="הערות נוספות..."></div>
+  <div class="form-row"><label>הערה</label><input type="text" id="walk-note" placeholder="הערות נוספות..."></div>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('walk')">ביטול</button>
     <button class="btn" id="walk-save-btn" onclick="saveWalk()">שמור 🐾</button>
@@ -1435,6 +1439,30 @@ function buildDogSelect(sid) {
   });
 }
 
+// Build walker selector from home members + current user
+async function buildWalkerSel() {
+  const c = document.getElementById('walk-walker-sel'); if (!c) return;
+  c.innerHTML = '';
+  // Collect all user names in this home from Firebase
+  const walkers = new Set();
+  walkers.add(currentUsername); // always include self
+  try {
+    const snap = await get(ref(db, 'users'));
+    const allUsers = snap.val() || {};
+    Object.values(allUsers).forEach(u => {
+      if (u.homeCode === currentHomeCode && u.name) walkers.add(u.name);
+    });
+  } catch(e) { console.warn('walker fetch error', e); }
+  walkers.forEach(name => {
+    const b = document.createElement('button');
+    b.className = 'dog-sel-btn'; b.dataset.walker = name;
+    b.textContent = '👤 ' + name;
+    if (name === currentUsername) b.classList.add('sel');
+    b.onclick = () => b.classList.toggle('sel');
+    c.appendChild(b);
+  });
+}
+
 function dogAvHTML(d, size='normal') {
   const sz = size === 'mini' ? '20px' : '24px';
   const fs = size === 'mini' ? '12px' : '14px';
@@ -1447,13 +1475,13 @@ function prepM(name) {
   const { date, time } = nowDT();
   if (name === 'walk') {
     buildDogSel('walk-dog-sel', true);
+    buildWalkerSel();
     resetWalkCounts();
     document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
     document.querySelectorAll('[data-e]').forEach(b => b.classList.remove('sel'));
     document.getElementById('walk-date').value = date;
     document.getElementById('walk-time').value = time;
     document.getElementById('walk-return-time').value = '';
-    document.getElementById('walk-walker').value = currentUsername || '';
     document.getElementById('walk-energy').value = '';
     document.getElementById('walk-note').value = '';
     document.getElementById('walk-events-row').style.display = '';
@@ -1491,7 +1519,6 @@ function prepM(name) {
 window.selPeriod = function(btn) {
   document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
   btn.classList.add(btn.dataset.p === 'תאונה' ? 'sel-red' : 'sel');
-  document.getElementById('walk-events-row').style.display = btn.dataset.p === 'תאונה' ? 'none' : '';
 }
 window.toggleQ = function(btn) { btn.classList.toggle('selected'); }
 
@@ -1630,7 +1657,8 @@ window.saveWalk = function() {
   const events = period==='תאונה' ? [] : getWalkEvents();
   const id = uid();
   const returnTime = document.getElementById('walk-return-time').value;
-  const walker = document.getElementById('walk-walker').value.trim() || currentUsername;
+  const walkers = [...document.querySelectorAll('#walk-walker-sel .dog-sel-btn.sel')].map(b=>b.dataset.walker).filter(Boolean);
+  const walker = walkers.join(', ') || currentUsername;
   const energy = document.getElementById('walk-energy').value;
   fbSet('walks/'+id, {
     id, dogIds, period, events,
@@ -1683,7 +1711,12 @@ function renderWalks() {
       return mins >= 60 ? `${Math.floor(mins/60)}ש׳ ${mins%60}ד׳` : `${mins} דק׳`;
     })() : '';
     const energyIcon = {yes:'✅ פרק אנרגיה', no:'❌ לא פרק', partial:'⚡ חלקית'}[w.energy] || '';
-    const soloTag = w.dogIds?.length > 1 ? '<span class="tag" style="background:#e8f4ff;color:#2b6cb0">👥 יחד</span>' : '';
+    const totalDogs = Object.keys(S.dogs).length;
+    const soloTag = w.dogIds?.length > 1
+      ? (w.dogIds.length >= totalDogs && totalDogs > 1
+          ? '<span class="tag" style="background:#e8f4ff;color:#2b6cb0">🐕 כולם</span>'
+          : '<span class="tag" style="background:#e8f4ff;color:#2b6cb0">👥 יחד</span>')
+      : '';
     const walkerTag = w.walker ? `<span class="tag tag-note">👤 ${w.walker}</span>` : '';
     const durationTag = duration ? `<span class="tag tag-note">⏱️ ${duration}</span>` : '';
     const timeStr = w.returnTime ? `${w.time||''} – ${w.returnTime}` : (w.time||'');
@@ -1694,7 +1727,7 @@ function renderWalks() {
       <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}${noteTag}</div>
       <div style="position:absolute;top:8px;left:8px;display:flex;gap:4px">
         <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 7px;border-radius:8px" onclick="editWalk('${w.id}')">✏️</button>
-        <button class="del-btn" onclick="deleteWalk('${w.id}')">✕</button>
+        <button class="del-btn" onclick="deleteWalk('${w.id}')">🗑️</button>
       </div>`;
     c.appendChild(div);
   });
@@ -2107,9 +2140,17 @@ window.editWalk = function(id) {
   document.getElementById('walk-date').value=w.date||'';
   document.getElementById('walk-time').value=w.time||'';
   document.getElementById('walk-return-time').value=w.returnTime||'';
-  document.getElementById('walk-walker').value=w.walker||'';
   document.getElementById('walk-energy').value=w.energy||'';
   document.getElementById('walk-note').value=w.note||'';
+  // Load walkers
+  const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
+  if(savedWalkers.length) {
+    setTimeout(()=>{
+      document.querySelectorAll('#walk-walker-sel .dog-sel-btn').forEach(b=>{
+        b.classList.toggle('sel', savedWalkers.includes(b.dataset.walker));
+      });
+    },100);
+  }
   if(w.energy) { setTimeout(()=>{ const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); },50); }
   setTimeout(()=>{
     document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
@@ -2119,7 +2160,7 @@ window.editWalk = function(id) {
   document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b=>{
     if(b.dataset.p===w.period) b.classList.add(w.period==='תאונה'?'sel-red':'sel');
   });
-  if(w.period==='תאונה') document.getElementById('walk-events-row').style.display='none';
+  if(w.period==='תאונה') document.getElementById('walk-events-row').style.display='';
   loadWalkCounts(w.events||[]);
   document.getElementById('modal-walk').classList.add('open');
 }
@@ -2134,8 +2175,21 @@ window.saveWalk = function() {
   const periodEl=document.querySelector('#walk-period-sel .period-sel-btn.sel,#walk-period-sel .period-sel-btn.sel-red');
   if(!periodEl){toast('❗ בחרי סוג יציאה');return;}
   const period=periodEl.dataset.p;
-  const events=period==='תאונה'?[]:getWalkEvents();
-  fbSet('walks/'+editId,{id:editId,dogIds,period,events,date:document.getElementById('walk-date').value,time:document.getElementById('walk-time').value,note:document.getElementById('walk-note').value.trim()});
+  const events=getWalkEvents();
+  const walkers=[...document.querySelectorAll('#walk-walker-sel .dog-sel-btn.sel')].map(b=>b.dataset.walker).filter(Boolean);
+  const walker=walkers.join(', ')||currentUsername;
+  const returnTime=document.getElementById('walk-return-time').value;
+  const energy=document.getElementById('walk-energy').value;
+  const totalDogs=Object.keys(S.dogs).length;
+  fbSet('walks/'+editId,{id:editId,dogIds,period,events,
+    date:document.getElementById('walk-date').value,
+    time:document.getElementById('walk-time').value,
+    returnTime:returnTime||null,
+    walker:walker||null,
+    energy:energy||null,
+    solo:dogIds.length===1,
+    note:document.getElementById('walk-note').value.trim()
+  });
   document.getElementById('editing-walk-id').value='';
   document.getElementById('walk-modal-title').textContent='🚶 תיעוד יציאה';
   document.getElementById('walk-save-btn').textContent='שמור 🐾';
