@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.93</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.94</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -441,13 +441,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.93</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.94</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.93</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.94</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -3313,16 +3313,21 @@ window.logoutUser = async function() {
 
 // ══ ON AUTH STATE CHANGED ══
 async function onUserLoggedIn(user) {
-  // Load user profile from DB
-  const snap = await get(ref(db, 'users/' + user.uid));
-  let profile = snap.val();
-  if (!profile) {
-    // Legacy: try to find by email
-    profile = { name: user.email.split('@')[0], homeCode: 'default', email: user.email };
-    await set(ref(db, 'users/' + user.uid), { ...profile, createdAt: Date.now() });
+  try {
+    // Load user profile from DB
+    const snap = await get(ref(db, 'users/' + user.uid));
+    let profile = snap.val();
+    if (!profile) {
+      profile = { name: user.email.split('@')[0], homeCode: '1234', email: user.email };
+      await set(ref(db, 'users/' + user.uid), { ...profile, createdAt: Date.now() });
+    }
+    currentUsername = profile.name;
+    currentHomeCode = (profile.homeCode || '1234').replace(/[^a-zA-Z0-9א-ת_-]/g, '_');
+  } catch(e) {
+    console.warn('profile load error', e);
+    currentUsername = user.email.split('@')[0];
+    currentHomeCode = '1234';
   }
-  currentUsername = profile.name;
-  currentHomeCode = profile.homeCode.replace(/[^a-zA-Z0-9א-ת_-]/g, '_');
 
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('sticky-top').style.display = 'block';
@@ -3333,26 +3338,28 @@ async function onUserLoggedIn(user) {
   if (unDisplay) unDisplay.textContent = currentUsername;
   if (unAvatar) unAvatar.textContent = currentUsername[0].toUpperCase();
 
-  // Migration from old paths
-  try {
-    for (const key of SHARED_KEYS) {
-      const homeSnap = await get(ref(db, homePath(key)));
-      if (homeSnap.val() && Object.keys(homeSnap.val()).length > 0) continue;
-      for (const oldPath of ['users/'+currentUsername+'/'+key, key]) {
-        const oldSnap = await get(ref(db, oldPath));
-        const oldVal = oldSnap.val();
-        if (oldVal && Object.keys(oldVal).length > 0) {
-          await set(ref(db, homePath(key)), oldVal);
-          console.log('[MIGRATE]', oldPath, '→', homePath(key));
-          break;
-        }
-      }
-    }
-  } catch(e) { console.warn('[MIGRATE]', e); }
-
   listenAll();
   initEmail();
   initChat();
+
+  // Migration in background (non-blocking)
+  setTimeout(async () => {
+    try {
+      for (const key of SHARED_KEYS) {
+        const homeSnap = await get(ref(db, homePath(key)));
+        if (homeSnap.val() && Object.keys(homeSnap.val()).length > 0) continue;
+        for (const oldPath of ['users/'+currentUsername+'/'+key, key]) {
+          const oldSnap = await get(ref(db, oldPath));
+          const oldVal = oldSnap.val();
+          if (oldVal && Object.keys(oldVal).length > 0) {
+            await set(ref(db, homePath(key)), oldVal);
+            console.log('[MIGRATE]', oldPath, '→', homePath(key));
+            break;
+          }
+        }
+      }
+    } catch(e) { console.warn('[MIGRATE]', e); }
+  }, 2000);
 }
 
 function initLogin() {
