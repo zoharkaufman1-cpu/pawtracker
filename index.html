@@ -51,7 +51,8 @@ nav::-webkit-scrollbar{display:none}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* SEC HEADER */
-#sticky-top{position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(245,166,35,0.3)}
+#sticky-top{position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(245,166,35,0.3);display:none}
+#main-content{display:none}
 .sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
 .sec-title{font-family:'Rubik',sans-serif;font-size:22px;font-weight:800}
 
@@ -379,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.90</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.91</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -440,13 +441,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.90</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.91</span>
 </div>
 
-<div id="sticky-top" style="display:none"><header>
+<div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.90</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.91</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -465,7 +466,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 </nav>
 </div><!-- /sticky-top -->
 
-<div class="main" id="main-content" style="display:none">
+<div class="main" id="main-content">
 
 <!-- WALKS -->
 <div class="section active" id="walks">
@@ -3315,8 +3316,8 @@ async function onUserLoggedIn(user) {
   currentHomeCode = profile.homeCode.replace(/[^a-zA-Z0-9א-ת_-]/g, '_');
 
   document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('sticky-top').style.display = '';
-  document.getElementById('main-content').style.display = '';
+  document.getElementById('sticky-top').style.display = 'block';
+  document.getElementById('main-content').style.display = 'block';
   document.getElementById('current-user-name').textContent = currentUsername;
   const unDisplay = document.getElementById('settings-username-display');
   const unAvatar = document.getElementById('settings-avatar');
