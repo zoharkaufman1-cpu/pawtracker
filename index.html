@@ -427,13 +427,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.81</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.82</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.81</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.82</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -2597,8 +2597,13 @@ function renderDayFor(sec, body, cfg) {
         ${has?`<span style="background:${p.color}22;color:${p.color};font-size:11px;padding:2px 8px;border-radius:50px">${period_items.length}</span>`:'<span style="font-size:12px;color:var(--muted);font-weight:500">לא תועד</span>'}
       </div>`;
     period_items.forEach(it => {
-      h += `<div style="padding:6px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:flex-start">
-        <div style="flex:1">${cfg.renderItem(it)}</div>
+      const isDone = !!(it.done);
+      const checkHtml = sec==='health'
+        ? `<span onclick="event.stopPropagation();_calToggleHealth('${it.id}','${p.key}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${isDone?p.color:'var(--border)'};background:${isDone?p.color:'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${isDone?'✓':''}</span>`
+        : '';
+      h += `<div style="padding:6px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:center">
+        ${checkHtml}
+        <div style="flex:1;${isDone?'opacity:0.5;text-decoration:line-through':''}">${cfg.renderItem(it)}</div>
         <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:2px 5px" onclick="event.stopPropagation();cfg_editItem('${sec}','${it.id}',${it._type?`'${it._type}'`:'null'})">✏️</button>
       </div>`;
     });
@@ -2629,8 +2634,13 @@ window.openDayModal = function(ds, sec, period) {
         ${!has?'<span style="font-size:12px;color:var(--muted);font-weight:400"> — לא תועד</span>':''}
       </div>`;
     period_items.forEach(it => {
-      h += `<div style="padding:7px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:flex-start">
-        <div style="flex:1">${cfg.renderItem(it)}</div>
+      const isDone = !!(it.done);
+      const checkHtml = sec==='health'
+        ? `<span onclick="event.stopPropagation();_calToggleHealth('${it.id}','${p.key}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${isDone?p.color:'var(--border)'};background:${isDone?p.color:'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${isDone?'✓':''}</span>`
+        : '';
+      h += `<div style="padding:7px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:center">
+        ${checkHtml}
+        <div style="flex:1;${isDone?'opacity:0.5;text-decoration:line-through':''}">${cfg.renderItem(it)}</div>
         <div style="display:flex;gap:4px;flex-shrink:0">
           <button style="background:none;border:none;cursor:pointer;font-size:13px" onclick="cfg_editItem('${sec}','${it.id}',${it._type?`'${it._type}'`:'null'})">✏️</button>
           <button style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--red)" onclick="cfg_deleteItem('${sec}','${it.id}')">✕</button>
@@ -2967,7 +2977,18 @@ window.calView=function(sec,view,ds){
 window.calTodayBtn=function(sec){
   if(!calState[sec]) calState[sec]={date:new Date(),view:'week'};
   calState[sec].date = new Date();
+  calState[sec].view = 'week';
   renderCal(sec);
+  // Scroll to today after render
+  setTimeout(()=>{
+    const scroll = document.getElementById('wscroll-'+sec);
+    if(!scroll) return;
+    const todayEl = scroll.querySelector('.week-day-hdr.today');
+    if(todayEl){
+      const col = todayEl.closest('.week-col');
+      scroll.scrollLeft = col.offsetLeft - scroll.clientWidth/2 + col.offsetWidth/2;
+    }
+  }, 100);
 };
 window._calItem=function(sec,id,ptype){
   const cfg=CAL_CFG[sec]; if(!cfg) return;
