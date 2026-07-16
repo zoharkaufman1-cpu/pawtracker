@@ -337,9 +337,6 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 .health-dog-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;box-shadow:0 2px 12px var(--shadow);overflow:hidden}
 
 ::-webkit-scrollbar{width:4px;height:4px}
-#pwa-banner{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2d2416;color:white;padding:12px 20px;border-radius:16px;font-size:13px;font-weight:600;z-index:500;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.3);max-width:320px;width:90%}
-#pwa-banner button{background:var(--accent);border:none;border-radius:50px;padding:7px 14px;color:white;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit}
-#notif-btn{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f5a623,#e87c3e);color:white;border:none;border-radius:50px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;z-index:500;box-shadow:0 4px 20px rgba(245,166,35,0.4);font-family:inherit;display:none}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 
 /* ── CALENDAR ── */
@@ -375,17 +372,48 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <body>
 
 <!-- LOGIN SCREEN -->
-<div id="login-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#ff9a3c 0%,#f5c842 100%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px">
-  <div style="font-size:64px;margin-bottom:10px">🐾</div>
-  <div style="font-family:'Rubik',sans-serif;font-size:28px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:6px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.85);font-size:14px;margin-bottom:30px">כניסה למערכת</div>
-  <div style="background:white;border-radius:20px;padding:24px;width:100%;max-width:340px;box-shadow:0 8px 32px rgba(0,0,0,0.15)">
-    <div style="font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:600">שם משתמש/ת</div>
-    <input id="login-name" type="text" placeholder="הכנס/י שם..." style="margin-bottom:14px;font-size:16px" onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="btn" style="width:100%;justify-content:center;font-size:15px" onclick="doLogin()">כניסה 🐾</button>
-    <div id="login-error" style="color:#e85454;font-size:12px;text-align:center;margin-top:8px;display:none">נא להזין שם</div>
+<div id="login-screen" style="position:fixed;inset:0;background:linear-gradient(135deg,#ff9a3c 0%,#f5c842 100%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;overflow-y:auto">
+  <div style="font-size:56px;margin-bottom:8px">🐾</div>
+  <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:4px">PawTracker</div>
+  <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
+
+  <!-- Tab switcher -->
+  <div style="display:flex;background:rgba(255,255,255,0.2);border-radius:50px;padding:3px;margin-bottom:18px;width:100%;max-width:340px">
+    <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:8px;border:none;border-radius:50px;background:white;color:#e87c3e;font-weight:700;font-size:13px;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.2s">כניסה</button>
+    <button id="tab-register" onclick="switchAuthTab('register')" style="flex:1;padding:8px;border:none;border-radius:50px;background:transparent;color:white;font-weight:600;font-size:13px;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.2s">הרשמה</button>
   </div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:16px;text-align:center">כל משתמש/ת רואה את הנתונים שלו/ה בלבד</div>
+
+  <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;box-shadow:0 8px 32px rgba(0,0,0,0.15)">
+
+    <!-- LOGIN FORM -->
+    <div id="auth-login-form">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600">אימייל</div>
+      <input id="login-email" type="email" placeholder="example@gmail.com" style="margin-bottom:12px;font-size:15px" onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600">סיסמה</div>
+      <input id="login-password" type="password" placeholder="סיסמה..." style="margin-bottom:6px;font-size:15px" onkeydown="if(event.key==='Enter')doLogin()">
+      <div style="text-align:left;margin-bottom:14px">
+        <span onclick="doResetPassword()" style="font-size:11px;color:var(--accent2);cursor:pointer;font-weight:600">שכחתי סיסמה</span>
+      </div>
+      <button class="btn" style="width:100%;justify-content:center;font-size:15px" onclick="doLogin()">כניסה 🐾</button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="auth-register-form" style="display:none">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600">שם תצוגה</div>
+      <input id="reg-name" type="text" placeholder="למשל: זוהר" style="margin-bottom:12px;font-size:15px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600">אימייל</div>
+      <input id="reg-email" type="email" placeholder="example@gmail.com" style="margin-bottom:12px;font-size:15px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600">סיסמה</div>
+      <input id="reg-password" type="password" placeholder="לפחות 6 תווים" style="margin-bottom:12px;font-size:15px">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600">קוד בית 🏠 <span style="font-weight:400;color:var(--muted)">(לשיתוף עם בן/בת זוג)</span></div>
+      <input id="reg-homecode" type="text" placeholder="בחרי קוד סודי..." style="margin-bottom:6px;font-size:15px">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:14px">מי שיש לו את הקוד יוכל להצטרף לבית שלך</div>
+      <button class="btn" style="width:100%;justify-content:center;font-size:15px" onclick="doRegister()">הרשמה 🐾</button>
+    </div>
+
+    <div id="login-error" style="color:#e85454;font-size:12px;text-align:center;margin-top:10px;display:none"></div>
+  </div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:14px;text-align:center">🔒 מאובטח עם Firebase Authentication</div>
 </div>
 
 <!-- LOADING -->
@@ -399,13 +427,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.77</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.81</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.77</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.81</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -655,6 +683,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
       <div class="color-dot" style="background:#3bbfb0" data-c="#3bbfb0" onclick="pickColor(this)"></div>
     </div>
   </div>
+  <div class="form-row"><label>משקל נוכחי (ק"ג)</label><input id="d-weight" type="number" step="0.1" min="0" placeholder="למשל: 12.5"></div>
   <div class="form-row"><label data-he="הערה" data-en="Note">הערה</label><input id="d-note" type="text" placeholder="פרטים נוספים..."></div>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('dog')">ביטול</button>
@@ -681,9 +710,24 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   </div>
   <div class="form-row">
     <div class="datetime-row">
-      <div><label data-he="תאריך" data-en="Date">תאריך</label><input type="date" id="walk-date"></div>
-      <div><label data-he="שעה" data-en="Time">שעה</label><input type="time" id="walk-time"></div>
+      <div><label>תאריך</label><input type="date" id="walk-date"></div>
+      <div><label>שעה יציאה</label><input type="time" id="walk-time"></div>
     </div>
+  </div>
+  <div class="form-row">
+    <div class="datetime-row">
+      <div><label>שעת חזרה <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="time" id="walk-return-time"></div>
+      <div><label>מי יצא? 👤</label><input type="text" id="walk-walker" placeholder="שם המטייל/ת..."></div>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>פרק אנרגיה לפני? 🏃</label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="period-sel-btn" data-e="yes" onclick="selEnergy(this)">✅ כן</button>
+      <button class="period-sel-btn" data-e="no" onclick="selEnergy(this)">❌ לא</button>
+      <button class="period-sel-btn" data-e="partial" onclick="selEnergy(this)">⚡ חלקית</button>
+    </div>
+    <input type="hidden" id="walk-energy" value="">
   </div>
   <div id="walk-events-row" class="form-row">
     <label data-he="מה קרה?" data-en="What happened?">מה קרה?</label>
@@ -962,18 +1006,15 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 </div>
 
 <div class="toast" id="toast"></div>
-<div id="pwa-banner" style="display:none">
-  <span>📲 הוסיפי למסך הבית!</span>
-  <button onclick="installPWA()">התקני</button>
-  <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:rgba(255,255,255,0.2);padding:7px 10px">✕</button>
-</div>
-<button id="notif-btn" data-he="🔔 הפעילי התראות" data-en="🔔 Enable Notifications" onclick="requestNotifPermission()">🔔 הפעילי התראות</button>
+
 
 <!-- ═══════ FIREBASE + SCRIPT ═══════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, remove, update }
+import { getDatabase, ref, onValue, set, remove, update, get }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // ══ FIREBASE SETUP ══
 // To set up your own PawTracker:
@@ -993,6 +1034,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
 
 // ── STATE (local cache) ──
 let S = { dogs:{}, walks:{}, skills:{}, routines:{}, meds:{}, members:{}, treatments:{} };
@@ -1011,21 +1053,31 @@ function setSyncStatus(status, text) {
 }
 
 // ── FIREBASE HELPERS ──
+// All shared data lives under homes/{homeCode}/ — visible only to those with the code
+const SHARED_KEYS = ['dogs','walks','skills','routines','meds','members','treatments'];
+
+let currentHomeCode = '';
+
+function homePath(key) {
+  return 'homes/' + currentHomeCode + '/' + key;
+}
+
 function fbSet(path, data) {
   setSyncStatus('', currentLang==='en'?'Saving...':'שומר...');
-  const fullPath = path.startsWith('users/') || path.startsWith('backups/') ? path : userPath(path);
+  // If path already has a root prefix (backups/, chat/, pushSubs/, homes/) keep it, else prefix with home
+  const fullPath = (path.startsWith('homes/') || path.startsWith('backups/') || path.startsWith('chat/') || path.startsWith('pushSubs/')) ? path : homePath(path);
   return set(ref(db, fullPath), data)
     .then(() => setSyncStatus('synced', currentLang==='en'?'✓ Synced':'✓ מסונכרן'))
     .catch(e => { setSyncStatus('error', currentLang==='en'?'✗ Save error':'✗ שגיאת שמירה'); console.error(e); });
 }
 function fbRemove(path) {
-  const fullPath = path.startsWith('users/') ? path : userPath(path);
+  const fullPath = (path.startsWith('homes/') || path.startsWith('backups/') || path.startsWith('chat/') || path.startsWith('pushSubs/')) ? path : homePath(path);
   return remove(ref(db, fullPath))
     .then(() => setSyncStatus('synced', currentLang==='en'?'✓ Synced':'✓ מסונכרן'))
     .catch(e => setSyncStatus('error', currentLang==='en'?'✗ Error':'✗ שגיאה'));
 }
 function fbUpdate(path, data) {
-  const fullPath = path.startsWith('users/') ? path : userPath(path);
+  const fullPath = (path.startsWith('homes/') || path.startsWith('backups/') || path.startsWith('chat/') || path.startsWith('pushSubs/')) ? path : homePath(path);
   return update(ref(db, fullPath), data)
     .then(() => setSyncStatus('synced', currentLang==='en'?'✓ Synced':'✓ מסונכרן'))
     .catch(e => setSyncStatus('error', currentLang==='en'?'✗ Error':'✗ שגיאה'));
@@ -1040,17 +1092,16 @@ function userPath(key) {
 }
 
 function listenAll() {
-  if (!currentUsername) return;
+  if (!currentUsername || !currentHomeCode) return;
   // Unsubscribe previous listeners
   _listeners.forEach(unsub => unsub && unsub());
   _listeners = [];
   let loaded = 0;
-  const keys = ['dogs','walks','skills','routines','meds','members','treatments'];
-  keys.forEach(key => {
-    const unsub = onValue(ref(db, userPath(key)), snap => {
+  SHARED_KEYS.forEach(key => {
+    const unsub = onValue(ref(db, homePath(key)), snap => {
       S[key] = snap.val() || {};
       loaded++;
-      if (loaded >= keys.length) setSyncStatus('synced', '✓ מסונכרן');
+      if (loaded >= SHARED_KEYS.length) setSyncStatus('synced', '✓ מסונכרן');
       renderAll();
     }, err => {
       console.error('Firebase error on', key, err);
@@ -1398,8 +1449,12 @@ function prepM(name) {
     buildDogSel('walk-dog-sel', true);
     resetWalkCounts();
     document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
+    document.querySelectorAll('[data-e]').forEach(b => b.classList.remove('sel'));
     document.getElementById('walk-date').value = date;
     document.getElementById('walk-time').value = time;
+    document.getElementById('walk-return-time').value = '';
+    document.getElementById('walk-walker').value = currentUsername || '';
+    document.getElementById('walk-energy').value = '';
     document.getElementById('walk-note').value = '';
     document.getElementById('walk-events-row').style.display = '';
   }
@@ -1445,6 +1500,12 @@ window.saveDog = async function() {
   const name = document.getElementById('d-name').value.trim();
   if (!name) { toast('❗ נא להזין שם'); return; }
   const emojiEl = document.querySelector('#dog-emojis .emoji-opt.chosen');
+  const weightVal = parseFloat(document.getElementById('d-weight').value);
+  const existingDog = editingDogId ? S.dogs[editingDogId] : null;
+  const weightHistory = existingDog?.weightHistory ? {...existingDog.weightHistory} : {};
+  if (!isNaN(weightVal) && weightVal > 0) {
+    weightHistory[nowDT().date] = weightVal;
+  }
   const dogData = {
     id: editingDogId || uid(),
     name, breed: document.getElementById('d-breed').value.trim(),
@@ -1453,11 +1514,28 @@ window.saveDog = async function() {
     color: chosenColor,
     emoji: emojiEl ? emojiEl.textContent : '🐶',
     note: document.getElementById('d-note').value.trim(),
-    photo: pendingPhotoData || (editingDogId ? (S.dogs[editingDogId]?.photo || null) : null)
+    photo: pendingPhotoData || (existingDog?.photo || null),
+    weight: (!isNaN(weightVal) && weightVal > 0) ? weightVal : (existingDog?.weight || null),
+    weightHistory
   };
   await fbSet('dogs/' + dogData.id, dogData);
   closeM('dog');
   toast(editingDogId ? '✏️ הכלב עודכן!' : '🐾 הכלב נוסף!', '#4caf7d');
+}
+
+window.showWeightHistory = function(id) {
+  const d = S.dogs[id]; if (!d?.weightHistory) return;
+  const entries = Object.entries(d.weightHistory).sort((a,b)=>a[0].localeCompare(b[0]));
+  const rows = entries.map(([date, w]) => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)"><span style="font-size:13px">${fmtDate(date)}</span><span style="font-size:13px;font-weight:700;color:var(--accent2)">${w} ק"ג</span></div>`).join('');
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px';
+  ov.innerHTML = `<div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;max-height:80vh;overflow-y:auto">
+    <div style="font-family:Rubik,sans-serif;font-size:17px;font-weight:800;margin-bottom:14px">⚖️ היסטוריית משקל — ${d.name}</div>
+    ${rows}
+    <button class="btn" style="width:100%;justify-content:center;margin-top:14px" onclick="this.closest('div[style]').remove()">סגור</button>
+  </div>`;
+  ov.onclick = e => { if(e.target===ov) ov.remove(); };
+  document.body.appendChild(ov);
 }
 
 window.editDog = function(id) {
@@ -1469,6 +1547,7 @@ window.editDog = function(id) {
   document.getElementById('d-breed').value = d.breed||'';
   document.getElementById('d-age').value = d.age||'';
   document.getElementById('d-note').value = d.note||'';
+  document.getElementById('d-weight').value = d.weight||'';
   document.getElementById('d-gender').value = d.gender||'זכר';
   chosenColor = d.color||'#f5a623';
   document.querySelectorAll('.color-dot').forEach(x => x.classList.toggle('chosen', x.dataset.c===chosenColor));
@@ -1506,8 +1585,10 @@ function renderDogs() {
           ${d.age?`<div style="font-size:12px;color:var(--muted)">${d.age}</div>`:''}
           <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
             <span style="background:${d.color}22;color:${d.color};padding:2px 9px;border-radius:50px;font-size:11px;font-weight:700">${d.gender}</span>
+            ${d.weight?`<span style="background:#e8f4ff;color:#2b6cb0;padding:2px 9px;border-radius:50px;font-size:11px;font-weight:700">⚖️ ${d.weight} ק"ג</span>`:''}
             ${d.note?`<span style="background:var(--surface2);color:var(--muted);padding:2px 9px;border-radius:50px;font-size:11px">${d.note}</span>`:''}
           </div>
+          ${d.weightHistory && Object.keys(d.weightHistory).length > 1 ? `<div onclick="showWeightHistory('${d.id}')" style="font-size:11px;color:var(--accent2);cursor:pointer;margin-top:4px;font-weight:600">📈 היסטוריית משקל (${Object.keys(d.weightHistory).length} מדידות)</div>` : ''}
         </div>
       </div>
       <div style="display:flex;gap:6px;margin-top:11px;flex-wrap:wrap">
@@ -1548,14 +1629,27 @@ window.saveWalk = function() {
   const period = periodEl.dataset.p;
   const events = period==='תאונה' ? [] : getWalkEvents();
   const id = uid();
+  const returnTime = document.getElementById('walk-return-time').value;
+  const walker = document.getElementById('walk-walker').value.trim() || currentUsername;
+  const energy = document.getElementById('walk-energy').value;
   fbSet('walks/'+id, {
     id, dogIds, period, events,
     date: document.getElementById('walk-date').value,
     time: document.getElementById('walk-time').value,
+    returnTime: returnTime || null,
+    walker: walker || null,
+    energy: energy || null,
+    solo: dogIds.length === 1,
     note: document.getElementById('walk-note').value.trim()
   });
   closeM('walk');
   toast(period==='תאונה' ? '🏠 תאונה תועדה' : '🐾 יציאה נשמרה!', period==='תאונה'?'#e85454':'#4caf7d');
+}
+
+window.selEnergy = function(btn) {
+  document.querySelectorAll('[data-e]').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('walk-energy').value = btn.dataset.e;
 }
 
 window.filterWalks = function(btn, p) {
@@ -1581,10 +1675,23 @@ function renderWalks() {
           return '';
         }).filter(Boolean).join('') : '<span class="tag tag-ok">✅ הכל תקין</span>');
     const noteTag = w.note ? `<span class="tag tag-note">💬 ${w.note}</span>` : '';
+    const duration = (w.time && w.returnTime) ? (() => {
+      const [sh,sm] = w.time.split(':').map(Number);
+      const [eh,em] = w.returnTime.split(':').map(Number);
+      const mins = (eh*60+em) - (sh*60+sm);
+      if (mins <= 0) return '';
+      return mins >= 60 ? `${Math.floor(mins/60)}ש׳ ${mins%60}ד׳` : `${mins} דק׳`;
+    })() : '';
+    const energyIcon = {yes:'✅ פרק אנרגיה', no:'❌ לא פרק', partial:'⚡ חלקית'}[w.energy] || '';
+    const soloTag = w.dogIds?.length > 1 ? '<span class="tag" style="background:#e8f4ff;color:#2b6cb0">👥 יחד</span>' : '';
+    const walkerTag = w.walker ? `<span class="tag tag-note">👤 ${w.walker}</span>` : '';
+    const durationTag = duration ? `<span class="tag tag-note">⏱️ ${duration}</span>` : '';
+    const timeStr = w.returnTime ? `${w.time||''} – ${w.returnTime}` : (w.time||'');
+    const energyTag = energyIcon ? `<span class="tag" style="background:#f0fff4;color:#276749">${energyIcon}</span>` : '';
     div.innerHTML=`
       <span class="period-badge" style="background:${pColor[w.period]||'var(--accent)'}">${pIcon[w.period]||'🐾'} ${w.period}</span>
-      <div class="walk-dog-row">${dogChips}<span style="font-size:11px;color:var(--muted);margin-right:auto">📅 ${fmtDate(w.date)} ⏰ ${w.time||''}</span></div>
-      <div class="tags-row">${tags}${noteTag}</div>
+      <div class="walk-dog-row">${dogChips}<span style="font-size:11px;color:var(--muted);margin-right:auto">📅 ${fmtDate(w.date)} ⏰ ${timeStr}</span></div>
+      <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}${noteTag}</div>
       <div style="position:absolute;top:8px;left:8px;display:flex;gap:4px">
         <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 7px;border-radius:8px" onclick="editWalk('${w.id}')">✏️</button>
         <button class="del-btn" onclick="deleteWalk('${w.id}')">✕</button>
@@ -1767,8 +1874,24 @@ window.addMed = function() {
   if(!Object.keys(S.dogs).length){toast('❗ הוסיפי כלב קודם');return;}
   const editId=document.getElementById('editing-med-id').value;
   const id=editId||uid();
-  const medPayment=document.getElementById('med-payment').value;
-  fbSet('meds/'+id,{id,dogId:document.getElementById('med-dog').value,name,type:document.getElementById('med-type').value,emoji:document.getElementById('med-emoji').value||'💊',given:document.getElementById('med-given').value,next:document.getElementById('med-next').value,note:document.getElementById('med-note').value.trim(),price:document.getElementById('med-price').value||'',payment:medPayment,payNote:medPayment==='אחר'?document.getElementById('med-pay-note').value.trim():'',done:S.meds[id]?.done||false});
+  const medPayment=document.getElementById('med-payment')?.value||'';
+  const nextDate=document.getElementById('med-next').value;
+  const dogId=document.getElementById('med-dog').value;
+  const medType=document.getElementById('med-type').value;
+  const medEmoji=document.getElementById('med-emoji').value||'💊';
+  fbSet('meds/'+id,{id,dogId,name,type:medType,emoji:medEmoji,given:document.getElementById('med-given').value,next:nextDate,note:document.getElementById('med-note').value.trim(),price:document.getElementById('med-price')?.value||'',payment:medPayment,payNote:medPayment==='אחר'?(document.getElementById('med-pay-note')?.value.trim()||''):'',done:S.meds[id]?.done||false});
+
+  // Auto-create a future med entry for the "next" date if it's in the future
+  if (nextDate && nextDate > nowDT().date) {
+    const futureId = uid();
+    fbSet('meds/'+futureId, {
+      id: futureId, dogId, name, type: medType, emoji: medEmoji,
+      given: nextDate, next: '', note: 'נוצר אוטומטית מתאריך "הבא"',
+      done: false, autoCreated: true
+    });
+    toast('📅 טיפול עתידי נוצר אוטומטית ל-'+fmtDate(nextDate)+'!', '#4caf7d');
+  }
+
   document.getElementById('editing-med-id').value='';
   document.getElementById('med-modal-title').textContent='💊 הוסף תרופה / חיסון';
   document.getElementById('med-save-btn').textContent='שמור';
@@ -1983,7 +2106,11 @@ window.editWalk = function(id) {
   document.getElementById('walk-save-btn').textContent='עדכן 🐾';
   document.getElementById('walk-date').value=w.date||'';
   document.getElementById('walk-time').value=w.time||'';
+  document.getElementById('walk-return-time').value=w.returnTime||'';
+  document.getElementById('walk-walker').value=w.walker||'';
+  document.getElementById('walk-energy').value=w.energy||'';
   document.getElementById('walk-note').value=w.note||'';
+  if(w.energy) { setTimeout(()=>{ const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); },50); }
   setTimeout(()=>{
     document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
       if((w.dogIds||[]).includes(b.dataset.id)) b.classList.add('sel');
@@ -2187,7 +2314,7 @@ window.saveChatName=function(){
 }
 function initChat(){
   if(myName) document.getElementById('chat-username').value=myName;
-  onValue(ref(db,'chat'),snap=>{renderChat(snap.val()||{});});
+  onValue(ref(db, homePath('chat')),snap=>{renderChat(snap.val()||{});});
 }
 function renderChat(msgs){
   const c=document.getElementById('chat-messages');if(!c)return;
@@ -2229,7 +2356,7 @@ window.sendChat=function(){
   const inp=document.getElementById('chat-input');
   const text=inp.value.trim();if(!text)return;
   if(!myName){toast('❗ קודם שמרי את שמך');return;}
-  fbSet('chat/'+uid(),{id:uid(),name:myName,text,ts:Date.now()});
+  fbSet(homePath('chat/'+uid()),{id:uid(),name:myName,text,ts:Date.now()});
   inp.value='';
   setTimeout(()=>{const c=document.getElementById('chat-messages');if(c)c.scrollTop=c.scrollHeight;},200);
   // email on chat
@@ -2584,7 +2711,8 @@ const CAL_CFG = {
     label:(w)=>{
       const evLabels={pee:'💧',poop:'💩',diarrhea:'⚠️',vomit:'🤢',blood:'🩸',ok:'✅'};
       const evs=(w.events||[]).map(e=>{const k=typeof e==='string'?e:e.type; return evLabels[k]||'';}).filter(Boolean).join('');
-      return (w.time||'')+' '+(evs||'🐾');
+      const initials=(w.dogIds||[]).map(id=>S.dogs[id]?.name?.[0]||'').filter(Boolean).join('');
+      return (w.time||'')+' '+(initials?'['+initials+'] ':' ')+(evs||'🐾');
     },
     onAdd:(ds,period)=>calOpenWalk(ds,period),
     onItem:(w)=>window.editWalk(w.id),
@@ -2998,78 +3126,136 @@ window.prepHealthModal = function(type) {
   }, 50);
 };
 
-// ══ LOGIN / USER ══
+// ══ AUTH TAB SWITCHER ══
+window.switchAuthTab = function(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('auth-login-form').style.display = isLogin ? '' : 'none';
+  document.getElementById('auth-register-form').style.display = isLogin ? 'none' : '';
+  document.getElementById('tab-login').style.cssText = isLogin
+    ? 'flex:1;padding:8px;border:none;border-radius:50px;background:white;color:#e87c3e;font-weight:700;font-size:13px;cursor:pointer;font-family:Rubik,sans-serif'
+    : 'flex:1;padding:8px;border:none;border-radius:50px;background:transparent;color:white;font-weight:600;font-size:13px;cursor:pointer;font-family:Rubik,sans-serif';
+  document.getElementById('tab-register').style.cssText = isLogin
+    ? 'flex:1;padding:8px;border:none;border-radius:50px;background:transparent;color:white;font-weight:600;font-size:13px;cursor:pointer;font-family:Rubik,sans-serif'
+    : 'flex:1;padding:8px;border:none;border-radius:50px;background:white;color:#e87c3e;font-weight:700;font-size:13px;cursor:pointer;font-family:Rubik,sans-serif';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('login-error');
+  el.textContent = msg; el.style.display = 'block';
+}
+
+// ══ LOGIN ══
 window.doLogin = async function() {
-  const name = document.getElementById('login-name').value.trim();
-  if (!name) {
-    document.getElementById('login-error').style.display = 'block';
-    return;
-  }
-  currentUsername = name.replace(/[^a-zA-Z0-9א-ת_-]/g, '_');
-  localStorage.setItem('pt_username', currentUsername);
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('current-user-name').textContent = name;
-  // update settings display
-  const unDisplay=document.getElementById('settings-username-display');
-  const unAvatar=document.getElementById('settings-avatar');
-  if(unDisplay) unDisplay.textContent=currentUsername;
-  if(unAvatar) unAvatar.textContent=name[0].toUpperCase();
-  setSyncStatus('', 'מעביר נתונים...');
-
-  // Migrate old data (from /walks, /dogs etc) to /users/name/
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) { showAuthError('נא למלא אימייל וסיסמה'); return; }
   try {
-    const keys = ['dogs','walks','skills','routines','meds','members','treatments'];
-    let migrated = false;
-    for (const key of keys) {
-      const snap = await new Promise(res => {
-        onValue(ref(db, key), res, {onlyOnce: true});
-      });
-      const val = snap.val();
-      if (val && Object.keys(val).length > 0) {
-        // Check user path is empty first
-        const userSnap = await new Promise(res => {
-          onValue(ref(db, userPath(key)), res, {onlyOnce: true});
-        });
-        if (!userSnap.val()) {
-          await set(ref(db, userPath(key)), val);
-          migrated = true;
-          console.log('[MIGRATE] moved', key, Object.keys(val).length, 'items');
-        }
-      }
-    }
-    if (migrated) {
-      toast('✅ נתונים קיימים הועברו לחשבון שלך!', '#4caf7d');
-    }
+    setSyncStatus('', 'מתחבר...');
+    await signInWithEmailAndPassword(auth, email, password);
+    // onAuthStateChanged will handle the rest
   } catch(e) {
-    console.warn('[MIGRATE] error:', e);
+    const msgs = { 'auth/user-not-found':'משתמש לא נמצא', 'auth/wrong-password':'סיסמה שגויה', 'auth/invalid-email':'אימייל לא תקין', 'auth/invalid-credential':'אימייל או סיסמה שגויים' };
+    showAuthError(msgs[e.code] || 'שגיאת כניסה: ' + e.code);
+    setSyncStatus('error', '✗ שגיאת כניסה');
   }
-
-  setSyncStatus('', 'מתחבר...');
-  listenAll();
-  initEmail();
-  initChat();
 };
 
-window.logoutUser = function() {
+// ══ REGISTER ══
+window.doRegister = async function() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const code = document.getElementById('reg-homecode').value.trim();
+  if (!name || !email || !password || !code) { showAuthError('נא למלא את כל השדות'); return; }
+  if (password.length < 6) { showAuthError('הסיסמה חייבת להכיל לפחות 6 תווים'); return; }
+  try {
+    setSyncStatus('', 'יוצר חשבון...');
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    const uid = cred.user.uid;
+    const homeCode = code.replace(/[^a-zA-Z0-9א-ת_-]/g, '_');
+    // Save user profile
+    await set(ref(db, 'users/' + uid), { name, email, homeCode, createdAt: Date.now() });
+    // onAuthStateChanged will handle the rest
+  } catch(e) {
+    const msgs = { 'auth/email-already-in-use':'האימייל כבר רשום', 'auth/weak-password':'הסיסמה חלשה מדי', 'auth/invalid-email':'אימייל לא תקין' };
+    showAuthError(msgs[e.code] || 'שגיאת הרשמה: ' + e.code);
+    setSyncStatus('error', '✗ שגיאת הרשמה');
+  }
+};
+
+// ══ RESET PASSWORD ══
+window.doResetPassword = async function() {
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) { showAuthError('הכניסי אימייל קודם'); return; }
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showAuthError('✅ נשלח מייל לאיפוס סיסמה!');
+    document.getElementById('login-error').style.color = '#4caf7d';
+  } catch(e) {
+    showAuthError('שגיאה: ' + e.code);
+  }
+};
+
+// ══ LOGOUT ══
+window.logoutUser = async function() {
   if (!confirm('להתנתק?')) return;
-  localStorage.removeItem('pt_username');
+  await signOut(auth);
   location.reload();
 };
 
-function initLogin() {
-  const saved = localStorage.getItem('pt_username');
-  if (saved) {
-    currentUsername = saved;
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('current-user-name').textContent = saved;
-    listenAll();
-    initEmail();
-    initChat();
-  } else {
-    document.getElementById('loading-screen').style.display = 'none';
-    document.getElementById('login-screen').style.display = 'flex';
-    setTimeout(() => document.getElementById('login-name').focus(), 300);
+// ══ ON AUTH STATE CHANGED ══
+async function onUserLoggedIn(user) {
+  // Load user profile from DB
+  const snap = await get(ref(db, 'users/' + user.uid));
+  let profile = snap.val();
+  if (!profile) {
+    // Legacy: try to find by email
+    profile = { name: user.email.split('@')[0], homeCode: 'default', email: user.email };
+    await set(ref(db, 'users/' + user.uid), { ...profile, createdAt: Date.now() });
   }
+  currentUsername = profile.name;
+  currentHomeCode = profile.homeCode.replace(/[^a-zA-Z0-9א-ת_-]/g, '_');
+
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('current-user-name').textContent = currentUsername;
+  const unDisplay = document.getElementById('settings-username-display');
+  const unAvatar = document.getElementById('settings-avatar');
+  if (unDisplay) unDisplay.textContent = currentUsername;
+  if (unAvatar) unAvatar.textContent = currentUsername[0].toUpperCase();
+
+  // Migration from old paths
+  try {
+    for (const key of SHARED_KEYS) {
+      const homeSnap = await get(ref(db, homePath(key)));
+      if (homeSnap.val() && Object.keys(homeSnap.val()).length > 0) continue;
+      for (const oldPath of ['users/'+currentUsername+'/'+key, key]) {
+        const oldSnap = await get(ref(db, oldPath));
+        const oldVal = oldSnap.val();
+        if (oldVal && Object.keys(oldVal).length > 0) {
+          await set(ref(db, homePath(key)), oldVal);
+          console.log('[MIGRATE]', oldPath, '→', homePath(key));
+          break;
+        }
+      }
+    }
+  } catch(e) { console.warn('[MIGRATE]', e); }
+
+  listenAll();
+  initEmail();
+  initChat();
+}
+
+function initLogin() {
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      onUserLoggedIn(user);
+    } else {
+      document.getElementById('loading-screen').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'flex';
+      setTimeout(() => { const el = document.getElementById('login-email'); if(el) el.focus(); }, 300);
+    }
+  });
 }
 
 // ── INIT ──
