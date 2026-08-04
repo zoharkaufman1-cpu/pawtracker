@@ -768,7 +768,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
       <div class="quick-btn" data-v="ok"><span class="icon">✅</span>הכל תקין<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'ok',-1)">−</button><span class="qbtn-count" id="cnt-ok">0</span><button class="qbtn-plus" onclick="changeCount(event,'ok',1)">+</button></div></div>
     </div>
   </div>
-  <div class="form-row"><label>הערה</label><textarea id="walk-note" placeholder="הערות נוספות..." rows="2" style="resize:none;overflow:hidden" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea></div>
+  <div class="form-row"><label>הערה</label><input type="text" id="walk-note" placeholder="הערות נוספות..."></div>
   <div class="form-row" id="walk-custom-fields"></div>
   <button class="btn-ghost btn-sm" onclick="addCustomField('walk')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
   <div class="modal-actions">
@@ -1857,11 +1857,13 @@ function renderWalks() {
     const durationTag = duration ? `<span class="tag tag-note">⏱️ ${duration}</span>` : '';
     const timeStr = w.returnTime ? `${w.time||''} – ${w.returnTime}` : (w.time||'');
     const energyTag = energyIcon ? `<span class="tag" style="background:#f0fff4;color:#276749">${energyIcon}</span>` : '';
-    const customFieldTags = w.customFields ? Object.entries(w.customFields).map(([k,v])=>`<span class="tag tag-note">📝 ${k}: ${v}</span>`).join('') : '';
+    const noteTag = w.note ? `<div style="font-size:12px;color:var(--muted);margin-top:5px">💬 ${w.note}</div>` : '';
+    const customFieldTags = w.customFields ? Object.entries(w.customFields).map(([k,v])=>`<div style="font-size:12px;color:var(--muted);margin-top:3px">📝 <b>${k}:</b> ${v}</div>`).join('') : '';
     div.innerHTML=`
       <span class="period-badge" style="background:${pColor[w.period]||'var(--accent)'}">${pIcon[w.period]||'🐾'} ${w.period}</span>
       <div class="walk-dog-row">${dogChips}<span style="font-size:11px;color:var(--muted);margin-right:auto">📅 ${fmtDate(w.date)} ⏰ ${timeStr}</span></div>
-      <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}${noteTag}${customFieldTags}</div>
+      <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}</div>
+      ${noteTag}${customFieldTags}
       <div style="position:absolute;top:8px;left:8px;display:flex;gap:4px">
         <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 7px;border-radius:8px" onclick="editWalk('${w.id}')">✏️</button>
         <button class="del-btn" onclick="deleteWalk('${w.id}')">🗑️</button>
