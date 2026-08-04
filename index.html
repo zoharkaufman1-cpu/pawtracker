@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.103</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.104</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.103</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.104</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.103</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.104</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -769,6 +769,8 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     </div>
   </div>
   <div class="form-row"><label>הערה</label><input type="text" id="walk-note" placeholder="הערות נוספות..."></div>
+  <div class="form-row" id="walk-custom-fields"></div>
+  <button class="btn-ghost btn-sm" onclick="addCustomField('walk')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('walk')">ביטול</button>
     <button class="btn" id="walk-save-btn" onclick="saveWalk()">שמור 🐾</button>
@@ -789,14 +791,20 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   </div>
   <div class="form-row"><label data-he="שם *" data-en="Name *">שם *</label><input id="sk-name" placeholder="למשל: ישב, תן יד..."></div>
   <div class="form-row"><label data-he="קטגוריה" data-en="Category">קטגוריה</label><select id="sk-cat"><option>פקודות בסיס</option><option>טריקים</option><option>משמעת</option><option>חברותיות</option><option>אגיליטי</option><option>אחר</option></select></div>
-  <div class="form-row"><label data-he="כלב *" data-en="Dog *">כלב *</label><select id="sk-dog"></select></div>
+  <div class="form-row"><label>כלב *</label><select id="sk-dog"></select></div>
   <div class="form-row">
     <div class="datetime-row">
-      <div><label data-he="תאריך" data-en="Date">תאריך</label><input type="date" id="sk-date"></div>
-      <div><label data-he="שעה" data-en="Time">שעה</label><input type="time" id="sk-time"></div>
+      <div><label>תאריך</label><input type="date" id="sk-date"></div>
+      <div><label>שעת התחלה</label><input type="time" id="sk-time"></div>
     </div>
   </div>
-  <div class="form-row"><label data-he="הערה" data-en="Note">הערה</label><input id="sk-note" placeholder="הערות..."></div>
+  <div class="form-row">
+    <label>שעת סיום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label>
+    <input type="time" id="sk-end-time">
+  </div>
+  <div class="form-row"><label>הערה</label><input id="sk-note" placeholder="הערות..."></div>
+  <div class="form-row" id="skill-custom-fields"></div>
+  <button class="btn-ghost btn-sm" onclick="addCustomField('skill')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('skill')">ביטול</button>
     <button class="btn" id="skill-save-btn" onclick="addSkill()">הוסף</button>
@@ -811,18 +819,39 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div class="modal-title" id="routine-modal-title">📋 הוסף משימה</div>
   <input type="hidden" id="editing-routine-id">
   <div class="form-row">
-    <label data-he="אמוג'י" data-en="Emoji">אמוג'י</label>
+    <label>אמוג'י</label>
     <div class="emoji-row" id="rt-emojis">🍽️ 🚶 💊 🛁 🪮 🦷 💧 🎯 🌅 ☀️ 🌙 ❤️ 🎀 🏃 🧸</div>
     <input type="hidden" id="rt-emoji" value="🍽️">
   </div>
-  <div class="form-row"><label data-he="שם המשימה *" data-en="Task Name *">שם המשימה *</label><input id="rt-name" placeholder="למשל: האכלת בוקר..."></div>
+  <div class="form-row"><label>שם המשימה *</label><input id="rt-name" placeholder="למשל: האכלת בוקר..."></div>
   <div class="form-row">
     <div class="datetime-row">
-      <div><label data-he="זמן ביום" data-en="Time of Day">זמן ביום</label><select id="rt-period"><option value="בוקר">🌅 בוקר</option><option value="צהריים">☀️ צהריים</option><option value="ערב">🌙 ערב</option></select></div>
-      <div><label data-he="שעה" data-en="Time">שעה</label><input type="time" id="rt-time" value="08:00"></div>
+      <div><label>זמן ביום</label><select id="rt-period"><option value="בוקר">🌅 בוקר</option><option value="צהריים">☀️ צהריים</option><option value="ערב">🌙 ערב</option></select></div>
+      <div><label>שעת התחלה</label><input type="time" id="rt-time" value="08:00"></div>
     </div>
   </div>
-  <div class="form-row"><label data-he="כלבים" data-en="Dogs">כלבים</label><div class="dog-selector" id="rt-dog-sel"></div></div>
+  <div class="form-row">
+    <div class="datetime-row">
+      <div><label>שעת סיום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="time" id="rt-end-time"></div>
+      <div><label>פעמים ביום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="number" id="rt-times-per-day" min="1" max="10" placeholder="1"></div>
+    </div>
+  </div>
+  <div class="form-row">
+    <label>ימים בשבוע <span style="font-weight:400;color:var(--muted)">(ריק = כל יום)</span></label>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <button class="period-sel-btn" data-day="א" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">א׳</button>
+      <button class="period-sel-btn" data-day="ב" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">ב׳</button>
+      <button class="period-sel-btn" data-day="ג" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">ג׳</button>
+      <button class="period-sel-btn" data-day="ד" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">ד׳</button>
+      <button class="period-sel-btn" data-day="ה" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">ה׳</button>
+      <button class="period-sel-btn" data-day="ו" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">ו׳</button>
+      <button class="period-sel-btn" data-day="ש" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">ש׳</button>
+    </div>
+  </div>
+  <div class="form-row"><label>כלבים</label><div class="dog-selector" id="rt-dog-sel"></div></div>
+  <div class="form-row"><label>הערות</label><input id="rt-note" placeholder="הערות נוספות..."></div>
+  <div class="form-row" id="routine-custom-fields"></div>
+  <button class="btn-ghost btn-sm" onclick="addCustomField('routine')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('routine')">ביטול</button>
     <button class="btn" id="routine-save-btn" onclick="addRoutine()">הוסף</button>
@@ -1528,9 +1557,25 @@ function prepM(name) {
     document.getElementById('walk-energy').value = '';
     document.getElementById('walk-note').value = '';
     document.getElementById('walk-events-row').style.display = '';
+    const wc = document.getElementById('walk-custom-fields'); if(wc) wc.innerHTML='';
   }
-  if (name === 'skill') { buildDogSelect('sk-dog'); initEmojiPicker('skill-emojis','sk-emoji','🎯'); ['sk-name','sk-note'].forEach(i=>document.getElementById(i).value=''); document.getElementById('sk-date').value=date; document.getElementById('sk-time').value=time; }
-  if (name === 'routine') { buildDogSel('rt-dog-sel',true); initEmojiPicker('rt-emojis','rt-emoji','🍽️'); document.getElementById('rt-name').value=''; }
+  if (name === 'skill') {
+    buildDogSelect('sk-dog'); initEmojiPicker('skill-emojis','sk-emoji','🎯');
+    ['sk-name','sk-note'].forEach(i=>document.getElementById(i).value='');
+    document.getElementById('sk-date').value=date;
+    document.getElementById('sk-time').value=time;
+    const skEndTime = document.getElementById('sk-end-time'); if(skEndTime) skEndTime.value='';
+    const sc = document.getElementById('skill-custom-fields'); if(sc) sc.innerHTML='';
+  }
+  if (name === 'routine') {
+    buildDogSel('rt-dog-sel',true); initEmojiPicker('rt-emojis','rt-emoji','🍽️');
+    document.getElementById('rt-name').value='';
+    const rtNote = document.getElementById('rt-note'); if(rtNote) rtNote.value='';
+    const rtEnd = document.getElementById('rt-end-time'); if(rtEnd) rtEnd.value='';
+    const rtTimes = document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value='';
+    document.querySelectorAll('#modal-routine [data-day]').forEach(b=>b.classList.remove('sel'));
+    const rc = document.getElementById('routine-custom-fields'); if(rc) rc.innerHTML='';
+  }
   if (name === 'med') { buildDogSelect('med-dog'); initEmojiPicker('med-emojis','med-emoji','💊'); ['med-name','med-note','med-price','med-pay-note'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';}); document.getElementById('med-given').value=date; document.getElementById('med-next').value=''; document.getElementById('med-payment').value=''; document.getElementById('med-pay-note-row').style.display='none'; }
   if (name === 'dog') {
     editingDogId = null; pendingPhotoData = null;
@@ -1559,6 +1604,55 @@ function prepM(name) {
 }
 
 // ── PERIOD SEL ──
+window.toggleDay = function(btn) { btn.classList.toggle('sel'); }
+
+// ══ CUSTOM FIELDS ══
+window.addCustomField = function(type) {
+  const containerId = type === 'walk' ? 'walk-custom-fields' : type === 'routine' ? 'routine-custom-fields' : 'skill-custom-fields';
+  const c = document.getElementById(containerId); if (!c) return;
+  const fieldId = 'custom_' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'form-row';
+  div.dataset.fieldId = fieldId;
+  div.innerHTML = `
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px">
+      <input type="text" placeholder="שם השדה..." style="flex:1;font-size:13px" class="custom-field-name" value="">
+      <button onclick="this.closest('[data-field-id]').remove()" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:2px">✕</button>
+    </div>
+    <input type="text" placeholder="תוכן..." class="custom-field-value">`;
+  c.appendChild(div);
+};
+
+function getCustomFields(containerId) {
+  const c = document.getElementById(containerId); if (!c) return {};
+  const fields = {};
+  c.querySelectorAll('[data-field-id]').forEach(div => {
+    const name = div.querySelector('.custom-field-name').value.trim();
+    const value = div.querySelector('.custom-field-value').value.trim();
+    if (name) fields[name] = value;
+  });
+  return Object.keys(fields).length ? fields : null;
+}
+
+function loadCustomFields(containerId, fields) {
+  const c = document.getElementById(containerId); if (!c) return;
+  c.innerHTML = '';
+  if (!fields) return;
+  const type = containerId.includes('walk') ? 'walk' : containerId.includes('routine') ? 'routine' : 'skill';
+  Object.entries(fields).forEach(([name, value]) => {
+    const div = document.createElement('div');
+    div.className = 'form-row';
+    div.dataset.fieldId = 'cf_' + Date.now() + Math.random();
+    div.innerHTML = `
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:5px">
+        <input type="text" placeholder="שם השדה..." style="flex:1;font-size:13px" class="custom-field-name" value="${name}">
+        <button onclick="this.closest('[data-field-id]').remove()" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:2px">✕</button>
+      </div>
+      <input type="text" placeholder="תוכן..." class="custom-field-value" value="${value}">`;
+    c.appendChild(div);
+  });
+}
+
 window.selPeriod = function(btn) {
   document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
   btn.classList.add(btn.dataset.p === 'תאונה' ? 'sel-red' : 'sel');
@@ -1711,7 +1805,8 @@ window.saveWalk = function() {
     walker: walker || null,
     energy: energy || null,
     solo: dogIds.length === 1,
-    note: document.getElementById('walk-note').value.trim()
+    note: document.getElementById('walk-note').value.trim(),
+    customFields: getCustomFields('walk-custom-fields')
   });
   closeM('walk');
   toast(period==='תאונה' ? '🏠 תאונה תועדה' : '🐾 יציאה נשמרה!', period==='תאונה'?'#e85454':'#4caf7d');
@@ -1762,10 +1857,11 @@ function renderWalks() {
     const durationTag = duration ? `<span class="tag tag-note">⏱️ ${duration}</span>` : '';
     const timeStr = w.returnTime ? `${w.time||''} – ${w.returnTime}` : (w.time||'');
     const energyTag = energyIcon ? `<span class="tag" style="background:#f0fff4;color:#276749">${energyIcon}</span>` : '';
+    const customFieldTags = w.customFields ? Object.entries(w.customFields).map(([k,v])=>`<span class="tag tag-note">📝 ${k}: ${v}</span>`).join('') : '';
     div.innerHTML=`
       <span class="period-badge" style="background:${pColor[w.period]||'var(--accent)'}">${pIcon[w.period]||'🐾'} ${w.period}</span>
       <div class="walk-dog-row">${dogChips}<span style="font-size:11px;color:var(--muted);margin-right:auto">📅 ${fmtDate(w.date)} ⏰ ${timeStr}</span></div>
-      <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}${noteTag}</div>
+      <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}${noteTag}${customFieldTags}</div>
       <div style="position:absolute;top:8px;left:8px;display:flex;gap:4px">
         <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 7px;border-radius:8px" onclick="editWalk('${w.id}')">✏️</button>
         <button class="del-btn" onclick="deleteWalk('${w.id}')">🗑️</button>
@@ -1792,7 +1888,17 @@ window.addSkill = function() {
   if (!name) { toast('❗ נא להזין שם'); return; }
   if (!Object.keys(S.dogs).length) { toast('❗ הוסיפי כלב קודם'); return; }
   const id = uid();
-  fbSet('skills/'+id, { id, dogId:document.getElementById('sk-dog').value, name, cat:document.getElementById('sk-cat').value, emoji:document.getElementById('sk-emoji').value||'🎯', stars:0, date:document.getElementById('sk-date').value, time:document.getElementById('sk-time').value, note:document.getElementById('sk-note').value.trim() });
+  fbSet('skills/'+id, {
+    id, dogId: document.getElementById('sk-dog').value, name,
+    cat: document.getElementById('sk-cat').value,
+    emoji: document.getElementById('sk-emoji').value||'🎯',
+    stars: 0,
+    date: document.getElementById('sk-date').value,
+    time: document.getElementById('sk-time').value,
+    endTime: document.getElementById('sk-end-time')?.value||null,
+    note: document.getElementById('sk-note').value.trim(),
+    customFields: getCustomFields('skill-custom-fields')
+  });
   closeM('skill'); toast('🎯 מיומנות נוספה!','#4caf7d');
 }
 window.rateStar = function(id,val) { fbUpdate('skills/'+id, {stars:val}); toast('⭐ דירוג עודכן!','#f5a623'); }
@@ -1838,9 +1944,20 @@ function renderSkills() {
 window.addRoutine = function() {
   const name=document.getElementById('rt-name').value.trim(); if(!name){toast('❗ נא להזין שם');return;}
   const dogNames=[...document.querySelectorAll('#rt-dog-sel .dog-sel-btn.sel')].map(b=>b.textContent.trim());
+  const days=[...document.querySelectorAll('#modal-routine [data-day].sel')].map(b=>b.dataset.day);
   const id=uid();
-  fbSet('routines/'+id,{id,name,period:document.getElementById('rt-period').value,time:document.getElementById('rt-time').value,emoji:document.getElementById('rt-emoji').value||'🍽️',dogNames,done:false});
-  closeM('routine');toast('📋 משימה נוספה!','#4caf7d');
+  fbSet('routines/'+id,{
+    id, name,
+    period: document.getElementById('rt-period').value,
+    time: document.getElementById('rt-time').value,
+    endTime: document.getElementById('rt-end-time').value||null,
+    timesPerDay: parseInt(document.getElementById('rt-times-per-day').value)||1,
+    days: days.length ? days : null,
+    emoji: document.getElementById('rt-emoji').value||'🍽️',
+    note: document.getElementById('rt-note').value.trim()||null,
+    dogNames, done: false
+  });
+  closeM('routine'); toast('📋 משימה נוספה!','#4caf7d');
 }
 window.toggleRoutine = function(id) { const r=S.routines[id]; if(r) fbUpdate('routines/'+id,{done:!r.done}); }
 window.deleteRoutine = function(id) { if(confirm('למחוק?')) fbRemove('routines/'+id); }
@@ -1857,9 +1974,29 @@ function renderRoutines() {
     card.innerHTML=`<div class="card-title">${p.icon} ${p.v}</div>`;
     items.forEach(r=>{
       const dl=r.dogNames?.length?' · '+r.dogNames.join(', '):'';
+      const timeStr = r.endTime ? `${r.time} – ${r.endTime}` : r.time;
+      const duration = (r.time && r.endTime) ? (() => {
+        const [sh,sm]=r.time.split(':').map(Number);
+        const [eh,em]=r.endTime.split(':').map(Number);
+        const mins=(eh*60+em)-(sh*60+sm);
+        if(mins<=0) return '';
+        return mins>=60?`${Math.floor(mins/60)}ש׳ ${mins%60}ד׳`:`${mins}ד׳`;
+      })() : '';
+      const daysStr = r.days?.length ? ' · ' + r.days.map(d=>d+'׳').join('') : '';
+      const timesStr = r.timesPerDay > 1 ? ` · ${r.timesPerDay}× ביום` : '';
       const div=document.createElement('div');div.className='routine-item';
       div.onclick=()=>toggleRoutine(r.id);
-      div.innerHTML=`<div class="check-box ${r.done?'done':''}">${r.done?'✓':''}</div><span style="font-size:18px">${r.emoji}</span><div style="flex:1"><span class="routine-label" style="${r.done?'text-decoration:line-through;color:var(--muted)':''}">${r.name}</span><span style="font-size:12px;color:var(--muted)">${dl}</span></div><span class="rt-time-badge">⏰ ${r.time}</span><button style="background:none;border:none;cursor:pointer;font-size:12px;padding:3px" onclick="event.stopPropagation();editRoutine('${r.id}')">✏️</button><button class="del-btn" onclick="event.stopPropagation();deleteRoutine('${r.id}')">✕</button>`;
+      div.innerHTML=`
+        <div class="check-box ${r.done?'done':''}">${r.done?'✓':''}</div>
+        <span style="font-size:18px">${r.emoji}</span>
+        <div style="flex:1">
+          <span class="routine-label" style="${r.done?'text-decoration:line-through;color:var(--muted)':''}">${r.name}</span>
+          <span style="font-size:12px;color:var(--muted)">${dl}${daysStr}${timesStr}</span>
+          ${r.note?`<div style="font-size:11px;color:var(--muted)">💬 ${r.note}</div>`:''}
+        </div>
+        <span class="rt-time-badge">⏰ ${timeStr}${duration?' ('+duration+')':''}</span>
+        <button style="background:none;border:none;cursor:pointer;font-size:12px;padding:3px" onclick="event.stopPropagation();editRoutine('${r.id}')">✏️</button>
+        <button class="del-btn" onclick="event.stopPropagation();deleteRoutine('${r.id}')">✕</button>`;
       card.appendChild(div);
     });
     c.appendChild(card);
@@ -2182,27 +2319,28 @@ window.editWalk = function(id) {
   document.getElementById('walk-time').value=w.time||'';
   document.getElementById('walk-return-time').value=w.returnTime||'';
   document.getElementById('walk-energy').value=w.energy||'';
-  document.getElementById('walk-note').value=w.note||'';
+  document.getElementById('walk-note').value=w.note||''; // after prepM which clears it
   // Load walkers
   const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
-  if(savedWalkers.length) {
-    setTimeout(()=>{
-      document.querySelectorAll('#walk-walker-sel .dog-sel-btn').forEach(b=>{
-        b.classList.toggle('sel', savedWalkers.includes(b.dataset.walker));
-      });
-    },100);
-  }
-  if(w.energy) { setTimeout(()=>{ const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); },50); }
   setTimeout(()=>{
+    // Dogs
     document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
       if((w.dogIds||[]).includes(b.dataset.id)) b.classList.add('sel');
     });
-  },50);
+    // Walkers
+    if(savedWalkers.length) {
+      document.querySelectorAll('#walk-walker-sel .dog-sel-btn').forEach(b=>{
+        b.classList.toggle('sel', savedWalkers.includes(b.dataset.walker));
+      });
+    }
+    // Energy
+    if(w.energy) { const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); }
+  },150);
   document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b=>{
     if(b.dataset.p===w.period) b.classList.add(w.period==='תאונה'?'sel-red':'sel');
   });
-  if(w.period==='תאונה') document.getElementById('walk-events-row').style.display='';
   loadWalkCounts(w.events||[]);
+  if(w.customFields) loadCustomFields('walk-custom-fields', w.customFields);
   document.getElementById('modal-walk').classList.add('open');
 }
 
@@ -3072,20 +3210,20 @@ window.calView=function(sec,view,ds){
   renderCal(sec);
 };
 window.calTodayBtn=function(sec){
-  if(!calState[sec]) calState[sec]={date:new Date(),view:'week'};
-  calState[sec].date = new Date();
-  calState[sec].view = 'week';
+  calState[sec] = {date: new Date(), view: 'week'};
   renderCal(sec);
-  // Scroll to today after render
   setTimeout(()=>{
     const scroll = document.getElementById('wscroll-'+sec);
     if(!scroll) return;
-    const todayEl = scroll.querySelector('.week-day-hdr.today');
-    if(todayEl){
-      const col = todayEl.closest('.week-col');
+    // Find today column by index (today is always in the week)
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0=Sun
+    const cols = scroll.querySelectorAll('.week-col');
+    if(cols[dayOfWeek]) {
+      const col = cols[dayOfWeek];
       scroll.scrollLeft = col.offsetLeft - scroll.clientWidth/2 + col.offsetWidth/2;
     }
-  }, 100);
+  }, 150);
 };
 window._calItem=function(sec,id,ptype){
   const cfg=CAL_CFG[sec]; if(!cfg) return;
