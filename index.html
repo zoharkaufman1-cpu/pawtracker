@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.116</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.117</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.116</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.117</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.116</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.117</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -2452,11 +2452,23 @@ window.editRoutine=function(id){
   document.getElementById('rt-name').value=r.name||'';
   document.getElementById('rt-period').value=r.period||'בוקר';
   document.getElementById('rt-time').value=r.time||'08:00';
+  const rtEnd=document.getElementById('rt-end-time'); if(rtEnd) rtEnd.value=r.endTime||'';
+  const rtTimes=document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value=r.timesPerDay||'';
+  const rtNote=document.getElementById('rt-note'); if(rtNote) rtNote.value=r.note||'';
   initEmojiPicker('rt-emojis','rt-emoji',r.emoji||'🍽️');
   setTimeout(()=>{
+    // Load dogs
     document.querySelectorAll('#rt-dog-sel .dog-sel-btn').forEach(b=>{
       if((r.dogNames||[]).some(n=>b.textContent.trim().includes(n))) b.classList.add('sel');
     });
+    // Load days
+    if(r.days?.length) {
+      document.querySelectorAll('#modal-routine [data-day]').forEach(b=>{
+        if(r.days.includes(b.dataset.day)) b.classList.add('sel');
+      });
+    }
+    // Recalc duration
+    calcDuration('rt-time','rt-end-time','rt-duration-display');
   },50);
   document.getElementById('modal-routine').classList.add('open');
 }
@@ -2466,7 +2478,18 @@ window.addRoutine=function(){
   if(!editId){_origAddRoutine();return;}
   const name=document.getElementById('rt-name').value.trim();if(!name){toast('❗ נא להזין שם');return;}
   const dogNames=[...document.querySelectorAll('#rt-dog-sel .dog-sel-btn.sel')].map(b=>b.textContent.trim());
-  fbSet('routines/'+editId,{id:editId,name,period:document.getElementById('rt-period').value,time:document.getElementById('rt-time').value,emoji:document.getElementById('rt-emoji').value||'🍽️',dogNames,done:S.routines[editId]?.done||false});
+  const days=[...document.querySelectorAll('#modal-routine [data-day].sel')].map(b=>b.dataset.day);
+  fbSet('routines/'+editId,{
+    id:editId, name,
+    period: document.getElementById('rt-period').value,
+    time: document.getElementById('rt-time').value,
+    endTime: document.getElementById('rt-end-time')?.value||null,
+    timesPerDay: parseInt(document.getElementById('rt-times-per-day')?.value)||1,
+    days: days.length ? days : null,
+    emoji: document.getElementById('rt-emoji').value||'🍽️',
+    note: document.getElementById('rt-note')?.value.trim()||null,
+    dogNames, done: S.routines[editId]?.done||false
+  });
   document.getElementById('editing-routine-id').value='';
   document.getElementById('routine-modal-title').textContent='📋 הוסף משימה';
   document.getElementById('routine-save-btn').textContent='הוסף';
