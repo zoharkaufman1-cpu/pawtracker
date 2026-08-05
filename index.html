@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.115</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.116</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.115</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.116</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.115</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.116</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -3256,13 +3256,31 @@ window.calTodayBtn=function(sec){
 window._calItem=function(sec,id,ptype){
   const cfg=CAL_CFG[sec]; if(!cfg) return;
   if(sec==='health') {
-    // default: open edit
     window._calOpenHealth(id, ptype);
     return;
   }
   const all=[...Object.values(S.walks),...Object.values(S.skills),...Object.values(S.routines),...Object.values(S.meds),...Object.values(S.treatments)];
   const item=all.find(x=>x.id===id); if(!item) return;
-  cfg.onItem(item);
+
+  // Show small action menu
+  const existing = document.getElementById('cal-action-menu');
+  if(existing) existing.remove();
+
+  const menu = document.createElement('div');
+  menu.id = 'cal-action-menu';
+  menu.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;display:flex;align-items:center;justify-content:center';
+  const label = cfg.label ? cfg.label(item) : item.name || '';
+  menu.innerHTML = `
+    <div style="background:white;border-radius:18px;padding:18px;width:260px;box-shadow:0 8px 32px rgba(0,0,0,0.2);text-align:center">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.4">${label}</div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="document.getElementById('cal-action-menu').remove();cfg_editItem('${sec}','${id}','${ptype||''}')">✏️ ערוך</button>
+        <button class="btn btn-red" style="flex:1;justify-content:center" onclick="document.getElementById('cal-action-menu').remove();cfg_deleteItem('${sec}','${id}')">🗑️ מחק</button>
+      </div>
+      <button class="btn-ghost" style="width:100%;margin-top:10px;border:none;color:var(--muted);cursor:pointer;font-family:Rubik,sans-serif" onclick="document.getElementById('cal-action-menu').remove()">ביטול</button>
+    </div>`;
+  menu.addEventListener('click', e => { if(e.target===menu) menu.remove(); });
+  document.body.appendChild(menu);
 };
 window._calAdd=function(sec,ds,period){
   const cfg=CAL_CFG[sec]; if(!cfg) return;
