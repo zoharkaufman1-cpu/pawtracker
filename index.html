@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.114</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.115</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.114</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.115</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.114</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.115</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1900,9 +1900,9 @@ function renderWalks() {
       <div class="walk-dog-row">${dogChips}<span style="font-size:11px;color:var(--muted);margin-right:auto">📅 ${fmtDate(w.date)} ⏰ ${timeStr}</span></div>
       <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}</div>
       ${noteTag}${customFieldTags}
-      <div style="position:absolute;top:8px;left:8px;display:flex;gap:4px">
-        <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 7px;border-radius:8px" onclick="editWalk('${w.id}')">✏️</button>
-        <button class="del-btn" onclick="deleteWalk('${w.id}')">🗑️</button>
+      <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:8px;padding-top:6px;border-top:1px solid var(--border)">
+        <button class="btn-ghost btn-sm" onclick="editWalk('${w.id}')">✏️ ערוך</button>
+        <button class="btn btn-sm btn-red" onclick="deleteWalk('${w.id}')">🗑️ מחק</button>
       </div>`;
     c.appendChild(div);
   });
@@ -1969,7 +1969,7 @@ function renderSkills() {
         const row=document.createElement('div');row.className='skill-item';
         const stars=[1,2,3,4,5].map(n=>`<span class="star ${n<=sk.stars?'on':''}" onclick="rateStar('${sk.id}',${n})">★</span>`).join('');
         const meta=sk.date?`<div style="font-size:11px;color:var(--muted);margin-top:2px">📅 ${fmtDate(sk.date)}${sk.time?' ⏰'+sk.time:''}${sk.note?' · '+sk.note:''}</div>`:'';
-        row.innerHTML=`<span style="font-size:18px">${sk.emoji}</span><div style="flex:1"><div class="skill-name">${sk.name}</div>${meta}</div><div class="star-row">${stars}</div><button style="background:none;border:none;cursor:pointer;font-size:12px;padding:3px" onclick="editSkill('${sk.id}')">✏️</button><button class="del-btn" onclick="deleteSkill('${sk.id}')">✕</button>`;
+        row.innerHTML=`<span style="font-size:18px">${sk.emoji}</span><div style="flex:1"><div class="skill-name">${sk.name}</div>${meta}</div><div class="star-row">${stars}</div><button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 6px;border-radius:8px" onclick="editSkill('${sk.id}')">✏️</button><button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 6px;border-radius:8px;color:var(--red)" onclick="deleteSkill('${sk.id}')">🗑️</button>`;
         card.appendChild(row);
       });
       grid.appendChild(card);
@@ -2033,8 +2033,8 @@ function renderRoutines() {
           ${r.note?`<div style="font-size:11px;color:var(--muted)">💬 ${r.note}</div>`:''}
         </div>
         <span class="rt-time-badge">⏰ ${timeStr}${duration?' ('+duration+')':''}</span>
-        <button style="background:none;border:none;cursor:pointer;font-size:12px;padding:3px" onclick="event.stopPropagation();editRoutine('${r.id}')">✏️</button>
-        <button class="del-btn" onclick="event.stopPropagation();deleteRoutine('${r.id}')">✕</button>`;
+        <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 6px;border-radius:8px" onclick="event.stopPropagation();editRoutine('${r.id}')">✏️</button>
+        <button style="background:none;border:none;cursor:pointer;font-size:13px;padding:3px 6px;border-radius:8px;color:var(--red)" onclick="event.stopPropagation();deleteRoutine('${r.id}')">🗑️</button>`;
       card.appendChild(div);
     });
     c.appendChild(card);
