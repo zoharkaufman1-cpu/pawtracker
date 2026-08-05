@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.111</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.112</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.111</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.112</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.111</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.112</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1190,7 +1190,7 @@ let _backupDone = false;
 function renderAll() {
   if (!_backupDone && Object.keys(S.walks).length > 0) {
     _backupDone = true;
-    setTimeout(autoBackup, 3000); // backup 3s after data loads
+    setTimeout(startBackupSchedule, 3000); // start backup schedule after data loads
   }
   renderDogs(); renderWalks(); updateStats();
   renderBars(); renderSkills(); renderRoutines();
@@ -3281,12 +3281,16 @@ window.calOpenHealth=function(ds,period){
 
 // ══ EXPORT / IMPORT + AUTO-BACKUP ══
 
-// Auto-backup to Firebase every time app opens (saves to backups/YYYY-MM-DD)
+// Auto-backup to Firebase every hour (saves to backups/YYYY-MM-DD_HH)
 async function autoBackup() {
   try {
-    const today = dateStr(new Date());
+    const now = new Date();
+    const today = dateStr(now);
+    const hour = String(now.getHours()).padStart(2,'0');
+    const backupKey = today + '_' + hour;
     const backupData = {
       date: today,
+      hour,
       ts: Date.now(),
       dogs: S.dogs,
       walks: S.walks,
@@ -3295,12 +3299,30 @@ async function autoBackup() {
       meds: S.meds,
       treatments: S.treatments,
     };
-    // Keep last 7 daily backups
-    await fbSet('backups/' + today, backupData);
-    console.log('[BACKUP] Auto-backup saved for', today);
+    await fbSet('backups/' + backupKey, backupData);
+    console.log('[BACKUP] Auto-backup saved for', backupKey);
+
+    // Clean up old backups — keep last 48 (2 days hourly)
+    try {
+      const snap = await get(ref(db, 'backups'));
+      const keys = Object.keys(snap.val()||{}).sort();
+      if (keys.length > 48) {
+        const toDelete = keys.slice(0, keys.length - 48);
+        for (const k of toDelete) {
+          await fbRemove('backups/' + k);
+        }
+      }
+    } catch(e) { console.warn('[BACKUP] cleanup error:', e); }
+
   } catch(e) {
     console.warn('[BACKUP] Auto-backup failed:', e);
   }
+}
+
+// Run backup on load and then every hour
+function startBackupSchedule() {
+  setTimeout(autoBackup, 3000);
+  setInterval(autoBackup, 60 * 60 * 1000); // every hour
 }
 
 
