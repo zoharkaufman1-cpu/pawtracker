@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.113</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.114</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.113</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.114</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.113</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.114</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -796,12 +796,14 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div class="form-row">
     <div class="datetime-row">
       <div><label>תאריך</label><input type="date" id="sk-date"></div>
-      <div><label>שעת התחלה</label><input type="time" id="sk-time"></div>
+      <div><label>שעת התחלה</label><input type="time" id="sk-time" oninput="calcDuration('sk-time','sk-end-time','sk-duration-display')"></div>
     </div>
   </div>
   <div class="form-row">
-    <label>שעת סיום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label>
-    <input type="time" id="sk-end-time">
+    <div class="datetime-row">
+      <div><label>שעת סיום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="time" id="sk-end-time" oninput="calcDuration('sk-time','sk-end-time','sk-duration-display')"></div>
+      <div><label>משך הפעילות</label><div id="sk-duration-display" style="padding:10px 14px;background:var(--surface2);border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:14px;color:var(--muted);min-height:42px;display:flex;align-items:center">—</div></div>
+    </div>
   </div>
   <div class="form-row"><label>הערה</label><input id="sk-note" placeholder="הערות..."></div>
   <div class="form-row" id="skill-custom-fields"></div>
@@ -828,13 +830,19 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div class="form-row">
     <div class="datetime-row">
       <div><label>זמן ביום</label><select id="rt-period"><option value="בוקר">🌅 בוקר</option><option value="צהריים">☀️ צהריים</option><option value="ערב">🌙 ערב</option></select></div>
-      <div><label>שעת התחלה</label><input type="time" id="rt-time" value="08:00"></div>
+      <div><label>שעת התחלה</label><input type="time" id="rt-time" value="08:00" oninput="calcDuration('rt-time','rt-end-time','rt-duration-display')"></div>
     </div>
   </div>
   <div class="form-row">
     <div class="datetime-row">
-      <div><label>שעת סיום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="time" id="rt-end-time"></div>
+      <div><label>שעת סיום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="time" id="rt-end-time" oninput="calcDuration('rt-time','rt-end-time','rt-duration-display')"></div>
+      <div><label>משך הפעילות</label><div id="rt-duration-display" style="padding:10px 14px;background:var(--surface2);border-radius:var(--radius-sm);border:1.5px solid var(--border);font-size:14px;color:var(--muted);min-height:42px;display:flex;align-items:center">—</div></div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="datetime-row">
       <div><label>פעמים ביום <span style="font-weight:400;color:var(--muted)">(אופציונלי)</span></label><input type="number" id="rt-times-per-day" min="1" max="10" placeholder="1"></div>
+      <div></div>
     </div>
   </div>
   <div class="form-row">
@@ -1571,6 +1579,7 @@ function prepM(name) {
     document.getElementById('sk-date').value=date;
     document.getElementById('sk-time').value=time;
     const skEndTime = document.getElementById('sk-end-time'); if(skEndTime) skEndTime.value='';
+    const skDur = document.getElementById('sk-duration-display'); if(skDur){skDur.textContent='—';skDur.style.color='var(--muted)';skDur.style.fontWeight='';}
     const sc = document.getElementById('skill-custom-fields'); if(sc) sc.innerHTML='';
   }
   if (name === 'routine') {
@@ -1578,6 +1587,7 @@ function prepM(name) {
     document.getElementById('rt-name').value='';
     const rtNote = document.getElementById('rt-note'); if(rtNote) rtNote.value='';
     const rtEnd = document.getElementById('rt-end-time'); if(rtEnd) rtEnd.value='';
+    const rtDur = document.getElementById('rt-duration-display'); if(rtDur){rtDur.textContent='—';rtDur.style.color='var(--muted)';rtDur.style.fontWeight='';}
     const rtTimes = document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value='';
     document.querySelectorAll('#modal-routine [data-day]').forEach(b=>b.classList.remove('sel'));
     const rc = document.getElementById('routine-custom-fields'); if(rc) rc.innerHTML='';
@@ -1610,21 +1620,25 @@ function prepM(name) {
 }
 
 // ── PERIOD SEL ──
-window.calcWalkDuration = function() {
-  const start = document.getElementById('walk-time')?.value;
-  const end = document.getElementById('walk-return-time')?.value;
-  const display = document.getElementById('walk-duration-display');
+function calcDuration(startId, endId, displayId) {
+  const start = document.getElementById(startId)?.value;
+  const end = document.getElementById(endId)?.value;
+  const display = document.getElementById(displayId);
   if (!display) return;
-  if (!start || !end) { display.textContent = '—'; display.style.color='var(--muted)'; return; }
+  if (!start || !end) { display.textContent = '—'; display.style.color='var(--muted)'; display.style.fontWeight=''; return; }
   const [sh,sm] = start.split(':').map(Number);
   const [eh,em] = end.split(':').map(Number);
   const mins = (eh*60+em) - (sh*60+sm);
-  if (mins <= 0) { display.textContent = '—'; display.style.color='var(--muted)'; return; }
+  if (mins <= 0) { display.textContent = '—'; display.style.color='var(--muted)'; display.style.fontWeight=''; return; }
   const h = Math.floor(mins/60);
   const m = mins % 60;
   display.textContent = h > 0 ? `${h}ש׳ ${m > 0 ? m+'ד׳' : ''}` : `${m} דק׳`;
   display.style.color = 'var(--accent2)';
   display.style.fontWeight = '700';
+}
+
+window.calcWalkDuration = function() {
+  calcDuration('walk-time', 'walk-return-time', 'walk-duration-display');
 };
 
 window.toggleDay = function(btn) { btn.classList.toggle('sel'); }
