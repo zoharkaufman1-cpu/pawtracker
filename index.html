@@ -3172,10 +3172,10 @@ function _calWeek(sec,body,cfg,cd){
             <span onclick="event.stopPropagation();_calOpenHealth('${it.id}','${p.key}')" style="flex:1;padding:3px 5px 3px 2px;cursor:pointer">${p.icon} ${lbl}</span>
           </div>`;
         } else {
-          inner+=`<div class="cal-item" style="background:${p.color};display:flex;align-items:center;gap:2px;padding:2px 4px;position:relative">
-            <span style="flex:1;overflow:hidden;cursor:pointer" onclick="event.stopPropagation();_calItem('${sec}','${it.id}','${p.key}')">${p.icon} ${lbl}</span>
-            <span onclick="event.stopPropagation();cfg_editItem('${sec}','${it.id}','${p.key||''}')" style="cursor:pointer;font-size:11px;opacity:0.85;flex-shrink:0">✏️</span>
-            <span onclick="event.stopPropagation();cfg_deleteItem('${sec}','${it.id}')" style="cursor:pointer;font-size:11px;opacity:0.85;flex-shrink:0">🗑️</span>
+          inner+=`<div class="cal-item" style="background:${p.color};display:flex;align-items:center;justify-content:space-between;padding:3px 5px;gap:2px">
+            <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;cursor:pointer" onclick="event.stopPropagation();cfg_editItem('${sec}','${it.id}','${p.key||''}')">${p.icon} ${lbl}</span>
+            <span onclick="event.stopPropagation();cfg_deleteItem('${sec}','${it.id}')" style="cursor:pointer;font-size:12px;flex-shrink:0;opacity:0.8">✕</span>
+          </div>`;
           </div>`;
         }
       });
