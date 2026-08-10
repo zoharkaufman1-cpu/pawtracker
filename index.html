@@ -380,7 +380,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.119</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.120</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -451,13 +451,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.119</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.120</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.119</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.120</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -467,7 +467,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 
 <nav>
   <button class="nav-btn active" onclick="goSec(this,'walks')" data-he="🚶 יציאות" data-en="🚶 Walks">🚶 יציאות</button>
-  <button class="nav-btn" onclick="goSec(this,'training')" data-he="🎯 אימונים" data-en="🎯 Training">🎯 אימונים</button>
+  
   <button class="nav-btn" onclick="goSec(this,'routines')" data-he="📋 רוטינות" data-en="📋 Routines">📋 רוטינות</button>
   <button class="nav-btn" onclick="goSec(this,'health')" data-he="💊 בריאות" data-en="💊 Health">💊 בריאות</button>
   <button class="nav-btn" onclick="goSec(this,'mydogs')" data-he="🐶 הכלבים שלי" data-en="🐶 My Dogs">🐶 הכלבים שלי</button>
@@ -491,17 +491,6 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   </div>
   <div id="calendar-walks"></div>
   <div id="walk-list" style="display:none"></div>
-</div>
-
-<!-- TRAINING -->
-<div class="section" id="training">
-  <div class="sec-header">
-    <div class="sec-title" data-he="🎯 אימונים" data-en="🎯 Training">🎯 אימונים</div>
-    <button class="btn" data-he="+ מיומנות חדשה" data-en="+ New Skill" onclick="openM('skill')">+ מיומנות חדשה</button>
-  </div>
-  <div id="calendar-training"></div>
-  <div id="train-bar" class="dogs-bar" style="display:none"></div>
-  <div id="skills-container" style="display:none"></div>
 </div>
 
 <!-- ROUTINES -->
@@ -1204,7 +1193,7 @@ function renderAll() {
   renderBars(); renderSkills(); renderRoutines();
   renderHealthContent(); renderMembers();
   document.getElementById('loading-screen').style.display = 'none';
-  ['walks','training','routines','health'].forEach(sec => renderCal(sec));
+  ['walks','routines','health'].forEach(sec => renderCal(sec));
 }
 
 // ── UTILS ──
