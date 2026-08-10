@@ -381,7 +381,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.127</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.128</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +452,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.127</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.128</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.127</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.128</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -2896,7 +2896,7 @@ function renderDayFor(sec, body, cfg) {
       const checkHtml = sec==='health'
         ? `<span onclick="event.stopPropagation();_calToggleHealth('${it.id}','${p.key}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${isDone?p.color:'var(--border)'};background:${isDone?p.color:'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${isDone?'✓':''}</span>`
         : sec==='routines'
-        ? `<span onclick="event.stopPropagation();_calToggleRoutine('${it.id}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'var(--border)'};background:${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${rStatus==='done'?'✓':rStatus==='missed'?'✕':''}</span>`
+        ? `<span onclick="event.stopPropagation();_calToggleRoutine('${it.id}','${it._ds||ds}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'var(--border)'};background:${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${rStatus==='done'?'✓':rStatus==='missed'?'✕':''}</span>`
         : '';
       h += `<div style="padding:6px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:center">
         ${checkHtml}
@@ -2939,7 +2939,7 @@ window.openDayModal = function(ds, sec, period) {
       const checkHtml = sec==='health'
         ? `<span onclick="event.stopPropagation();_calToggleHealth('${it.id}','${p.key}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${isDone?p.color:'var(--border)'};background:${isDone?p.color:'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${isDone?'✓':''}</span>`
         : sec==='routines'
-        ? `<span onclick="event.stopPropagation();_calToggleRoutine('${it.id}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'var(--border)'};background:${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${rStatus==='done'?'✓':rStatus==='missed'?'✕':''}</span>`
+        ? `<span onclick="event.stopPropagation();_calToggleRoutine('${it.id}','${it._ds||ds}')" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;border:2px solid ${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'var(--border)'};background:${rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'white'};cursor:pointer;flex-shrink:0;margin-left:6px;font-size:13px;color:white">${rStatus==='done'?'✓':rStatus==='missed'?'✕':''}</span>`
         : '';
       h += `<div style="padding:7px 0;border-top:1px solid ${p.color}33;display:flex;justify-content:space-between;align-items:center">
         ${checkHtml}
@@ -3050,6 +3050,7 @@ const CAL_CFG = {
       const dayName = dayNames[d.getDay()];
       return Object.values(S.routines)
         .filter(r => !r.days || r.days.length === 0 || r.days.includes(dayName))
+        .map(r => ({...r, _ds: ds, status: (r.statusByDate||{})[ds]||null}))
         .sort((a,b)=>(a.time||'').localeCompare(b.time||''));
     },
     getPeriod:(r)=>r.period,
@@ -3212,7 +3213,7 @@ function _calWeek(sec,body,cfg,cd){
           const rBg = rStatus==='done'?'var(--green)':rStatus==='missed'?'var(--red)':'rgba(255,255,255,0.9)';
           const rTextColor = rStatus ? 'white' : 'transparent';
           inner+=`<div class="cal-item" style="background:${p.color};display:flex;align-items:center;gap:2px;padding:0">
-            <span onclick="event.stopPropagation();_calToggleRoutine('${it.id}')" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:100%;min-height:16px;flex-shrink:0;cursor:pointer;padding:3px 2px 3px 4px">
+            <span onclick="event.stopPropagation();_calToggleRoutine('${it.id}','${it._ds||ds}')" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:100%;min-height:16px;flex-shrink:0;cursor:pointer;padding:3px 2px 3px 4px">
               <span style="display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;min-width:12px;min-height:12px;aspect-ratio:1/1;border-radius:50%;border:1px solid rgba(255,255,255,0.8);background:${rBg};font-size:8px;font-weight:900;color:${rTextColor};flex-shrink:0;box-sizing:border-box">${rIcon}</span>
             </span>
             <span onclick="event.stopPropagation();_calItem('${sec}','${it.id}','${p.key}')" style="flex:1;padding:3px 5px 3px 2px;cursor:pointer">${p.icon} ${lbl}</span>
@@ -3751,19 +3752,23 @@ checkNotifSupport();
 initLogin();
 
 
-window._calToggleRoutine = function(id) {
+window._calToggleRoutine = function(id, ds) {
   const scrollEl = document.getElementById('wscroll-routines');
   const savedScroll = scrollEl ? scrollEl.scrollLeft : 0;
   const prevScrollTop = window.scrollY;
   const r = S.routines[id];
   if (r) {
+    const statusByDate = r.statusByDate || {};
+    const currentStatus = statusByDate[ds] || null;
     let newStatus;
-    if (r.status === 'done') newStatus = 'missed';
-    else if (r.status === 'missed') newStatus = null;
+    if (currentStatus === 'done') newStatus = 'missed';
+    else if (currentStatus === 'missed') newStatus = null;
     else newStatus = 'done';
-    S.routines[id].status = newStatus;
-    S.routines[id].done = newStatus === 'done';
-    fbUpdate('routines/'+id, {status: newStatus, done: newStatus==='done'});
+    const updated = {...statusByDate};
+    if (newStatus === null) delete updated[ds];
+    else updated[ds] = newStatus;
+    S.routines[id].statusByDate = updated;
+    fbUpdate('routines/'+id, {statusByDate: updated});
   }
   renderCal('routines');
   requestAnimationFrame(()=>{
