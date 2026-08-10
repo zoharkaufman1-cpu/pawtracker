@@ -3039,7 +3039,12 @@ const CAL_CFG = {
       {key:'צהריים',icon:'☀️',color:'#4a90d9'},
       {key:'ערב',icon:'🌙',color:'#7b68ee'},
     ],
-    getItems:()=>Object.values(S.routines),
+    getItems:(ds)=>{
+      const dayNames = ['א','א','ב','ג','ד','ה','ו','ש']; // index 0=Sun
+      const d = new Date(ds+'T12:00:00');
+      const dayName = dayNames[d.getDay()];
+      return Object.values(S.routines).filter(r => !r.days || r.days.length === 0 || r.days.includes(dayName));
+    },
     getPeriod:(r)=>r.period,
     label:(r)=>(r.emoji||'')+(r.name?(' '+r.name):''),
     onAdd:()=>window.openM('routine'),
