@@ -1941,7 +1941,7 @@ function renderTrainBar() {
   dogs.forEach(d=>{const c=document.createElement('div');c.className='dog-chip'+(trainFilter===d.id?' active':'');c.innerHTML=dogAvHTML(d)+' '+d.name;c.onclick=()=>{trainFilter=d.id;renderTrainBar();renderSkills();};bar.appendChild(c);});
 }
 function renderSkills() {
-  const c=document.getElementById('skills-container');
+  const c=document.getElementById('skills-container'); if(!c) return;
   let list=Object.values(S.skills); if(trainFilter) list=list.filter(s=>s.dogId===trainFilter);
   if(!list.length){c.innerHTML='<div class="empty"><div class="empty-icon">🎯</div><div class="empty-text">אין מיומנויות עדיין.</div></div>';return;}
   const byDog={};list.forEach(s=>{(byDog[s.dogId]=byDog[s.dogId]||[]).push(s);});
