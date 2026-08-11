@@ -381,7 +381,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.129</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.130</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +452,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.129</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.130</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.129</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.130</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1509,6 +1509,7 @@ function buildDogSelect(sid) {
 }
 
 // Build walker selector from home members
+let _walkerSelReady = null;
 async function buildWalkerSel(preselect) {
   const c = document.getElementById('walk-walker-sel'); if (!c) return;
   c.innerHTML = '<span style="font-size:12px;color:var(--muted)">טוען...</span>';
@@ -1517,15 +1518,12 @@ async function buildWalkerSel(preselect) {
   try {
     const snap = await get(ref(db, 'users'));
     const allUsers = snap.val() || {};
-    console.log('[WALKER] currentHomeCode:', currentHomeCode, 'total users in DB:', Object.keys(allUsers).length);
     Object.values(allUsers).forEach(u => {
       const normalizedCode = u.homeCode ? u.homeCode.replace(/[^a-zA-Z0-9א-ת_-]/g,'_') : '';
-      console.log('[WALKER] user:', u.name, 'homeCode:', u.homeCode, 'normalized:', normalizedCode, 'match:', normalizedCode === currentHomeCode);
       if (normalizedCode === currentHomeCode && u.name) {
         walkers.add(u.name);
       }
     });
-    console.log('[WALKER] final walkers set:', [...walkers]);
   } catch(e) { console.warn('walker fetch error', e); }
   c.innerHTML = '';
   const namesToSelect = preselect && preselect.length ? preselect : [currentUsername];
@@ -1537,6 +1535,7 @@ async function buildWalkerSel(preselect) {
     b.onclick = () => b.classList.toggle('sel');
     c.appendChild(b);
   });
+  _walkerSelReady = true;
 }
 
 function dogAvHTML(d, size='normal') {
@@ -1550,23 +1549,28 @@ function dogAvHTML(d, size='normal') {
 function prepM(name) {
   const { date, time } = nowDT();
   if (name === 'walk') {
+    const isEditingExisting = document.getElementById('editing-walk-id')?.value;
     buildDogSel('walk-dog-sel', true);
-    buildWalkerSel();
+    // Only build walker selector here for NEW walks; editWalk() will call it separately with correct preselection
+    if (!isEditingExisting) buildWalkerSel();
     resetWalkCounts();
     document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
     document.querySelectorAll('[data-e]').forEach(b => b.classList.remove('sel'));
-    document.getElementById('walk-date').value = date;
-    document.getElementById('walk-time').value = time;
-    document.getElementById('walk-return-time').value = '';
     const dd = document.getElementById('walk-duration-display'); if(dd){dd.textContent='—';dd.style.color='var(--muted)';dd.style.fontWeight='';}
-    document.getElementById('walk-energy').value = '';
-    document.getElementById('walk-note').value = '';
-    document.getElementById('editing-walk-id').value = ''; // CRITICAL: reset edit mode
-    document.getElementById('walk-modal-title').textContent = '🚶 תיעוד יציאה';
-    document.getElementById('walk-save-btn').textContent = 'שמור 🐾';
     const wn = document.getElementById('walk-note'); if(wn) wn.style.height='auto';
     document.getElementById('walk-events-row').style.display = '';
     const wc = document.getElementById('walk-custom-fields'); if(wc) wc.innerHTML='';
+    if (!isEditingExisting) {
+      // Only reset these fields for a brand NEW walk, not when editing
+      document.getElementById('walk-date').value = date;
+      document.getElementById('walk-time').value = time;
+      document.getElementById('walk-return-time').value = '';
+      document.getElementById('walk-energy').value = '';
+      document.getElementById('walk-note').value = '';
+      document.getElementById('editing-walk-id').value = '';
+      document.getElementById('walk-modal-title').textContent = '🚶 תיעוד יציאה';
+      document.getElementById('walk-save-btn').textContent = 'שמור 🐾';
+    }
   }
   if (name === 'skill') {
     buildDogSelect('sk-dog'); initEmojiPicker('skill-emojis','sk-emoji','🎯');
@@ -2351,10 +2355,10 @@ function renderTreatments() {
 }
 
 // ══ EDIT WALK ══
-window.editWalk = function(id) {
+window.editWalk = async function(id) {
   const w=S.walks[id]; if(!w) return;
+  document.getElementById('editing-walk-id').value=id; // set BEFORE prepM so it skips default buildWalkerSel
   prepM('walk');
-  document.getElementById('editing-walk-id').value=id;
   document.getElementById('walk-modal-title').textContent='✏️ ערוך יציאה';
   document.getElementById('walk-save-btn').textContent='עדכן 🐾';
   document.getElementById('walk-date').value=w.date||'';
@@ -2364,9 +2368,9 @@ window.editWalk = function(id) {
   document.getElementById('walk-energy').value=w.energy||'';
   document.getElementById('walk-note').value=w.note||''; // after prepM which clears it
   setTimeout(()=>{ const wn=document.getElementById('walk-note'); if(wn&&wn.value){wn.style.height='auto';wn.style.height=wn.scrollHeight+'px';} },50);
-  // Load walkers - rebuild with correct preselection (prepM already called buildWalkerSel with default)
+  // Load walkers - AWAIT to avoid race condition with prepM's own buildWalkerSel call
   const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
-  buildWalkerSel(savedWalkers.length ? savedWalkers : null);
+  await buildWalkerSel(savedWalkers.length ? savedWalkers : null);
   // Dogs + period + energy (don't depend on async walker build)
   setTimeout(()=>{
     document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
