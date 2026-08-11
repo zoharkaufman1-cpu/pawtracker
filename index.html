@@ -2495,16 +2495,16 @@ function showTimeChangeConfirm(editId, onConfirm) {
   ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9500;display:flex;align-items:center;justify-content:center;padding:20px';
   ov.innerHTML = `<div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px">
     <div style="font-family:'Rubik',sans-serif;font-size:16px;font-weight:800;margin-bottom:10px">⏰ שינית את השעה</div>
-    <div style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.6">האם להחיל את השינוי על כל החזרות העתידיות של הרוטינה הזו?</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.6">רוטינה זו חוזרת על עצמה. האם להחיל את שינוי השעה על כל החזרות (כולל עתידיות)?</div>
     <div style="display:flex;flex-direction:column;gap:8px">
       <button class="btn" style="justify-content:center" id="tcc-yes">✅ כן, על כל החזרות</button>
-      <button class="btn-ghost" style="justify-content:center" id="tcc-cancel">ביטול</button>
+      <button class="btn-ghost" style="justify-content:center" id="tcc-cancel">ביטול השינוי</button>
     </div>
   </div>`;
   document.body.appendChild(ov);
   document.getElementById('tcc-yes').onclick = () => { document.body.removeChild(ov); onConfirm(); };
-  document.getElementById('tcc-cancel').onclick = () => { document.body.removeChild(ov); };
-  ov.onclick = e => { if(e.target===ov) document.body.removeChild(ov); };
+  document.getElementById('tcc-cancel').onclick = () => { document.body.removeChild(ov); closeM('routine'); };
+  ov.onclick = e => { if(e.target===ov) { document.body.removeChild(ov); closeM('routine'); } };
 }
 
 function _saveRoutineEdit(editId){
