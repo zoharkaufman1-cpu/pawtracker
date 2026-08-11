@@ -381,7 +381,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.133</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.134</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +452,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.133</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.134</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.133</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.134</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -467,9 +467,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 </header>
 
 <nav>
-  <button class="nav-btn active" onclick="goSec(this,'walks')" data-he="🚶 יציאות" data-en="🚶 Walks">🚶 יציאות</button>
+  <button class="nav-btn active" onclick="goSec(this,'walks')" data-he="🚶 טיולים" data-en="🚶 Trips">🚶 טיולים</button>
   
-  <button class="nav-btn" onclick="goSec(this,'routines')" data-he="📋 רוטינות" data-en="📋 Routines">📋 רוטינות</button>
+  <button class="nav-btn" onclick="goSec(this,'routines')" data-he="📋 משימות" data-en="📋 Tasks">📋 משימות</button>
   <button class="nav-btn" onclick="goSec(this,'health')" data-he="💊 בריאות" data-en="💊 Health">💊 בריאות</button>
   <button class="nav-btn" onclick="goSec(this,'mydogs')" data-he="🐶 הכלבים שלי" data-en="🐶 My Dogs">🐶 הכלבים שלי</button>
   <button class="nav-btn" onclick="goSec(this,'settings')" data-he="⚙️ הגדרות" data-en="⚙️ Settings">⚙️ הגדרות</button>
@@ -482,12 +482,12 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- WALKS -->
 <div class="section active" id="walks">
   <div class="sec-header" style="flex-wrap:nowrap;align-items:center">
-    <div class="sec-title" data-he="🚶 יציאות" data-en="🚶 Walks">🚶 יציאות</div>
+    <div class="sec-title" data-he="🚶 טיולים" data-en="🚶 Trips">🚶 טיולים</div>
     <div style="display:flex;gap:6px;align-items:center">
-      <div class="stat-chip"><div class="stat-chip-val" id="stat-walks">0</div><div class="stat-chip-lbl" data-he="יציאות" data-en="Walks">יציאות</div></div>
+      <div class="stat-chip"><div class="stat-chip-val" id="stat-walks">0</div><div class="stat-chip-lbl" data-he="טיולים" data-en="Trips">טיולים</div></div>
       <div class="stat-chip"><div class="stat-chip-val" id="stat-acc">0</div><div class="stat-chip-lbl" data-he="תאונות" data-en="Acc.">תאונות</div></div>
       <div class="stat-chip"><div class="stat-chip-val" id="stat-streak">0</div><div class="stat-chip-lbl" data-he="רצף" data-en="Streak">רצף</div></div>
-      <button class="btn" data-he="+ יציאה חדשה" data-en="+ New Walk" onclick="openM('walk')">+ יציאה חדשה</button>
+      <button class="btn" data-he="+ טיול חדש" data-en="+ New Trip" onclick="openM('walk')">+ טיול חדש</button>
     </div>
   </div>
   <div id="calendar-walks"></div>
@@ -497,7 +497,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- ROUTINES -->
 <div class="section" id="routines">
   <div class="sec-header">
-    <div class="sec-title" data-he="📋 רוטינות" data-en="📋 Routines">📋 רוטינות</div>
+    <div class="sec-title" data-he="📋 משימות" data-en="📋 Tasks">📋 משימות</div>
     <button class="btn" data-he="+ משימה חדשה" data-en="+ New Task" onclick="openM('routine')">+ משימה חדשה</button>
   </div>
   <div id="calendar-routines"></div>
@@ -710,7 +710,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <div class="modal-overlay" id="modal-walk">
  <div class="modal">
   <div class="modal-handle"></div>
-  <div class="modal-title" id="walk-modal-title" data-he="🚶 תיעוד יציאה" data-en="🚶 Log Walk">🚶 תיעוד יציאה</div>
+  <div class="modal-title" id="walk-modal-title" data-he="🚶 תיעוד טיול" data-en="🚶 Log Trip">🚶 תיעוד טיול</div>
   <input type="hidden" id="editing-walk-id">
   <div class="form-row"><label data-he="כלב/ים *" data-en="Dog(s) *">כלב/ים *</label><div class="dog-selector" id="walk-dog-sel"></div></div>
   <div class="form-row">
@@ -818,6 +818,18 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   </div>
   <div class="form-row"><label>שם המשימה *</label><input id="rt-name" placeholder="למשל: האכלת בוקר..."></div>
   <div class="form-row">
+    <label>סוג משימה</label>
+    <div style="display:flex;gap:8px">
+      <button type="button" class="period-sel-btn sel" data-recur="yes" onclick="selRecurType(this)" style="flex:1;justify-content:center">🔁 חוזרת</button>
+      <button type="button" class="period-sel-btn" data-recur="no" onclick="selRecurType(this)" style="flex:1;justify-content:center">📌 חד פעמית</button>
+    </div>
+    <input type="hidden" id="rt-recurring" value="yes">
+  </div>
+  <div id="rt-onetime-date-row" class="form-row" style="display:none">
+    <label>תאריך</label>
+    <input type="date" id="rt-onetime-date">
+  </div>
+  <div class="form-row">
     <div class="datetime-row">
       <div><label>זמן ביום</label><select id="rt-period"><option value="בוקר">🌅 בוקר</option><option value="צהריים">☀️ צהריים</option><option value="ערב">🌙 ערב</option></select></div>
       <div><label>שעת התחלה</label><input type="time" id="rt-time" value="08:00" oninput="calcDuration('rt-time','rt-end-time','rt-duration-display')"></div>
@@ -835,7 +847,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
       <div></div>
     </div>
   </div>
-  <div class="form-row">
+  <div id="rt-days-row" class="form-row">
     <label>ימים בשבוע <span style="font-weight:400;color:var(--muted)">(ריק = כל יום)</span></label>
     <div style="display:flex;gap:6px;flex-wrap:wrap">
       <button class="period-sel-btn" data-day="א" onclick="toggleDay(this)" style="padding:6px 10px;font-size:13px">א׳</button>
@@ -978,7 +990,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <div class="modal-overlay" id="modal-day-detail">
  <div class="modal">
   <div class="modal-handle"></div>
-  <div class="modal-title" id="day-detail-title">📅 יציאות היום</div>
+  <div class="modal-title" id="day-detail-title">📅 טיולים היום</div>
   <div id="day-detail-content"></div>
   <div class="modal-actions" style="margin-top:14px">
     <button class="btn-ghost" onclick="closeM('day-detail')">סגור</button>
@@ -994,13 +1006,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div class="modal-title" data-he="👥 הזמן שותף/ה" data-en="👥 Invite Partner">👥 הזמן שותף/ה</div>
   <div class="form-row"><label data-he="שם" data-en="Name">שם</label><input id="inv-name" placeholder="שם השותף/ה"></div>
   <div class="form-row"><label data-he="אימייל" data-en="Email">אימייל</label><input id="inv-email" type="email" placeholder="example@email.com"></div>
-  <div class="form-row"><label data-he="הרשאות" data-en="Permissions">הרשאות</label><select id="inv-role"><option>עריכה מלאה</option><option>צפייה בלבד</option><option>יציאות בלבד</option></select></div>
+  <div class="form-row"><label data-he="הרשאות" data-en="Permissions">הרשאות</label><select id="inv-role"><option>עריכה מלאה</option><option>צפייה בלבד</option><option>טיולים בלבד</option></select></div>
   <div class="form-row">
     <label>לשוניות גלויות לשותף/ה</label>
     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px" id="inv-sections">
-      <label class="sec-toggle"><input type="checkbox" value="walks" checked> 🚶 יציאות</label>
+      <label class="sec-toggle"><input type="checkbox" value="walks" checked> 🚶 טיולים</label>
       <label class="sec-toggle"><input type="checkbox" value="training" checked> 🎯 אימונים</label>
-      <label class="sec-toggle"><input type="checkbox" value="routines" checked> 📋 רוטינות</label>
+      <label class="sec-toggle"><input type="checkbox" value="routines" checked> 📋 משימות</label>
       <label class="sec-toggle"><input type="checkbox" value="health" checked> 💊 בריאות</label>
       <label class="sec-toggle"><input type="checkbox" value="mydogs" checked> 🐶 כלבים</label>
       <label class="sec-toggle"><input type="checkbox" value="chat" checked> 💬 צ'אט</label>
@@ -1568,7 +1580,7 @@ function prepM(name) {
       document.getElementById('walk-energy').value = '';
       document.getElementById('walk-note').value = '';
       document.getElementById('editing-walk-id').value = '';
-      document.getElementById('walk-modal-title').textContent = '🚶 תיעוד יציאה';
+      document.getElementById('walk-modal-title').textContent = '🚶 תיעוד טיול';
       document.getElementById('walk-save-btn').textContent = 'שמור 🐾';
     }
   }
@@ -1590,6 +1602,13 @@ function prepM(name) {
     const rtTimes = document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value='';
     document.querySelectorAll('#modal-routine [data-day]').forEach(b=>b.classList.remove('sel'));
     const rc = document.getElementById('routine-custom-fields'); if(rc) rc.innerHTML='';
+    // Reset recurring toggle to "recurring" by default
+    document.querySelectorAll('#modal-routine [data-recur]').forEach(b=>b.classList.remove('sel'));
+    const recurYesBtn = document.querySelector('#modal-routine [data-recur="yes"]'); if(recurYesBtn) recurYesBtn.classList.add('sel');
+    document.getElementById('rt-recurring').value = 'yes';
+    document.getElementById('rt-days-row').style.display = '';
+    document.getElementById('rt-onetime-date-row').style.display = 'none';
+    const rtOnetimeDate = document.getElementById('rt-onetime-date'); if(rtOnetimeDate) rtOnetimeDate.value='';
   }
   if (name === 'med') { buildDogSelect('med-dog'); initEmojiPicker('med-emojis','med-emoji','💊'); ['med-name','med-note','med-price','med-pay-note'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';}); document.getElementById('med-given').value=date; document.getElementById('med-next').value=''; document.getElementById('med-payment').value=''; document.getElementById('med-pay-note-row').style.display='none'; }
   if (name === 'dog') {
@@ -1639,6 +1658,18 @@ function calcDuration(startId, endId, displayId) {
 window.calcWalkDuration = function() {
   calcDuration('walk-time', 'walk-return-time', 'walk-duration-display');
 };
+
+window.selRecurType = function(btn) {
+  const isRecurring = btn.dataset.recur === 'yes';
+  document.querySelectorAll('#modal-routine [data-recur]').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('rt-recurring').value = btn.dataset.recur;
+  document.getElementById('rt-days-row').style.display = isRecurring ? '' : 'none';
+  document.getElementById('rt-onetime-date-row').style.display = isRecurring ? 'none' : '';
+  if (!isRecurring && !document.getElementById('rt-onetime-date').value) {
+    document.getElementById('rt-onetime-date').value = nowDT().date;
+  }
+}
 
 window.toggleDay = function(btn) { btn.classList.toggle('sel'); }
 
@@ -1825,7 +1856,7 @@ window.saveWalk = function() {
   const dogIds = [...document.querySelectorAll('#walk-dog-sel .dog-sel-btn.sel')].map(b=>b.dataset.id);
   if (!dogIds.length) { toast('❗ בחרי כלב'); return; }
   const periodEl = document.querySelector('#walk-period-sel .period-sel-btn.sel, #walk-period-sel .period-sel-btn.sel-red');
-  if (!periodEl) { toast('❗ בחרי סוג יציאה'); return; }
+  if (!periodEl) { toast('❗ בחרי סוג טיול'); return; }
   const period = periodEl.dataset.p;
   const events = period==='תאונה' ? [] : getWalkEvents();
   const id = uid();
@@ -1845,7 +1876,7 @@ window.saveWalk = function() {
     customFields: getCustomFields('walk-custom-fields')
   });
   closeM('walk');
-  toast(period==='תאונה' ? '🏠 תאונה תועדה' : '🐾 יציאה נשמרה!', period==='תאונה'?'#e85454':'#4caf7d');
+  toast(period==='תאונה' ? '🏠 תאונה תועדה' : '🐾 טיול נשמר!', period==='תאונה'?'#e85454':'#4caf7d');
 }
 
 window.selEnergy = function(btn) {
@@ -1863,7 +1894,7 @@ function renderWalks() {
   const c = document.getElementById('walk-list');
   let list = Object.values(S.walks).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
   if (walkFilter!=='all') list = walkFilter==='תאונה' ? list.filter(w=>w.period==='תאונה') : list.filter(w=>w.period===walkFilter);
-  if (!list.length) { c.innerHTML='<div class="empty"><div class="empty-icon">🦮</div><div class="empty-text">אין יציאות עדיין.<br>לחצי על "+ תעד יציאה"</div></div>'; return; }
+  if (!list.length) { c.innerHTML='<div class="empty"><div class="empty-icon">🦮</div><div class="empty-text">אין טיולים עדיין.<br>לחצי על "+ הוסף טיול"</div></div>'; return; }
   c.innerHTML='';
   list.forEach(w => {
     const dogs = (w.dogIds||[]).map(id=>S.dogs[id]).filter(Boolean);
@@ -1907,7 +1938,7 @@ function renderWalks() {
   });
 }
 
-window.deleteWalk = function(id) { if(confirm('למחוק יציאה זו?')) fbRemove('walks/'+id); }
+window.deleteWalk = function(id) { if(confirm('למחוק טיול זה?')) fbRemove('walks/'+id); }
 
 function updateStats() {
   const today = nowDT().date;
@@ -1981,7 +2012,10 @@ function renderSkills() {
 window.addRoutine = function() {
   const name=document.getElementById('rt-name').value.trim(); if(!name){toast('❗ נא להזין שם');return;}
   const dogNames=[...document.querySelectorAll('#rt-dog-sel .dog-sel-btn.sel')].map(b=>b.textContent.trim());
-  const days=[...document.querySelectorAll('#modal-routine [data-day].sel')].map(b=>b.dataset.day);
+  const isRecurring = document.getElementById('rt-recurring').value !== 'no';
+  const days=isRecurring ? [...document.querySelectorAll('#modal-routine [data-day].sel')].map(b=>b.dataset.day) : [];
+  const oneTimeDate = !isRecurring ? document.getElementById('rt-onetime-date').value : null;
+  if (!isRecurring && !oneTimeDate) { toast('❗ בחרי תאריך למשימה החד-פעמית'); return; }
   const id=uid();
   fbSet('routines/'+id,{
     id, name,
@@ -1990,11 +2024,13 @@ window.addRoutine = function() {
     endTime: document.getElementById('rt-end-time').value||null,
     timesPerDay: parseInt(document.getElementById('rt-times-per-day').value)||1,
     days: days.length ? days : null,
+    recurring: isRecurring,
+    oneTimeDate: oneTimeDate,
     emoji: document.getElementById('rt-emoji').value||'🍽️',
     note: document.getElementById('rt-note').value.trim()||null,
     dogNames, done: false
   });
-  closeM('routine'); toast('📋 משימה נוספה!','#4caf7d');
+  closeM('routine'); toast(isRecurring ? '📋 משימה נוספה!' : '📌 משימה חד-פעמית נוספה!','#4caf7d');
 }
 window.toggleRoutine = function(id) {
   const r=S.routines[id]; if(!r) return;
@@ -2360,7 +2396,7 @@ window.editWalk = async function(id) {
     const w=S.walks[id]; if(!w) return;
     document.getElementById('editing-walk-id').value=id; // set BEFORE prepM so it skips default buildWalkerSel
     prepM('walk');
-    document.getElementById('walk-modal-title').textContent='✏️ ערוך יציאה';
+    document.getElementById('walk-modal-title').textContent='✏️ ערוך טיול';
     document.getElementById('walk-save-btn').textContent='עדכן 🐾';
     document.getElementById('walk-date').value=w.date||'';
     document.getElementById('walk-time').value=w.time||'';
@@ -2401,7 +2437,7 @@ window.saveWalk = function() {
   const dogIds=[...document.querySelectorAll('#walk-dog-sel .dog-sel-btn.sel')].map(b=>b.dataset.id);
   if(!dogIds.length){toast('❗ בחרי כלב');return;}
   const periodEl=document.querySelector('#walk-period-sel .period-sel-btn.sel,#walk-period-sel .period-sel-btn.sel-red');
-  if(!periodEl){toast('❗ בחרי סוג יציאה');return;}
+  if(!periodEl){toast('❗ בחרי סוג טיול');return;}
   const period=periodEl.dataset.p;
   const events=getWalkEvents();
   const walkers=[...document.querySelectorAll('#walk-walker-sel .dog-sel-btn.sel')].map(b=>b.dataset.walker).filter(Boolean);
@@ -2418,9 +2454,9 @@ window.saveWalk = function() {
     note:document.getElementById('walk-note').value.trim()
   });
   document.getElementById('editing-walk-id').value='';
-  document.getElementById('walk-modal-title').textContent='🚶 תיעוד יציאה';
+  document.getElementById('walk-modal-title').textContent='🚶 תיעוד טיול';
   document.getElementById('walk-save-btn').textContent='שמור 🐾';
-  closeM('walk');toast('✏️ יציאה עודכנה!','#4caf7d');
+  closeM('walk');toast('✏️ טיול עודכן!','#4caf7d');
 }
 
 // ══ EDIT SKILL ══
@@ -2468,6 +2504,15 @@ window.editRoutine=function(id, ds){
   const rtTimes=document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value=r.timesPerDay||'';
   const rtNote=document.getElementById('rt-note'); if(rtNote) rtNote.value=r.note||'';
   initEmojiPicker('rt-emojis','rt-emoji',r.emoji||'🍽️');
+  // Set recurring vs one-time UI state
+  const isRecurring = r.recurring !== false; // default true for legacy tasks
+  document.querySelectorAll('#modal-routine [data-recur]').forEach(b=>b.classList.remove('sel'));
+  const recurBtn = document.querySelector(`#modal-routine [data-recur="${isRecurring?'yes':'no'}"]`);
+  if(recurBtn) recurBtn.classList.add('sel');
+  document.getElementById('rt-recurring').value = isRecurring ? 'yes' : 'no';
+  document.getElementById('rt-days-row').style.display = isRecurring ? '' : 'none';
+  document.getElementById('rt-onetime-date-row').style.display = isRecurring ? 'none' : '';
+  const rtOnetimeDate = document.getElementById('rt-onetime-date'); if(rtOnetimeDate) rtOnetimeDate.value = r.oneTimeDate || '';
   setTimeout(()=>{
     // Load dogs
     document.querySelectorAll('#rt-dog-sel .dog-sel-btn').forEach(b=>{
@@ -2493,8 +2538,9 @@ window.addRoutine=function(){
   const newTime = document.getElementById('rt-time').value;
   const timeChanged = existing && existing.time !== newTime;
   const editingDs = window._editingRoutineDs || null; // date of the occurrence being edited, if opened from calendar
+  const isOneTime = existing && existing.recurring === false;
 
-  if (timeChanged && editingDs) {
+  if (timeChanged && editingDs && !isOneTime) {
     showTimeChangeConfirm(editId,
       () => _saveRoutineEdit(editId), // apply to all
       () => _saveRoutineTimeOverride(editId, editingDs, newTime) // this occurrence only
@@ -2522,7 +2568,7 @@ function showTimeChangeConfirm(editId, onConfirmAll, onConfirmOnce) {
   ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9500;display:flex;align-items:center;justify-content:center;padding:20px';
   ov.innerHTML = `<div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px">
     <div style="font-family:'Rubik',sans-serif;font-size:16px;font-weight:800;margin-bottom:10px">⏰ שינית את השעה</div>
-    <div style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.6">רוטינה זו חוזרת על עצמה. איך להחיל את שינוי השעה?</div>
+    <div style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.6">משימה זו חוזרת על עצמה. איך להחיל את שינוי השעה?</div>
     <div style="display:flex;flex-direction:column;gap:8px">
       <button class="btn" style="justify-content:center" id="tcc-all">✅ על כל החזרות</button>
       <button class="btn-ghost" style="justify-content:center" id="tcc-once">📅 רק על החזרה הזו</button>
@@ -2539,7 +2585,9 @@ function showTimeChangeConfirm(editId, onConfirmAll, onConfirmOnce) {
 function _saveRoutineEdit(editId){
   const name=document.getElementById('rt-name').value.trim();
   const dogNames=[...document.querySelectorAll('#rt-dog-sel .dog-sel-btn.sel')].map(b=>b.textContent.trim());
-  const days=[...document.querySelectorAll('#modal-routine [data-day].sel')].map(b=>b.dataset.day);
+  const isRecurring = document.getElementById('rt-recurring').value !== 'no';
+  const days=isRecurring ? [...document.querySelectorAll('#modal-routine [data-day].sel')].map(b=>b.dataset.day) : [];
+  const oneTimeDate = !isRecurring ? document.getElementById('rt-onetime-date').value : null;
   fbSet('routines/'+editId,{
     id:editId, name,
     period: document.getElementById('rt-period').value,
@@ -2547,11 +2595,14 @@ function _saveRoutineEdit(editId){
     endTime: document.getElementById('rt-end-time')?.value||null,
     timesPerDay: parseInt(document.getElementById('rt-times-per-day')?.value)||1,
     days: days.length ? days : null,
+    recurring: isRecurring,
+    oneTimeDate: oneTimeDate,
     emoji: document.getElementById('rt-emoji').value||'🍽️',
     note: document.getElementById('rt-note')?.value.trim()||null,
     dogNames, done: S.routines[editId]?.done||false
   });
   document.getElementById('editing-routine-id').value='';
+  window._editingRoutineDs = null;
   document.getElementById('routine-modal-title').textContent='📋 הוסף משימה';
   document.getElementById('routine-save-btn').textContent='הוסף';
   closeM('routine');toast('✏️ משימה עודכנה!','#4caf7d');
@@ -3110,7 +3161,10 @@ const CAL_CFG = {
       const d = new Date(ds+'T12:00:00');
       const dayName = dayNames[d.getDay()];
       return Object.values(S.routines)
-        .filter(r => !r.days || r.days.length === 0 || r.days.includes(dayName))
+        .filter(r => {
+          if (r.recurring === false) return r.oneTimeDate === ds; // one-time task: only show on its date
+          return !r.days || r.days.length === 0 || r.days.includes(dayName); // recurring task
+        })
         .map(r => ({...r, _ds: ds, status: (r.statusByDate||{})[ds]||null}))
         .sort((a,b)=>{
           const ta = (a.timeOverrides && a.timeOverrides[ds]) || a.time || '';
@@ -3121,7 +3175,8 @@ const CAL_CFG = {
     getPeriod:(r)=>r.period,
     label:(r)=>{
       const t = (r._ds && r.timeOverrides && r.timeOverrides[r._ds]) ? r.timeOverrides[r._ds] : r.time;
-      return (t?t+' ':'')+(r.emoji||'')+(r.name?(' '+r.name):'');
+      const oneTimeTag = r.recurring === false ? '📌 ' : '';
+      return oneTimeTag+(t?t+' ':'')+(r.emoji||'')+(r.name?(' '+r.name):'');
     },
     onAdd:()=>window.openM('routine'),
     onItem:(r)=>window.editRoutine(r.id),
@@ -3926,15 +3981,15 @@ window.saveInsurance = function() {
 // ══ LANGUAGE ══
 const LANGS = {
   he: {
-    dir:'rtl', walks:'🚶 יציאות', training:'🎯 אימונים', routines:'📋 רוטינות',
+    dir:'rtl', walks:'🚶 טיולים', training:'🎯 אימונים', routines:'📋 משימות',
     health:'💊 בריאות', mydogs:'🐶 הכלבים שלי', chat:"💬 צ'אט", settings:'⚙️ הגדרות',
-    addWalk:'+ תעד יציאה', addSkill:'+ הוסף מיומנות', addRoutine:'+ הוסף משימה',
+    addWalk:'+ הוסף טיול', addSkill:'+ הוסף מיומנות', addRoutine:'+ הוסף משימה',
     addHealth:'+ הוסף', addDog:'+ הוסף כלב', invite:'👥 הזמן שותף/ה',
     settingsTitle:'⚙️ הגדרות', fontTitle:'🔤 פונט / Font', langTitle:'🌐 שפה / Language',
     placeholder_chat:'כתבי הודעה...', send:'שלח 📨'
   },
   en: {
-    dir:'ltr', walks:'🚶 Walks', training:'🎯 Training', routines:'📋 Routines',
+    dir:'ltr', walks:'🚶 Trips', training:'🎯 Training', routines:'📋 Tasks',
     health:'💊 Health', mydogs:'🐶 My Dogs', chat:'💬 Chat', settings:'⚙️ Settings',
     addWalk:'+ Log Walk', addSkill:'+ Add Skill', addRoutine:'+ Add Task',
     addHealth:'+ Add', addDog:'+ Add Dog', invite:'👥 Invite Partner',
@@ -3999,7 +4054,7 @@ function applyLang() {
   // modal dynamic titles - re-apply current lang to JS-set titles
   const dynamicTitles = {
     'dog-modal-title':    [isHe?'🐶 הוסף כלב':'🐶 Add Dog'],
-    'walk-modal-title':   [isHe?'🚶 תיעוד יציאה':'🚶 Log Walk'],
+    'walk-modal-title':   [isHe?'🚶 תיעוד טיול':'🚶 Log Trip'],
     'skill-modal-title':  [isHe?'🎯 הוסף מיומנות':'🎯 Add Skill'],
     'routine-modal-title':[isHe?'📋 הוסף משימה':'📋 Add Task'],
     'med-modal-title':    [isHe?'💊 הוסף תרופה / חיסון':'💊 Add Med / Vaccine'],
