@@ -381,7 +381,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.128</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.129</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +452,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.128</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.129</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.128</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.129</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1509,7 +1509,7 @@ function buildDogSelect(sid) {
 }
 
 // Build walker selector from home members
-async function buildWalkerSel() {
+async function buildWalkerSel(preselect) {
   const c = document.getElementById('walk-walker-sel'); if (!c) return;
   c.innerHTML = '<span style="font-size:12px;color:var(--muted)">טוען...</span>';
   const walkers = new Set();
@@ -1524,11 +1524,12 @@ async function buildWalkerSel() {
     });
   } catch(e) { console.warn('walker fetch error', e); }
   c.innerHTML = '';
+  const namesToSelect = preselect && preselect.length ? preselect : [currentUsername];
   walkers.forEach(name => {
     const b = document.createElement('button');
     b.className = 'dog-sel-btn'; b.dataset.walker = name;
     b.textContent = '👤 ' + name;
-    if (name === currentUsername) b.classList.add('sel');
+    if (namesToSelect.includes(name)) b.classList.add('sel');
     b.onclick = () => b.classList.toggle('sel');
     c.appendChild(b);
   });
@@ -2359,22 +2360,16 @@ window.editWalk = function(id) {
   document.getElementById('walk-energy').value=w.energy||'';
   document.getElementById('walk-note').value=w.note||''; // after prepM which clears it
   setTimeout(()=>{ const wn=document.getElementById('walk-note'); if(wn&&wn.value){wn.style.height='auto';wn.style.height=wn.scrollHeight+'px';} },50);
-  // Load walkers
+  // Load walkers - rebuild with correct preselection (prepM already called buildWalkerSel with default)
   const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
+  buildWalkerSel(savedWalkers.length ? savedWalkers : null);
+  // Dogs + period + energy (don't depend on async walker build)
   setTimeout(()=>{
-    // Dogs
     document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
       if((w.dogIds||[]).includes(b.dataset.id)) b.classList.add('sel');
     });
-    // Walkers
-    if(savedWalkers.length) {
-      document.querySelectorAll('#walk-walker-sel .dog-sel-btn').forEach(b=>{
-        b.classList.toggle('sel', savedWalkers.includes(b.dataset.walker));
-      });
-    }
-    // Energy
     if(w.energy) { const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); }
-  },150);
+  },100);
   document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b=>{
     if(b.dataset.p===w.period) b.classList.add(w.period==='תאונה'?'sel-red':'sel');
   });
