@@ -1517,11 +1517,15 @@ async function buildWalkerSel(preselect) {
   try {
     const snap = await get(ref(db, 'users'));
     const allUsers = snap.val() || {};
+    console.log('[WALKER] currentHomeCode:', currentHomeCode, 'total users in DB:', Object.keys(allUsers).length);
     Object.values(allUsers).forEach(u => {
-      if (u.homeCode && u.homeCode.replace(/[^a-zA-Z0-9א-ת_-]/g,'_') === currentHomeCode && u.name) {
+      const normalizedCode = u.homeCode ? u.homeCode.replace(/[^a-zA-Z0-9א-ת_-]/g,'_') : '';
+      console.log('[WALKER] user:', u.name, 'homeCode:', u.homeCode, 'normalized:', normalizedCode, 'match:', normalizedCode === currentHomeCode);
+      if (normalizedCode === currentHomeCode && u.name) {
         walkers.add(u.name);
       }
     });
+    console.log('[WALKER] final walkers set:', [...walkers]);
   } catch(e) { console.warn('walker fetch error', e); }
   c.innerHTML = '';
   const namesToSelect = preselect && preselect.length ? preselect : [currentUsername];
