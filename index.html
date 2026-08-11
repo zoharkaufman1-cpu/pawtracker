@@ -381,7 +381,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.135</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.136</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +452,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.135</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.136</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.135</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.136</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -762,6 +762,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div class="form-row"><label>הערה</label><textarea id="walk-note" placeholder="הערות נוספות..." rows="1" style="resize:none;overflow:hidden;min-height:40px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea></div>
   <div class="form-row" id="walk-custom-fields"></div>
   <button class="btn-ghost btn-sm" onclick="addCustomField('walk')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
+  <div class="modal-actions" id="walk-duplicate-row" style="display:none;margin-top:0;margin-bottom:10px">
+    <button class="btn-ghost" style="width:100%;justify-content:center;font-size:13px" onclick="duplicateWalk()">📋 שכפל טיול זה עם תאריך/שעה שונים</button>
+  </div>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('walk')">ביטול</button>
     <button class="btn" id="walk-save-btn" onclick="saveWalk()">שמור 🐾</button>
@@ -863,6 +866,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div class="form-row"><label>הערות</label><input id="rt-note" placeholder="הערות נוספות..."></div>
   <div class="form-row" id="routine-custom-fields"></div>
   <button class="btn-ghost btn-sm" onclick="addCustomField('routine')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
+  <div class="modal-actions" id="routine-duplicate-row" style="display:none;margin-top:0;margin-bottom:10px">
+    <button class="btn-ghost" style="width:100%;justify-content:center;font-size:13px" onclick="duplicateRoutine()">📋 שכפל משימה זו עם תאריך/שעה שונים</button>
+  </div>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('routine')">ביטול</button>
     <button class="btn" id="routine-save-btn" onclick="addRoutine()">הוסף</button>
@@ -1582,6 +1588,7 @@ function prepM(name) {
       document.getElementById('editing-walk-id').value = '';
       document.getElementById('walk-modal-title').textContent = '🚶 תיעוד טיול';
       document.getElementById('walk-save-btn').textContent = 'שמור 🐾';
+      document.getElementById('walk-duplicate-row').style.display = 'none';
     }
   }
   if (name === 'skill') {
@@ -1609,6 +1616,7 @@ function prepM(name) {
     document.getElementById('rt-days-row').style.display = '';
     document.getElementById('rt-onetime-date-row').style.display = 'none';
     const rtOnetimeDate = document.getElementById('rt-onetime-date'); if(rtOnetimeDate) rtOnetimeDate.value='';
+    document.getElementById('routine-duplicate-row').style.display = 'none';
   }
   if (name === 'med') { buildDogSelect('med-dog'); initEmojiPicker('med-emojis','med-emoji','💊'); ['med-name','med-note','med-price','med-pay-note'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';}); document.getElementById('med-given').value=date; document.getElementById('med-next').value=''; document.getElementById('med-payment').value=''; document.getElementById('med-pay-note-row').style.display='none'; }
   if (name === 'dog') {
@@ -2390,6 +2398,18 @@ function renderTreatments() {
   });
 }
 
+window.duplicateWalk = function() {
+  const editId = document.getElementById('editing-walk-id').value;
+  if (!editId) return;
+  const w = S.walks[editId]; if(!w) return;
+  // Reset edit mode so save creates a NEW walk with current form data
+  document.getElementById('editing-walk-id').value = '';
+  document.getElementById('walk-modal-title').textContent = '📋 שכפול טיול';
+  document.getElementById('walk-save-btn').textContent = 'שמור עותק 🐾';
+  document.getElementById('walk-duplicate-row').style.display = 'none';
+  toast('📋 שנה תאריך/שעה ולחצי שמור ליצירת עותק', '#4a90d9');
+}
+
 // ══ EDIT WALK ══
 window.editWalk = async function(id) {
   try {
@@ -2420,6 +2440,7 @@ window.editWalk = async function(id) {
     });
     loadWalkCounts(w.events||[]);
     if(w.customFields) loadCustomFields('walk-custom-fields', w.customFields);
+    document.getElementById('walk-duplicate-row').style.display = '';
     document.getElementById('modal-walk').classList.add('open');
   } catch(e) {
     console.error('[editWalk] error:', e);
@@ -2487,6 +2508,17 @@ window.addSkill=function(){
   closeM('skill');toast('✏️ מיומנות עודכנה!','#4caf7d');
 }
 
+window.duplicateRoutine = function() {
+  const editId = document.getElementById('editing-routine-id').value;
+  if (!editId) return;
+  document.getElementById('editing-routine-id').value = '';
+  window._editingRoutineDs = null;
+  document.getElementById('routine-modal-title').textContent = '📋 שכפול משימה';
+  document.getElementById('routine-save-btn').textContent = 'שמור עותק';
+  document.getElementById('routine-duplicate-row').style.display = 'none';
+  toast('📋 שני תאריך/שעה ולחצי הוסף ליצירת עותק', '#4a90d9');
+}
+
 // ══ EDIT ROUTINE ══
 window.editRoutine=function(id, ds){
   const r=S.routines[id];if(!r)return;
@@ -2527,6 +2559,7 @@ window.editRoutine=function(id, ds){
     // Recalc duration
     calcDuration('rt-time','rt-end-time','rt-duration-display');
   },50);
+  document.getElementById('routine-duplicate-row').style.display = '';
   document.getElementById('modal-routine').classList.add('open');
 }
 const _origAddRoutine=window.addRoutine;
@@ -3132,8 +3165,15 @@ const CAL_CFG = {
       {key:'תאונה',icon:'🏠',color:'#e85454'},
     ],
     getItems:(ds)=>Object.values(S.walks).filter(w=>w.date===ds).sort((a,b)=>{
-      const toMin = t => { if(!t) return 9999; const [h,m]=t.split(':').map(Number); return h*60+(m||0); };
-      return toMin(a.time) - toMin(b.time);
+      const toMin = (t,period) => {
+        if(!t) return 9999;
+        const [h,m]=t.split(':').map(Number);
+        let mins = h*60+(m||0);
+        // Late night hours (00:00-06:00) marked as "ערב" (evening) are actually after midnight - push them to end
+        if (period === 'ערב' && h < 6) mins += 24*60;
+        return mins;
+      };
+      return toMin(a.time, a.period) - toMin(b.time, b.period);
     }),
     getPeriod:(w)=>w.period,
     label:(w)=>{
