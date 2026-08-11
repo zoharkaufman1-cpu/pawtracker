@@ -381,7 +381,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.134</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.135</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +452,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.134</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.135</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.134</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.135</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -3131,7 +3131,10 @@ const CAL_CFG = {
       {key:'ערב',icon:'🌙',color:'#7b68ee'},
       {key:'תאונה',icon:'🏠',color:'#e85454'},
     ],
-    getItems:(ds)=>Object.values(S.walks).filter(w=>w.date===ds).sort((a,b)=>(a.time||'').localeCompare(b.time||'')),
+    getItems:(ds)=>Object.values(S.walks).filter(w=>w.date===ds).sort((a,b)=>{
+      const toMin = t => { if(!t) return 9999; const [h,m]=t.split(':').map(Number); return h*60+(m||0); };
+      return toMin(a.time) - toMin(b.time);
+    }),
     getPeriod:(w)=>w.period,
     label:(w)=>{
       const evLabels={pee:'💧',poop:'💩',diarrhea:'⚠️',vomit:'🤢',blood:'🩸',ok:'✅'};
@@ -3144,7 +3147,10 @@ const CAL_CFG = {
   },
   training: {
     periods:[{key:'אימון',icon:'🎯',color:'#9b7fde'}],
-    getItems:(ds)=>Object.values(S.skills).filter(s=>s.date===ds).sort((a,b)=>(a.time||'').localeCompare(b.time||'')),
+    getItems:(ds)=>Object.values(S.skills).filter(s=>s.date===ds).sort((a,b)=>{
+      const toMin = t => { if(!t) return 9999; const [h,m]=t.split(':').map(Number); return h*60+(m||0); };
+      return toMin(a.time) - toMin(b.time);
+    }),
     getPeriod:()=>'אימון',
     label:(s)=>s.name||'אימון',
     onAdd:()=>window.openM('skill'),
@@ -3167,9 +3173,10 @@ const CAL_CFG = {
         })
         .map(r => ({...r, _ds: ds, status: (r.statusByDate||{})[ds]||null}))
         .sort((a,b)=>{
+          const toMin = t => { if(!t) return 9999; const [h,m]=t.split(':').map(Number); return h*60+(m||0); };
           const ta = (a.timeOverrides && a.timeOverrides[ds]) || a.time || '';
           const tb = (b.timeOverrides && b.timeOverrides[ds]) || b.time || '';
-          return ta.localeCompare(tb);
+          return toMin(ta) - toMin(tb);
         });
     },
     getPeriod:(r)=>r.period,
