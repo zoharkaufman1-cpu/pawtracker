@@ -381,7 +381,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.131</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.132</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +452,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.131</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.132</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.131</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.132</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -2356,34 +2356,41 @@ function renderTreatments() {
 
 // ══ EDIT WALK ══
 window.editWalk = async function(id) {
-  const w=S.walks[id]; if(!w) return;
-  document.getElementById('editing-walk-id').value=id; // set BEFORE prepM so it skips default buildWalkerSel
-  prepM('walk');
-  document.getElementById('walk-modal-title').textContent='✏️ ערוך יציאה';
-  document.getElementById('walk-save-btn').textContent='עדכן 🐾';
-  document.getElementById('walk-date').value=w.date||'';
-  document.getElementById('walk-time').value=w.time||'';
-  document.getElementById('walk-return-time').value=w.returnTime||'';
-  setTimeout(()=>calcWalkDuration(), 100);
-  document.getElementById('walk-energy').value=w.energy||'';
-  document.getElementById('walk-note').value=w.note||''; // after prepM which clears it
-  setTimeout(()=>{ const wn=document.getElementById('walk-note'); if(wn&&wn.value){wn.style.height='auto';wn.style.height=wn.scrollHeight+'px';} },50);
-  // Load walkers - AWAIT to avoid race condition with prepM's own buildWalkerSel call
-  const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
-  await buildWalkerSel(savedWalkers.length ? savedWalkers : null);
-  // Dogs + period + energy (don't depend on async walker build)
-  setTimeout(()=>{
-    document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
-      if((w.dogIds||[]).includes(b.dataset.id)) b.classList.add('sel');
+  try {
+    const w=S.walks[id]; if(!w) return;
+    document.getElementById('editing-walk-id').value=id; // set BEFORE prepM so it skips default buildWalkerSel
+    prepM('walk');
+    document.getElementById('walk-modal-title').textContent='✏️ ערוך יציאה';
+    document.getElementById('walk-save-btn').textContent='עדכן 🐾';
+    document.getElementById('walk-date').value=w.date||'';
+    document.getElementById('walk-time').value=w.time||'';
+    document.getElementById('walk-return-time').value=w.returnTime||'';
+    setTimeout(()=>calcWalkDuration(), 100);
+    document.getElementById('walk-energy').value=w.energy||'';
+    document.getElementById('walk-note').value=w.note||''; // after prepM which clears it
+    setTimeout(()=>{ const wn=document.getElementById('walk-note'); if(wn&&wn.value){wn.style.height='auto';wn.style.height=wn.scrollHeight+'px';} },50);
+    // Load walkers - AWAIT to avoid race condition with prepM's own buildWalkerSel call
+    const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
+    await buildWalkerSel(savedWalkers.length ? savedWalkers : null);
+    // Dogs + period + energy (don't depend on async walker build)
+    setTimeout(()=>{
+      document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
+        if((w.dogIds||[]).includes(b.dataset.id)) b.classList.add('sel');
+      });
+      if(w.energy) { const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); }
+    },100);
+    document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b=>{
+      if(b.dataset.p===w.period) b.classList.add(w.period==='תאונה'?'sel-red':'sel');
     });
-    if(w.energy) { const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); }
-  },100);
-  document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b=>{
-    if(b.dataset.p===w.period) b.classList.add(w.period==='תאונה'?'sel-red':'sel');
-  });
-  loadWalkCounts(w.events||[]);
-  if(w.customFields) loadCustomFields('walk-custom-fields', w.customFields);
-  document.getElementById('modal-walk').classList.add('open');
+    loadWalkCounts(w.events||[]);
+    if(w.customFields) loadCustomFields('walk-custom-fields', w.customFields);
+    document.getElementById('modal-walk').classList.add('open');
+  } catch(e) {
+    console.error('[editWalk] error:', e);
+    toast('❗ שגיאה בפתיחת עריכה: ' + e.message, '#e85454');
+    // Fallback: try to open modal anyway
+    document.getElementById('modal-walk')?.classList.add('open');
+  }
 }
 
 // ══ PATCH saveWalk for editing ══
@@ -2991,11 +2998,10 @@ window.openDayModal = function(ds, sec, period) {
 }
 
 window.cfg_editItem = function(sec, id, type) {
-  closeM('day-detail');
-  if (sec==='walks') editWalk(id);
-  else if (sec==='training') editSkill(id);
-  else if (sec==='routines') editRoutine(id);
-  else if (sec==='health') type==='תרופה' ? editMed(id) : editTreatment(id);
+  if (sec==='walks') { editWalk(id); closeM('day-detail'); }
+  else if (sec==='training') { editSkill(id); closeM('day-detail'); }
+  else if (sec==='routines') { editRoutine(id); closeM('day-detail'); }
+  else if (sec==='health') { (type==='תרופה' ? editMed(id) : editTreatment(id)); closeM('day-detail'); }
 }
 window.cfg_deleteItem = function(sec, id) {
   if (!confirm('למחוק?')) return;
