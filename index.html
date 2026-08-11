@@ -141,6 +141,8 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 
 /* QUICK BTNS */
 .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.walk-dog-block{background:var(--surface2);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;border:1.5px solid var(--border)}
+.walk-dog-block-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:700;font-size:14px}
 .quick-btn{background:var(--surface2);border:2px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px;cursor:default;text-align:center;transition:all 0.15s;font-family:'Rubik',sans-serif;color:var(--text);font-size:12px;font-weight:600}
 .quick-btn .icon{font-size:20px;margin-bottom:2px;display:block}
 .quick-btn.selected{border-color:var(--accent);background:rgba(245,166,35,0.12)}
@@ -381,7 +383,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.136</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.137</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -452,13 +454,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.136</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.137</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.136</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.137</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -748,23 +750,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     </div>
     <input type="hidden" id="walk-energy" value="">
   </div>
-  <div id="walk-events-row" class="form-row">
-    <label>מה קרה?</label>
-    <div class="quick-grid" id="walk-events-grid">
-      <div class="quick-btn" data-v="pee"><span class="icon">💧</span>פיפי<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'pee',-1)">−</button><span class="qbtn-count" id="cnt-pee">0</span><button class="qbtn-plus" onclick="changeCount(event,'pee',1)">+</button></div></div>
-      <div class="quick-btn" data-v="poop"><span class="icon">💩</span>קקי<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'poop',-1)">−</button><span class="qbtn-count" id="cnt-poop">0</span><button class="qbtn-plus" onclick="changeCount(event,'poop',1)">+</button></div></div>
-      <div class="quick-btn" data-v="diarrhea"><span class="icon">⚠️</span>שלשול<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'diarrhea',-1)">−</button><span class="qbtn-count" id="cnt-diarrhea">0</span><button class="qbtn-plus" onclick="changeCount(event,'diarrhea',1)">+</button></div></div>
-      <div class="quick-btn" data-v="vomit"><span class="icon">🤢</span>הקאה<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'vomit',-1)">−</button><span class="qbtn-count" id="cnt-vomit">0</span><button class="qbtn-plus" onclick="changeCount(event,'vomit',1)">+</button></div></div>
-      <div class="quick-btn" data-v="blood"><span class="icon">🩸</span>דם<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'blood',-1)">−</button><span class="qbtn-count" id="cnt-blood">0</span><button class="qbtn-plus" onclick="changeCount(event,'blood',1)">+</button></div></div>
-      <div class="quick-btn" data-v="ok"><span class="icon">✅</span>הכל תקין<div class="qbtn-counter"><button class="qbtn-minus" onclick="changeCount(event,'ok',-1)">−</button><span class="qbtn-count" id="cnt-ok">0</span><button class="qbtn-plus" onclick="changeCount(event,'ok',1)">+</button></div></div>
-    </div>
-  </div>
-  <div class="form-row"><label>הערה</label><textarea id="walk-note" placeholder="הערות נוספות..." rows="1" style="resize:none;overflow:hidden;min-height:40px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea></div>
+  <div id="walk-per-dog-container"></div>
   <div class="form-row" id="walk-custom-fields"></div>
   <button class="btn-ghost btn-sm" onclick="addCustomField('walk')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
-  <div class="modal-actions" id="walk-duplicate-row" style="display:none;margin-top:0;margin-bottom:10px">
-    <button class="btn-ghost" style="width:100%;justify-content:center;font-size:13px" onclick="duplicateWalk()">📋 שכפל טיול זה עם תאריך/שעה שונים</button>
-  </div>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('walk')">ביטול</button>
     <button class="btn" id="walk-save-btn" onclick="saveWalk()">שמור 🐾</button>
@@ -1514,10 +1502,98 @@ function buildDogSel(cid, multi) {
     b.onclick = () => {
       if (!multi) c.querySelectorAll('.dog-sel-btn').forEach(x => x.classList.remove('sel'));
       b.classList.toggle('sel');
+      if (cid === 'walk-dog-sel') renderWalkPerDogBlocks();
     };
     c.appendChild(b);
   });
 }
+
+// ══ PER-DOG WALK BLOCKS ══
+const evLabelsWalk = {pee:{icon:'💧',label:'פיפי'},poop:{icon:'💩',label:'קקי'},diarrhea:{icon:'⚠️',label:'שלשול'},vomit:{icon:'🤢',label:'הקאה'},blood:{icon:'🩸',label:'דם'},ok:{icon:'✅',label:'הכל תקין'}};
+let _walkPerDogData = {}; // { dogId: { pee: 0, poop: 0, ..., note: '' } }
+
+function renderWalkPerDogBlocks() {
+  const container = document.getElementById('walk-per-dog-container');
+  if (!container) return;
+  const selectedIds = [...document.querySelectorAll('#walk-dog-sel .dog-sel-btn.sel')].map(b=>b.dataset.id);
+  // Preserve data for still-selected dogs, init new ones
+  const newData = {};
+  selectedIds.forEach(id => {
+    newData[id] = _walkPerDogData[id] || {pee:0,poop:0,diarrhea:0,vomit:0,blood:0,ok:0,note:''};
+  });
+  _walkPerDogData = newData;
+
+  container.innerHTML = '';
+  if (!selectedIds.length) return;
+
+  const isAccident = document.querySelector('#walk-period-sel .period-sel-btn.sel-red') !== null;
+  if (isAccident) return; // accident mode doesn't need per-dog events
+
+  selectedIds.forEach(dogId => {
+    const dog = S.dogs[dogId]; if (!dog) return;
+    const data = _walkPerDogData[dogId];
+    const block = document.createElement('div');
+    block.className = 'walk-dog-block';
+    block.dataset.dogId = dogId;
+    block.innerHTML = `
+      <div class="walk-dog-block-header">${dogAvHTML(dog,'mini')} ${dog.name}</div>
+      <div class="quick-grid">
+        ${Object.entries(evLabelsWalk).map(([key,ev])=>`
+          <div class="quick-btn" data-dog="${dogId}" data-v="${key}">
+            <span class="icon">${ev.icon}</span>${ev.label}
+            <div class="qbtn-counter">
+              <button class="qbtn-minus" onclick="changeCountPerDog(event,'${dogId}','${key}',-1)">−</button>
+              <span class="qbtn-count" id="cnt-${dogId}-${key}">${data[key]||0}</span>
+              <button class="qbtn-plus" onclick="changeCountPerDog(event,'${dogId}','${key}',1)">+</button>
+            </div>
+          </div>`).join('')}
+      </div>
+      <textarea placeholder="הערה ל${dog.name}..." rows="1" style="resize:none;overflow:hidden;min-height:38px;margin-top:6px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';_walkPerDogData['${dogId}'].note=this.value">${data.note||''}</textarea>
+    `;
+    container.appendChild(block);
+    // Mark selected quick-btns
+    Object.keys(evLabelsWalk).forEach(key => {
+      if (data[key] > 0) block.querySelector(`.quick-btn[data-v="${key}"]`)?.classList.add('selected');
+    });
+  });
+}
+
+window.changeCountPerDog = function(e, dogId, key, delta) {
+  e.stopPropagation();
+  if (!_walkPerDogData[dogId]) _walkPerDogData[dogId] = {pee:0,poop:0,diarrhea:0,vomit:0,blood:0,ok:0,note:''};
+  _walkPerDogData[dogId][key] = Math.max(0, (_walkPerDogData[dogId][key]||0) + delta);
+  const el = document.getElementById(`cnt-${dogId}-${key}`);
+  if (el) el.textContent = _walkPerDogData[dogId][key];
+  const btn = e.target.closest('.quick-btn');
+  if (btn) btn.classList.toggle('selected', _walkPerDogData[dogId][key] > 0);
+}
+
+function resetWalkPerDogData() {
+  _walkPerDogData = {};
+  const container = document.getElementById('walk-per-dog-container');
+  if (container) container.innerHTML = '';
+}
+
+function getWalkPerDogEvents(dogId) {
+  const data = _walkPerDogData[dogId];
+  if (!data) return [];
+  return Object.keys(evLabelsWalk).filter(k => data[k] > 0).map(k => ({type:k, count:data[k]}));
+}
+
+function loadWalkPerDogData(dogsData) {
+  _walkPerDogData = {};
+  if (!dogsData) return;
+  Object.entries(dogsData).forEach(([dogId, dd]) => {
+    const counts = {pee:0,poop:0,diarrhea:0,vomit:0,blood:0,ok:0,note:dd.note||''};
+    (dd.events||[]).forEach(ev => {
+      const key = typeof ev === 'string' ? ev : ev.type;
+      const cnt = typeof ev === 'string' ? 1 : (ev.count||1);
+      if (key) counts[key] = (counts[key]||0) + cnt;
+    });
+    _walkPerDogData[dogId] = counts;
+  });
+}
+
 function buildDogSelect(sid) {
   const s = document.getElementById(sid); if (!s) return;
   s.innerHTML = '';
@@ -1572,11 +1648,10 @@ function prepM(name) {
     // Only build walker selector here for NEW walks; editWalk() will call it separately with correct preselection
     if (!isEditingExisting) buildWalkerSel();
     resetWalkCounts();
+    resetWalkPerDogData();
     document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
     document.querySelectorAll('[data-e]').forEach(b => b.classList.remove('sel'));
     const dd = document.getElementById('walk-duration-display'); if(dd){dd.textContent='—';dd.style.color='var(--muted)';dd.style.fontWeight='';}
-    const wn = document.getElementById('walk-note'); if(wn) wn.style.height='auto';
-    document.getElementById('walk-events-row').style.display = '';
     const wc = document.getElementById('walk-custom-fields'); if(wc) wc.innerHTML='';
     if (!isEditingExisting) {
       // Only reset these fields for a brand NEW walk, not when editing
@@ -1584,11 +1659,9 @@ function prepM(name) {
       document.getElementById('walk-time').value = time;
       document.getElementById('walk-return-time').value = '';
       document.getElementById('walk-energy').value = '';
-      document.getElementById('walk-note').value = '';
       document.getElementById('editing-walk-id').value = '';
       document.getElementById('walk-modal-title').textContent = '🚶 תיעוד טיול';
       document.getElementById('walk-save-btn').textContent = 'שמור 🐾';
-      document.getElementById('walk-duplicate-row').style.display = 'none';
     }
   }
   if (name === 'skill') {
@@ -1731,6 +1804,7 @@ function loadCustomFields(containerId, fields) {
 window.selPeriod = function(btn) {
   document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
   btn.classList.add(btn.dataset.p === 'תאונה' ? 'sel-red' : 'sel');
+  renderWalkPerDogBlocks();
 }
 window.toggleQ = function(btn) { btn.classList.toggle('selected'); }
 
@@ -1866,21 +1940,32 @@ window.saveWalk = function() {
   const periodEl = document.querySelector('#walk-period-sel .period-sel-btn.sel, #walk-period-sel .period-sel-btn.sel-red');
   if (!periodEl) { toast('❗ בחרי סוג טיול'); return; }
   const period = periodEl.dataset.p;
-  const events = period==='תאונה' ? [] : getWalkEvents();
   const id = uid();
   const returnTime = document.getElementById('walk-return-time').value;
   const walkers = [...document.querySelectorAll('#walk-walker-sel .dog-sel-btn.sel')].map(b=>b.dataset.walker).filter(Boolean);
   const walker = walkers.join(', ') || currentUsername;
   const energy = document.getElementById('walk-energy').value;
+
+  // Build per-dog data structure
+  const dogsData = {};
+  if (period !== 'תאונה') {
+    dogIds.forEach(dogId => {
+      dogsData[dogId] = {
+        events: getWalkPerDogEvents(dogId),
+        note: (_walkPerDogData[dogId]?.note || '').trim()
+      };
+    });
+  }
+
   fbSet('walks/'+id, {
-    id, dogIds, period, events,
+    id, dogIds, period,
+    dogsData,
     date: document.getElementById('walk-date').value,
     time: document.getElementById('walk-time').value,
     returnTime: returnTime || null,
     walker: walker || null,
     energy: energy || null,
     solo: dogIds.length === 1,
-    note: document.getElementById('walk-note').value.trim(),
     customFields: getCustomFields('walk-custom-fields')
   });
   closeM('walk');
@@ -1909,12 +1994,38 @@ function renderWalks() {
     const isAcc = w.period==='תאונה';
     const div = document.createElement('div'); div.className='walk-item'+(isAcc?' accident':'');
     const dogChips = dogs.map(d=>`<span style="display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:${d.color}">${dogAvHTML(d,'mini')} ${d.name}</span>`).join('');
-    const tags = isAcc ? '<span class="tag tag-accident">🏠 תאונה בבית</span>'
-      : (w.events?.length ? w.events.map(e=>{
-          if(typeof e==='string') return `<span class="tag ${evCls[e]}">${evLabel[e]}</span>`;
-          if(e&&e.count>0) return `<span class="tag ${evCls[e.type]||''}">${evLabel[e.type]||e.type}${e.count>1?' &times;'+e.count:''}</span>`;
-          return '';
-        }).filter(Boolean).join('') : '<span class="tag tag-ok">✅ הכל תקין</span>');
+
+    // Per-dog events display: new format (dogsData) or legacy (shared events/note)
+    let perDogHtml = '';
+    if (!isAcc) {
+      if (w.dogsData) {
+        perDogHtml = dogs.map(d => {
+          const dd = w.dogsData[d.id];
+          if (!dd) return '';
+          const evTags = (dd.events||[]).length
+            ? dd.events.map(e => `<span class="tag ${evCls[e.type]||''}">${evLabel[e.type]||e.type}${e.count>1?' &times;'+e.count:''}</span>`).join('')
+            : '<span class="tag tag-ok">✅ הכל תקין</span>';
+          const noteHtml = dd.note ? `<div style="font-size:11px;color:var(--muted);margin-top:2px">💬 ${dd.note}</div>` : '';
+          return `<div style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)">
+            <div style="font-size:12px;font-weight:700;color:${d.color};margin-bottom:3px">${dogAvHTML(d,'mini')} ${d.name}</div>
+            <div class="tags-row">${evTags}</div>
+            ${noteHtml}
+          </div>`;
+        }).join('');
+      } else {
+        // Legacy format: shared events/note for all dogs
+        const tags = (w.events?.length ? w.events.map(e=>{
+            if(typeof e==='string') return `<span class="tag ${evCls[e]}">${evLabel[e]}</span>`;
+            if(e&&e.count>0) return `<span class="tag ${evCls[e.type]||''}">${evLabel[e.type]||e.type}${e.count>1?' &times;'+e.count:''}</span>`;
+            return '';
+          }).filter(Boolean).join('') : '<span class="tag tag-ok">✅ הכל תקין</span>');
+        const noteHtml = w.note ? `<div style="font-size:12px;color:var(--muted);margin-top:5px">💬 ${w.note}</div>` : '';
+        perDogHtml = `<div class="tags-row">${tags}</div>${noteHtml}`;
+      }
+    } else {
+      perDogHtml = '<span class="tag tag-accident">🏠 תאונה בבית</span>';
+    }
+
     const duration = (w.time && w.returnTime) ? (() => {
       const [sh,sm] = w.time.split(':').map(Number);
       const [eh,em] = w.returnTime.split(':').map(Number);
@@ -1931,13 +2042,12 @@ function renderWalks() {
     const durationTag = duration ? `<span class="tag tag-note">⏱️ ${duration}</span>` : '';
     const timeStr = w.returnTime ? `${w.time||''} – ${w.returnTime}` : (w.time||'');
     const energyTag = energyIcon ? `<span class="tag" style="background:#f0fff4;color:#276749">${energyIcon}</span>` : '';
-    const noteTag = w.note ? `<div style="font-size:12px;color:var(--muted);margin-top:5px">💬 ${w.note}</div>` : '';
     const customFieldTags = w.customFields ? Object.entries(w.customFields).map(([k,v])=>`<div style="font-size:12px;color:var(--muted);margin-top:3px">📝 <b>${k}:</b> ${v}</div>`).join('') : '';
     div.innerHTML=`
       <span class="period-badge" style="background:${pColor[w.period]||'var(--accent)'}">${pIcon[w.period]||'🐾'} ${w.period}</span>
       <div class="walk-dog-row">${dogChips}<span style="font-size:11px;color:var(--muted);margin-right:auto">📅 ${fmtDate(w.date)} ⏰ ${timeStr}</span></div>
-      <div class="tags-row">${tags}${soloTag}${walkerTag}${durationTag}${energyTag}</div>
-      ${noteTag}${customFieldTags}
+      <div class="tags-row">${soloTag}${walkerTag}${durationTag}${energyTag}</div>
+      ${perDogHtml}${customFieldTags}
       <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:8px;padding-top:6px;border-top:1px solid var(--border)">
         <button class="btn-ghost btn-sm" onclick="editWalk('${w.id}')">✏️ ערוך</button>
         <button class="btn btn-sm btn-red" onclick="deleteWalk('${w.id}')">🗑️ מחק</button>
@@ -2398,18 +2508,6 @@ function renderTreatments() {
   });
 }
 
-window.duplicateWalk = function() {
-  const editId = document.getElementById('editing-walk-id').value;
-  if (!editId) return;
-  const w = S.walks[editId]; if(!w) return;
-  // Reset edit mode so save creates a NEW walk with current form data
-  document.getElementById('editing-walk-id').value = '';
-  document.getElementById('walk-modal-title').textContent = '📋 שכפול טיול';
-  document.getElementById('walk-save-btn').textContent = 'שמור עותק 🐾';
-  document.getElementById('walk-duplicate-row').style.display = 'none';
-  toast('📋 שנה תאריך/שעה ולחצי שמור ליצירת עותק', '#4a90d9');
-}
-
 // ══ EDIT WALK ══
 window.editWalk = async function(id) {
   try {
@@ -2423,24 +2521,34 @@ window.editWalk = async function(id) {
     document.getElementById('walk-return-time').value=w.returnTime||'';
     setTimeout(()=>calcWalkDuration(), 100);
     document.getElementById('walk-energy').value=w.energy||'';
-    document.getElementById('walk-note').value=w.note||''; // after prepM which clears it
-    setTimeout(()=>{ const wn=document.getElementById('walk-note'); if(wn&&wn.value){wn.style.height='auto';wn.style.height=wn.scrollHeight+'px';} },50);
     // Load walkers - AWAIT to avoid race condition with prepM's own buildWalkerSel call
     const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
     await buildWalkerSel(savedWalkers.length ? savedWalkers : null);
+
+    // Load per-dog data: new format (dogsData) or legacy (events+note shared across all dogs)
+    if (w.dogsData) {
+      loadWalkPerDogData(w.dogsData);
+    } else if (w.events || w.note) {
+      // Legacy walk: apply same events/note to all dogs for display purposes
+      const legacyData = {};
+      (w.dogIds||[]).forEach(dogId => { legacyData[dogId] = { events: w.events||[], note: w.note||'' }; });
+      loadWalkPerDogData(legacyData);
+    } else {
+      resetWalkPerDogData();
+    }
+
     // Dogs + period + energy (don't depend on async walker build)
     setTimeout(()=>{
       document.querySelectorAll('#walk-dog-sel .dog-sel-btn').forEach(b=>{
         if((w.dogIds||[]).includes(b.dataset.id)) b.classList.add('sel');
       });
       if(w.energy) { const b=document.querySelector(`[data-e="${w.energy}"]`); if(b)b.classList.add('sel'); }
+      renderWalkPerDogBlocks();
     },100);
     document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b=>{
       if(b.dataset.p===w.period) b.classList.add(w.period==='תאונה'?'sel-red':'sel');
     });
-    loadWalkCounts(w.events||[]);
     if(w.customFields) loadCustomFields('walk-custom-fields', w.customFields);
-    document.getElementById('walk-duplicate-row').style.display = '';
     document.getElementById('modal-walk').classList.add('open');
   } catch(e) {
     console.error('[editWalk] error:', e);
@@ -2460,19 +2568,30 @@ window.saveWalk = function() {
   const periodEl=document.querySelector('#walk-period-sel .period-sel-btn.sel,#walk-period-sel .period-sel-btn.sel-red');
   if(!periodEl){toast('❗ בחרי סוג טיול');return;}
   const period=periodEl.dataset.p;
-  const events=getWalkEvents();
   const walkers=[...document.querySelectorAll('#walk-walker-sel .dog-sel-btn.sel')].map(b=>b.dataset.walker).filter(Boolean);
   const walker=walkers.join(', ')||currentUsername;
   const returnTime=document.getElementById('walk-return-time').value;
   const energy=document.getElementById('walk-energy').value;
-  fbSet('walks/'+editId,{id:editId,dogIds,period,events,
+
+  const dogsData = {};
+  if (period !== 'תאונה') {
+    dogIds.forEach(dogId => {
+      dogsData[dogId] = {
+        events: getWalkPerDogEvents(dogId),
+        note: (_walkPerDogData[dogId]?.note || '').trim()
+      };
+    });
+  }
+
+  fbSet('walks/'+editId,{id:editId,dogIds,period,
+    dogsData,
     date:document.getElementById('walk-date').value,
     time:document.getElementById('walk-time').value,
     returnTime:returnTime||null,
     walker:walker||null,
     energy:energy||null,
     solo:dogIds.length===1,
-    note:document.getElementById('walk-note').value.trim()
+    customFields: getCustomFields('walk-custom-fields')
   });
   document.getElementById('editing-walk-id').value='';
   document.getElementById('walk-modal-title').textContent='🚶 תיעוד טיול';
@@ -2698,20 +2817,7 @@ function sendEmail(subject, lines) { /* email disabled */ }
 // Walk email hook
 const _ews=window.saveWalk;
 window.saveWalk=function(){
-  const periodEl=document.querySelector('#walk-period-sel .period-sel-btn.sel,#walk-period-sel .period-sel-btn.sel-red');
-  const period=periodEl?periodEl.dataset.p:'';
-  const dogNames=[...document.querySelectorAll('#walk-dog-sel .dog-sel-btn.sel')].map(b=>S.dogs[b.dataset.id]?.name).filter(Boolean).join(', ');
-  const date=document.getElementById('walk-date').value;
-  const time=document.getElementById('walk-time').value;
-  const note=document.getElementById('walk-note').value.trim();
   _ews();
-  if(period==='תאונה'){
-    sendEmail('🏠 תאונה ב-PawTracker!',['תאונה בבית! 🏠','כלב: '+dogNames,'תאריך: '+date+' שעה: '+time,note?'הערה: '+note:'']);
-  } else if(period){
-    const evs=getWalkEvents();
-    const evTxt=evs.length?evs.map(e=>(evLabel[e.type]||e.type)+(e.count>1?' x'+e.count:'')).join(', '):'הכל תקין';
-    sendEmail('🐾 יציאת '+period+' נרשמה',['יציאת '+period+' 🐾','כלב: '+dogNames,'תאריך: '+date+' שעה: '+time,'אירועים: '+evTxt,note?'הערה: '+note:'']);
-  }
 }
 
 // Med email hook
@@ -3125,7 +3231,7 @@ window.addWalkForDay = function() {
   if (_modalPeriod) {
     setTimeout(()=>{
       const btn = document.querySelector(`#walk-period-sel .period-sel-btn[data-p="${_modalPeriod}"]`);
-      if (btn) { btn.classList.add(_modalPeriod==='תאונה'?'sel-red':'sel'); if(_modalPeriod==='תאונה') document.getElementById('walk-events-row').style.display='none'; }
+      if (btn) { btn.classList.add(_modalPeriod==='תאונה'?'sel-red':'sel'); if(_modalPeriod==='תאונה') renderWalkPerDogBlocks(); }
     },50);
   }
   openM('walk');
@@ -3178,8 +3284,23 @@ const CAL_CFG = {
     getPeriod:(w)=>w.period,
     label:(w)=>{
       const evLabels={pee:'💧',poop:'💩',diarrhea:'⚠️',vomit:'🤢',blood:'🩸',ok:'✅'};
+      const dogs = (w.dogIds||[]).map(id=>S.dogs[id]).filter(Boolean);
+      if (w.dogsData) {
+        // New format: group dogs by their event signature, one line per unique signature
+        const groups = {};
+        dogs.forEach(d => {
+          const dd = w.dogsData[d.id];
+          const evs = (dd?.events||[]).map(e=>evLabels[e.type]||'').filter(Boolean).join('') || (dd?.events?.length===0 ? '✅' : '');
+          const key = evs;
+          if (!groups[key]) groups[key] = [];
+          groups[key].push(d.name[0]);
+        });
+        const lines = Object.entries(groups).map(([evs, initials]) => `[${initials.join(',')}] ${evs}`);
+        return (w.time||'')+' '+lines.join(' | ');
+      }
+      // Legacy format: shared events across all dogs
       const evs=(w.events||[]).map(e=>{const k=typeof e==='string'?e:e.type; return evLabels[k]||'';}).filter(Boolean).join('');
-      const initials=(w.dogIds||[]).map(id=>S.dogs[id]?.name?.[0]||'').filter(Boolean).join('');
+      const initials=dogs.map(d=>d.name[0]).filter(Boolean).join('');
       return (w.time||'')+' '+(initials?'['+initials+'] ':' ')+(evs||'🐾');
     },
     onAdd:(ds,period)=>calOpenWalk(ds,period),
@@ -3510,7 +3631,7 @@ window.calOpenWalk=function(ds,period){
     document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b=>{
       if(b.dataset.p===period) b.classList.add(period==='תאונה'?'sel-red':'sel');
     });
-    if(period==='תאונה') document.getElementById('walk-events-row').style.display='none';
+    if(period==='תאונה') renderWalkPerDogBlocks();
   }
   openM('walk');
 };
