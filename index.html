@@ -383,7 +383,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.138</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.139</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -454,13 +454,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.138</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.139</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.138</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.139</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1767,7 +1767,7 @@ window.addCustomField = function(type) {
       <input type="text" placeholder="שם השדה..." style="flex:1;font-size:13px" class="custom-field-name" value="">
       <button onclick="this.closest('[data-field-id]').remove()" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:2px">✕</button>
     </div>
-    <input type="text" placeholder="תוכן..." class="custom-field-value">`;
+    <textarea placeholder="תוכן..." class="custom-field-value" rows="1" style="resize:none;overflow:hidden;min-height:40px;width:100%;box-sizing:border-box" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>`;
   c.appendChild(div);
 };
 
@@ -1786,7 +1786,6 @@ function loadCustomFields(containerId, fields) {
   const c = document.getElementById(containerId); if (!c) return;
   c.innerHTML = '';
   if (!fields) return;
-  const type = containerId.includes('walk') ? 'walk' : containerId.includes('routine') ? 'routine' : 'skill';
   Object.entries(fields).forEach(([name, value]) => {
     const div = document.createElement('div');
     div.className = 'form-row';
@@ -1796,8 +1795,10 @@ function loadCustomFields(containerId, fields) {
         <input type="text" placeholder="שם השדה..." style="flex:1;font-size:13px" class="custom-field-name" value="${name}">
         <button onclick="this.closest('[data-field-id]').remove()" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:2px">✕</button>
       </div>
-      <input type="text" placeholder="תוכן..." class="custom-field-value" value="${value}">`;
+      <textarea placeholder="תוכן..." class="custom-field-value" rows="1" style="resize:none;overflow:hidden;min-height:40px;width:100%;box-sizing:border-box" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'">${value}</textarea>`;
     c.appendChild(div);
+    const ta = div.querySelector('.custom-field-value');
+    if (ta.value) { ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'; }
   });
 }
 
