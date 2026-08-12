@@ -383,7 +383,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.137</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.138</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -454,13 +454,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.137</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.138</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.137</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.138</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -851,7 +851,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     </div>
   </div>
   <div class="form-row"><label>כלבים</label><div class="dog-selector" id="rt-dog-sel"></div></div>
-  <div class="form-row"><label>הערות</label><input id="rt-note" placeholder="הערות נוספות..."></div>
+  <div class="form-row"><label>הערות</label><textarea id="rt-note" placeholder="הערות נוספות..." rows="1" style="resize:none;overflow:hidden;min-height:40px;width:100%;box-sizing:border-box" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea></div>
   <div class="form-row" id="routine-custom-fields"></div>
   <button class="btn-ghost btn-sm" onclick="addCustomField('routine')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
   <div class="modal-actions" id="routine-duplicate-row" style="display:none;margin-top:0;margin-bottom:10px">
@@ -1548,7 +1548,7 @@ function renderWalkPerDogBlocks() {
             </div>
           </div>`).join('')}
       </div>
-      <textarea placeholder="הערה ל${dog.name}..." rows="1" style="resize:none;overflow:hidden;min-height:38px;margin-top:6px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';_walkPerDogData['${dogId}'].note=this.value">${data.note||''}</textarea>
+      <textarea placeholder="הערה ל${dog.name}..." rows="1" style="resize:none;overflow:hidden;min-height:38px;margin-top:6px;width:100%;box-sizing:border-box;word-wrap:break-word;white-space:pre-wrap" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';_walkPerDogData['${dogId}'].note=this.value">${data.note||''}</textarea>
     `;
     container.appendChild(block);
     // Mark selected quick-btns
@@ -1676,7 +1676,7 @@ function prepM(name) {
   if (name === 'routine') {
     buildDogSel('rt-dog-sel',true); initEmojiPicker('rt-emojis','rt-emoji','🍽️');
     document.getElementById('rt-name').value='';
-    const rtNote = document.getElementById('rt-note'); if(rtNote) rtNote.value='';
+    const rtNote = document.getElementById('rt-note'); if(rtNote){ rtNote.value=''; rtNote.style.height='auto'; }
     const rtEnd = document.getElementById('rt-end-time'); if(rtEnd) rtEnd.value='';
     const rtDur = document.getElementById('rt-duration-display'); if(rtDur){rtDur.textContent='—';rtDur.style.color='var(--muted)';rtDur.style.fontWeight='';}
     const rtTimes = document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value='';
@@ -2653,7 +2653,7 @@ window.editRoutine=function(id, ds){
   document.getElementById('rt-time').value=effectiveTime;
   const rtEnd=document.getElementById('rt-end-time'); if(rtEnd) rtEnd.value=r.endTime||'';
   const rtTimes=document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value=r.timesPerDay||'';
-  const rtNote=document.getElementById('rt-note'); if(rtNote) rtNote.value=r.note||'';
+  const rtNote=document.getElementById('rt-note'); if(rtNote){ rtNote.value=r.note||''; setTimeout(()=>{ if(rtNote.value){rtNote.style.height='auto';rtNote.style.height=rtNote.scrollHeight+'px';} },50); }
   initEmojiPicker('rt-emojis','rt-emoji',r.emoji||'🍽️');
   // Set recurring vs one-time UI state
   const isRecurring = r.recurring !== false; // default true for legacy tasks
