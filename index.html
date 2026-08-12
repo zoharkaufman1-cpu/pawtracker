@@ -383,7 +383,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.139</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.140</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -454,13 +454,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.139</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.140</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.139</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.140</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1212,20 +1212,29 @@ function toast(msg, color) {
 }
 
 window.openM = function(name) { prepM(name); document.getElementById('modal-'+name).classList.add('open'); }
-window.closeM = function(name) { document.getElementById('modal-'+name).classList.remove('open'); }
+window.closeM = function(name) {
+  document.getElementById('modal-'+name).classList.remove('open');
+  // CRITICAL: reset edit-mode ID when closing without saving, to prevent next "new" from being treated as edit
+  if (name === 'walk') document.getElementById('editing-walk-id').value = '';
+  if (name === 'routine') { document.getElementById('editing-routine-id').value = ''; window._editingRoutineDs = null; }
+  if (name === 'skill') document.getElementById('editing-skill-id').value = '';
+  if (name === 'med') document.getElementById('editing-med-id').value = '';
+  if (name === 'treatment') document.getElementById('editing-treat-id').value = '';
+}
 document.querySelectorAll('.modal-overlay').forEach(o => {
   // Click backdrop to close
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+  o.addEventListener('click', e => { if (e.target === o) closeM(o.id.replace('modal-','')); });
 });
 
 // Handle bar click + swipe down to close
 document.querySelectorAll('.modal-handle').forEach(handle => {
   const modal = handle.closest('.modal');
   const overlay = handle.closest('.modal-overlay');
-  
+  const modalName = overlay.id.replace('modal-','');
+
   // Click handle to close
-  handle.addEventListener('click', () => overlay.classList.remove('open'));
-  
+  handle.addEventListener('click', () => closeM(modalName));
+
   // Swipe down to close
   let startY = 0, isDragging = false;
   handle.addEventListener('touchstart', e => {
@@ -1243,7 +1252,7 @@ document.querySelectorAll('.modal-handle').forEach(handle => {
     modal.style.transition = '';
     const dy = e.changedTouches[0].clientY - startY;
     if (dy > 80) {
-      overlay.classList.remove('open');
+      closeM(modalName);
       modal.style.transform = '';
     } else {
       modal.style.transform = '';
