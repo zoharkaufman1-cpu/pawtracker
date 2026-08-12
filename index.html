@@ -21,7 +21,7 @@
   --radius:18px; --radius-sm:12px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body{font-family:'Baloo 2',cursive;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
 
 /* SYNC BAR */
 #sync-bar{background:#1a1a2e;color:#7eb8ff;font-size:12px;font-weight:600;padding:6px 16px;text-align:center;display:flex;align-items:center;justify-content:center;gap:8px}
@@ -33,14 +33,14 @@ body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--text);min-h
 /* HEADER */
 header{background:linear-gradient(135deg,#ff9a3c 0%,#f5c842 100%);padding:14px 18px 12px;display:flex;align-items:center;justify-content:space-between}
 .logo{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);display:flex;align-items:center;gap:6px}
-.logo-sub{font-size:11px;font-weight:400;opacity:0.85;font-family:'Rubik',sans-serif}
-.invite-btn{background:rgba(255,255,255,0.3);border:1.5px solid rgba(255,255,255,0.6);border-radius:50px;padding:7px 14px;color:white;font-family:'Rubik',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:background 0.2s}
+.logo-sub{font-size:11px;font-weight:400;opacity:0.85;font-family:'Baloo 2',cursive}
+.invite-btn{background:rgba(255,255,255,0.3);border:1.5px solid rgba(255,255,255,0.6);border-radius:50px;padding:7px 14px;color:white;font-family:'Baloo 2',cursive;font-size:12px;font-weight:600;cursor:pointer;transition:background 0.2s}
 .invite-btn:hover{background:rgba(255,255,255,0.45)}
 
 /* NAV */
 nav{background:var(--surface);border-bottom:2px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
-.nav-btn{flex-shrink:0;padding:12px 16px;background:none;border:none;color:var(--muted);font-family:'Rubik',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;white-space:nowrap}
+.nav-btn{flex-shrink:0;padding:12px 16px;background:none;border:none;color:var(--muted);font-family:'Baloo 2',cursive;font-size:13px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;white-space:nowrap}
 .nav-btn:hover{color:var(--accent)}
 .nav-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
 
@@ -65,14 +65,14 @@ nav::-webkit-scrollbar{display:none}
 /* BUTTONS */
 .btn{background:linear-gradient(135deg,#f5a623,#e87c3e);color:white;border:none;border-radius:50px;padding:10px 20px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:700;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 3px 12px rgba(245,166,35,0.35);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
 .btn:active{transform:scale(0.96)}
-.btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text);border-radius:50px;padding:9px 18px;font-family:'Rubik',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:border-color 0.2s}
+.btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text);border-radius:50px;padding:9px 18px;font-family:'Baloo 2',cursive;font-size:13px;font-weight:600;cursor:pointer;transition:border-color 0.2s}
 .btn-ghost:hover{border-color:var(--accent)}
 .btn-sm{padding:7px 14px;font-size:12px}
 .btn-green{background:linear-gradient(135deg,#4caf7d,#2d9e65);box-shadow:0 3px 12px rgba(76,175,125,0.3)}
 .btn-red{background:linear-gradient(135deg,#e85454,#c93a3a);box-shadow:0 3px 12px rgba(232,84,84,0.3)}
 
 /* INPUTS */
-input,select,textarea{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Rubik',sans-serif;font-size:14px;padding:10px 14px;outline:none;width:100%;transition:border-color 0.2s,box-shadow 0.2s}
+input,select,textarea{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:'Baloo 2',cursive;font-size:14px;padding:10px 14px;outline:none;width:100%;transition:border-color 0.2s,box-shadow 0.2s}
 input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(245,166,35,0.15)}
 select option{background:white}
 label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-weight:600}
@@ -120,7 +120,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 
 /* DOG SELECTOR */
 .dog-selector{display:flex;gap:8px;flex-wrap:wrap}
-.dog-sel-btn{padding:8px 14px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.15s;display:flex;align-items:center;gap:6px}
+.dog-sel-btn{padding:8px 14px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:'Baloo 2',cursive;transition:all 0.15s;display:flex;align-items:center;gap:6px}
 .dog-sel-btn.sel{border-color:var(--accent);background:rgba(245,166,35,0.12);color:var(--accent2)}
 
 /* WALK ITEMS */
@@ -143,7 +143,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 .quick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
 .walk-dog-block{background:var(--surface2);border-radius:var(--radius-sm);padding:12px;margin-bottom:12px;border:1.5px solid var(--border)}
 .walk-dog-block-header{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-weight:700;font-size:14px}
-.quick-btn{background:var(--surface2);border:2px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px;cursor:default;text-align:center;transition:all 0.15s;font-family:'Rubik',sans-serif;color:var(--text);font-size:12px;font-weight:600}
+.quick-btn{background:var(--surface2);border:2px solid var(--border);border-radius:var(--radius-sm);padding:8px 4px;cursor:default;text-align:center;transition:all 0.15s;font-family:'Baloo 2',cursive;color:var(--text);font-size:12px;font-weight:600}
 .quick-btn .icon{font-size:20px;margin-bottom:2px;display:block}
 .quick-btn.selected{border-color:var(--accent);background:rgba(245,166,35,0.12)}
 .qbtn-counter{display:flex;align-items:center;justify-content:center;gap:4px;margin-top:4px}
@@ -154,12 +154,12 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 
 /* PERIOD TABS */
 .period-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
-.period-tab{padding:8px 16px;border-radius:50px;border:2px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.15s;box-shadow:0 2px 6px var(--shadow)}
+.period-tab{padding:8px 16px;border-radius:50px;border:2px solid var(--border);background:var(--surface);color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Baloo 2',cursive;transition:all 0.15s;box-shadow:0 2px 6px var(--shadow)}
 .period-tab.active{background:linear-gradient(135deg,#f5a623,#e87c3e);color:white;border-color:transparent}
 
 /* PERIOD SEL */
 .period-sel{display:flex;gap:8px;flex-wrap:wrap}
-.period-sel-btn{padding:8px 14px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.15s}
+.period-sel-btn{padding:8px 14px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;font-family:'Baloo 2',cursive;transition:all 0.15s}
 .period-sel-btn.sel{background:linear-gradient(135deg,#f5a623,#e87c3e);color:white;border-color:transparent}
 .period-sel-btn.sel-red{background:linear-gradient(135deg,#e85454,#c93a3a);color:white;border-color:transparent}
 
@@ -242,7 +242,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 #loading-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
 .loading-paw{font-size:60px;animation:bounce 0.8s infinite alternate}
 @keyframes bounce{from{transform:translateY(0)}to{transform:translateY(-16px)}}
-.loading-text{font-family:'Rubik',sans-serif;font-size:18px;font-weight:700;color:var(--accent2)}
+.loading-text{font-family:'Baloo 2',cursive;font-size:18px;font-weight:700;color:var(--accent2)}
 
 .chat-msg{max-width:78%;padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.5;word-break:break-word;align-self:flex-start!important;text-align:right}
 .chat-msg.mine{align-self:flex-end;background:linear-gradient(135deg,#f5a623,#e87c3e);color:white;border-bottom-left-radius:4px;border-bottom-right-radius:18px;text-align:right}
@@ -253,12 +253,12 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 /* ── CALENDAR ── */
 .cal-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:16px;box-shadow:0 2px 12px var(--shadow)}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.cal-title{font-family:'Rubik',sans-serif;font-size:17px;font-weight:800}
+.cal-title{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800}
 .cal-nav{display:flex;gap:6px;align-items:center}
 .cal-nav-btn{background:var(--surface2);border:1.5px solid var(--border);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:700;transition:background 0.15s}
 .cal-nav-btn:hover{background:rgba(245,166,35,0.15);border-color:var(--accent)}
 .cal-view-tabs{display:flex;gap:6px;margin-bottom:12px}
-.cal-view-btn{padding:6px 14px;border-radius:50px;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.15s}
+.cal-view-btn{padding:6px 14px;border-radius:50px;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:'Baloo 2',cursive;transition:all 0.15s}
 .cal-view-btn.active{background:linear-gradient(135deg,#f5a623,#e87c3e);color:white;border-color:transparent}
 /* Month grid */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
@@ -349,9 +349,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 /* ── CALENDAR ── */
 .cal-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:8px 4px;margin-bottom:8px;box-shadow:0 2px 12px var(--shadow);width:100%;overflow:visible}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
-.cal-title{font-family:'Rubik',sans-serif;font-size:15px;font-weight:800;text-align:center;flex:1}
+.cal-title{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;text-align:center;flex:1}
 .cal-view-tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.cal-view-btn{flex:1;padding:7px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:'Rubik',sans-serif;min-height:36px}
+.cal-view-btn{flex:1;padding:7px;border-radius:50px;border:2px solid var(--border);background:var(--surface2);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:'Baloo 2',cursive;min-height:36px}
 .cal-view-btn.active{background:linear-gradient(135deg,#f5a623,#e87c3e);color:white;border-color:transparent}
 .cal-nav-btn{background:var(--surface2);border:1.5px solid var(--border);border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-family:sans-serif}
 .cal-nav-btn:hover{background:rgba(245,166,35,0.15);border-color:var(--accent)}
@@ -382,14 +382,14 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <div id="login-screen" style="position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;background:linear-gradient(135deg,#ff9a3c 0%,#f5c842 100%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:30px 20px;overflow-y:scroll;-webkit-overflow-scrolling:touch">
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
-  <div style="font-family:'Rubik',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
+  <div style="font-family:'Baloo 2',cursive;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
   <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.141</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
   <div style="display:flex;background:rgba(255,255,255,0.2);border-radius:50px;padding:3px;margin-bottom:18px;width:100%;max-width:340px">
-    <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:8px;border:none;border-radius:50px;background:white;color:#e87c3e;font-weight:700;font-size:13px;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.2s">כניסה</button>
-    <button id="tab-register" onclick="switchAuthTab('register')" style="flex:1;padding:8px;border:none;border-radius:50px;background:transparent;color:white;font-weight:600;font-size:13px;cursor:pointer;font-family:'Rubik',sans-serif;transition:all 0.2s">הרשמה</button>
+    <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:8px;border:none;border-radius:50px;background:white;color:#e87c3e;font-weight:700;font-size:13px;cursor:pointer;font-family:'Baloo 2',cursive;transition:all 0.2s">כניסה</button>
+    <button id="tab-register" onclick="switchAuthTab('register')" style="flex:1;padding:8px;border:none;border-radius:50px;background:transparent;color:white;font-weight:600;font-size:13px;cursor:pointer;font-family:'Baloo 2',cursive;transition:all 0.2s">הרשמה</button>
   </div>
 
   <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;box-shadow:0 8px 32px rgba(0,0,0,0.15)">
@@ -402,7 +402,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
       <input id="login-password" type="password" placeholder="סיסמה..." style="margin-bottom:14px;font-size:15px" onkeydown="if(event.key==='Enter')doLogin()">
       <button class="btn" style="width:100%;justify-content:center;font-size:15px;margin-bottom:10px" onclick="doLogin()">כניסה 🐾</button>
       <div style="text-align:center;margin-bottom:10px;color:var(--muted);font-size:12px">— או —</div>
-      <button onclick="doGoogleLogin()" style="width:100%;padding:11px;border:1.5px solid #e0e0e0;border-radius:50px;background:white;cursor:pointer;font-size:14px;font-weight:600;font-family:'Rubik',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;color:#444">
+      <button onclick="doGoogleLogin()" style="width:100%;padding:11px;border:1.5px solid #e0e0e0;border-radius:50px;background:white;cursor:pointer;font-size:14px;font-weight:600;font-family:'Baloo 2',cursive;display:flex;align-items:center;justify-content:center;gap:10px;color:#444">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         כניסה עם Google
       </button>
@@ -424,7 +424,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
       <div style="font-size:11px;color:var(--muted);margin-bottom:14px">הזן את אותו קוד כמו בן/בת הזוג כדי לשתף נתונים</div>
       <button class="btn" style="width:100%;justify-content:center;font-size:15px" onclick="doRegister()">הרשמה 🐾</button>
       <div style="text-align:center;margin-top:10px;margin-bottom:10px;color:var(--muted);font-size:12px">— או —</div>
-      <button onclick="doGoogleLogin()" style="width:100%;padding:11px;border:1.5px solid #e0e0e0;border-radius:50px;background:white;cursor:pointer;font-size:14px;font-weight:600;font-family:'Rubik',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;color:#444">
+      <button onclick="doGoogleLogin()" style="width:100%;padding:11px;border:1.5px solid #e0e0e0;border-radius:50px;background:white;cursor:pointer;font-size:14px;font-weight:600;font-family:'Baloo 2',cursive;display:flex;align-items:center;justify-content:center;gap:10px;color:#444">
         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
         כניסה עם Google
       </button>
@@ -1903,7 +1903,7 @@ function renderDogs() {
       <div style="display:flex;gap:12px;align-items:flex-start">
         ${photoEl}
         <div style="flex:1;min-width:0">
-          <div style="font-family:'Rubik',sans-serif;font-size:17px;font-weight:800;color:${d.color}">${d.name}</div>
+          <div style="font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:${d.color}">${d.name}</div>
           ${d.breed?`<div style="font-size:12px;color:var(--muted)">${d.breed}</div>`:''}
           ${d.age?`<div style="font-size:12px;color:var(--muted)">${d.age}</div>`:''}
           <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
@@ -2118,7 +2118,7 @@ function renderSkills() {
   Object.entries(byDog).forEach(([did,skills])=>{
     const dog=S.dogs[did]; if(!dog) return;
     const wrap=document.createElement('div');
-    wrap.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">${dogAvHTML(dog)}<span style="font-family:'Rubik',sans-serif;font-size:16px;font-weight:800;color:${dog.color}">${dog.name}</span></div>`;
+    wrap.innerHTML=`<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">${dogAvHTML(dog)}<span style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;color:${dog.color}">${dog.name}</span></div>`;
     const byCat={};skills.forEach(s=>{(byCat[s.cat]=byCat[s.cat]||[]).push(s);});
     const grid=document.createElement('div');grid.className='grid-2';
     Object.entries(byCat).forEach(([cat,cs])=>{
@@ -2729,7 +2729,7 @@ function showTimeChangeConfirm(editId, onConfirmAll, onConfirmOnce) {
   const ov = document.createElement('div');
   ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9500;display:flex;align-items:center;justify-content:center;padding:20px';
   ov.innerHTML = `<div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px">
-    <div style="font-family:'Rubik',sans-serif;font-size:16px;font-weight:800;margin-bottom:10px">⏰ שינית את השעה</div>
+    <div style="font-family:'Baloo 2',cursive;font-size:16px;font-weight:800;margin-bottom:10px">⏰ שינית את השעה</div>
     <div style="font-size:14px;color:var(--muted);margin-bottom:18px;line-height:1.6">משימה זו חוזרת על עצמה. איך להחיל את שינוי השעה?</div>
     <div style="display:flex;flex-direction:column;gap:8px">
       <button class="btn" style="justify-content:center" id="tcc-all">✅ על כל החזרות</button>
