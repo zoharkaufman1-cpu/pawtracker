@@ -368,9 +368,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 @media(min-width:900px){
   .week-col{width:calc((100% - 24px) / 7);min-width:0;flex-shrink:1;flex-grow:1}
   .week-scroll{overflow-x:visible}
-  .week-cell{min-height:450px;gap:6px;padding:10px 8px}
-  .cal-item{font-size:13px;padding:6px 8px;border-radius:9px;margin-bottom:4px}
-  .week-day-hdr{font-size:15px;padding:12px 0}
+  .week-cell{min-height:450px;gap:8px;padding:12px 10px}
+  .cal-item{font-size:15px;padding:8px 10px;border-radius:10px;margin-bottom:5px}
+  .week-day-hdr{font-size:17px;padding:14px 0}
 }
 .month-hdr-row{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;margin-bottom:4px}
 .month-hdr-cell{font-size:11px;font-weight:700;color:var(--muted);padding:4px 0}
@@ -390,7 +390,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Alef',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.147</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.148</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -461,13 +461,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.147</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.148</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.147</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.148</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -3628,13 +3628,13 @@ window._calItem=function(sec,id,ptype,ds){
   menu.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;display:flex;align-items:center;justify-content:center';
   const label = cfg.label ? cfg.label(item) : item.name || '';
   menu.innerHTML = `
-    <div style="background:white;border-radius:18px;padding:18px;width:260px;box-shadow:0 8px 32px rgba(0,0,0,0.2);text-align:center">
-      <div style="font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.4">${label}</div>
-      <div style="display:flex;gap:10px">
-        <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="document.getElementById('cal-action-menu').remove();cfg_editItem('${sec}','${id}','${ptype||''}','${ds||''}')">✏️ ערוך</button>
-        <button class="btn btn-red" style="flex:1;justify-content:center" onclick="document.getElementById('cal-action-menu').remove();cfg_deleteItem('${sec}','${id}')">🗑️ מחק</button>
+    <div style="background:white;border-radius:20px;padding:26px;width:340px;box-shadow:0 8px 32px rgba(0,0,0,0.2);text-align:center">
+      <div style="font-size:16px;color:var(--muted);margin-bottom:20px;line-height:1.5">${label}</div>
+      <div style="display:flex;gap:12px">
+        <button class="btn btn-ghost" style="flex:1;justify-content:center;font-size:15px;padding:12px" onclick="document.getElementById('cal-action-menu').remove();cfg_editItem('${sec}','${id}','${ptype||''}','${ds||''}')">✏️ ערוך</button>
+        <button class="btn btn-red" style="flex:1;justify-content:center;font-size:15px;padding:12px" onclick="document.getElementById('cal-action-menu').remove();cfg_deleteItem('${sec}','${id}')">🗑️ מחק</button>
       </div>
-      <button class="btn-ghost" style="width:100%;margin-top:10px;border:none;color:var(--muted);cursor:pointer;font-family:Rubik,sans-serif" onclick="document.getElementById('cal-action-menu').remove()">ביטול</button>
+      <button class="btn-ghost" style="width:100%;margin-top:12px;border:none;color:var(--muted);cursor:pointer;font-family:'Alef',sans-serif;font-size:14px" onclick="document.getElementById('cal-action-menu').remove()">ביטול</button>
     </div>`;
   menu.addEventListener('click', e => { if(e.target===menu) menu.remove(); });
   document.body.appendChild(menu);
