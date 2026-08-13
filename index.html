@@ -383,7 +383,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Alef',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.143</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.144</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -454,13 +454,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.143</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.144</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.143</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.144</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1102,6 +1102,7 @@ setPersistence(auth, browserLocalPersistence).catch(e => console.warn('persisten
 
 // ── STATE (local cache) ──
 let S = { dogs:{}, walks:{}, skills:{}, routines:{}, meds:{}, members:{}, treatments:{} };
+let currentLang = localStorage.getItem('pt_lang') || 'he';
 let walkFilter = 'all';
 let trainFilter = null;
 let healthFilter = null;
@@ -2963,14 +2964,15 @@ window.installPWA = function() {
 // Notification permission
 function checkNotifSupport() {
   if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
+  const btn = document.getElementById('notif-btn'); if (!btn) return;
   if (Notification.permission === 'default') {
-    document.getElementById('notif-btn').style.display = 'block';
+    btn.style.display = 'block';
   }
 }
 
 window.requestNotifPermission = async function() {
   const perm = await Notification.requestPermission();
-  document.getElementById('notif-btn').style.display = 'none';
+  const btn = document.getElementById('notif-btn'); if (btn) btn.style.display = 'none';
   if (perm === 'granted') {
     toast('🔔 התראות הופעלו!', '#4caf7d');
     await subscribeToPush();
@@ -3265,7 +3267,7 @@ const calState = {};
 
 // getWeekStart defined above
 function fmtDayHdr(d) {
-  const lang = (typeof currentLang!=='undefined' ? currentLang : null) || localStorage.getItem('pt_lang') || 'he';
+  const lang = localStorage.getItem('pt_lang') || 'he';
   const daysHe=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
   const daysEn=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const days = lang==='en' ? daysEn : daysHe;
@@ -4175,7 +4177,6 @@ const LANGS = {
     placeholder_chat:'Type a message...', send:'Send 📨'
   }
 };
-let currentLang = localStorage.getItem('pt_lang') || 'he';
 
 window.setLang = function(lang) {
   currentLang = lang;
