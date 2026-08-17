@@ -390,7 +390,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Alef',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.148</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.149</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -461,13 +461,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.148</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.149</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.148</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.149</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -2164,6 +2164,7 @@ window.addRoutine = function() {
     oneTimeDate: oneTimeDate,
     emoji: document.getElementById('rt-emoji').value||'🍽️',
     note: document.getElementById('rt-note').value.trim()||null,
+    customFields: getCustomFields('routine-custom-fields'),
     dogNames, done: false
   });
   closeM('routine'); toast(isRecurring ? '📋 משימה נוספה!' : '📌 משימה חד-פעמית נוספה!','#4caf7d');
@@ -2696,6 +2697,7 @@ window.editRoutine=function(id, ds){
     // Recalc duration
     calcDuration('rt-time','rt-end-time','rt-duration-display');
   },50);
+  if(r.customFields) loadCustomFields('routine-custom-fields', r.customFields);
   document.getElementById('routine-duplicate-row').style.display = '';
   document.getElementById('modal-routine').classList.add('open');
 }
@@ -2769,6 +2771,7 @@ function _saveRoutineEdit(editId){
     oneTimeDate: oneTimeDate,
     emoji: document.getElementById('rt-emoji').value||'🍽️',
     note: document.getElementById('rt-note')?.value.trim()||null,
+    customFields: getCustomFields('routine-custom-fields'),
     dogNames, done: S.routines[editId]?.done||false
   });
   document.getElementById('editing-routine-id').value='';
