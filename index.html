@@ -3232,10 +3232,11 @@ window.openDayModal = function(ds, sec, period) {
 }
 
 window.cfg_editItem = async function(sec, id, type, ds) {
-  if (sec==='walks') { await editWalk(id); closeM('day-detail'); }
-  else if (sec==='training') { editSkill(id); closeM('day-detail'); }
-  else if (sec==='routines') { editRoutine(id, ds); closeM('day-detail'); }
-  else if (sec==='health') { (type==='תרופה' ? editMed(id) : editTreatment(id)); closeM('day-detail'); }
+  if (sec==='walks') { await editWalk(id); }
+  else if (sec==='training') { editSkill(id); }
+  else if (sec==='routines') { editRoutine(id, ds); }
+  else if (sec==='health') { (type==='תרופה' ? editMed(id) : editTreatment(id)); }
+  const dd = document.getElementById('modal-day-detail'); if(dd) dd.classList.remove('open');
 }
 window.cfg_deleteItem = function(sec, id) {
   if (!confirm('למחוק?')) return;
@@ -3243,7 +3244,7 @@ window.cfg_deleteItem = function(sec, id) {
   else if (sec==='training') { fbRemove('skills/'+id); }
   else if (sec==='routines') { fbRemove('routines/'+id); }
   else if (sec==='health') { fbRemove('meds/'+id); fbRemove('treatments/'+id); }
-  closeM('day-detail');
+  const dd = document.getElementById('modal-day-detail'); if(dd) dd.classList.remove('open');
 }
 
 window.addWalkForDay = function() {
@@ -3764,8 +3765,8 @@ function showItemViewMode(sec, item, ptype, ds) {
     <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.25)">
       ${bodyHtml}
       <div style="display:flex;gap:10px;margin-top:18px;padding-top:14px;border-top:1.5px solid var(--border)">
-        <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="document.getElementById('cal-view-modal').remove();cfg_editItem('${sec}','${item.id}','${ptype||''}','${ds||''}')">✏️ ערוך</button>
-        <button class="btn btn-red" style="flex:1;justify-content:center" onclick="document.getElementById('cal-view-modal').remove();cfg_deleteItem('${sec}','${item.id}')">🗑️ מחק</button>
+        <button class="btn btn-ghost" style="flex:1;justify-content:center" onclick="cfg_editItem('${sec}','${item.id}','${ptype||''}','${ds||''}');document.getElementById('cal-view-modal')?.remove()">✏️ ערוך</button>
+        <button class="btn btn-red" style="flex:1;justify-content:center" onclick="cfg_deleteItem('${sec}','${item.id}');document.getElementById('cal-view-modal')?.remove()">🗑️ מחק</button>
       </div>
       <button class="btn-ghost" style="width:100%;margin-top:10px;border:none;color:var(--muted);cursor:pointer;font-family:'Alef',sans-serif;font-size:14px" onclick="document.getElementById('cal-view-modal').remove()">סגור</button>
     </div>`;
