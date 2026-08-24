@@ -1597,12 +1597,14 @@ function renderDogCustomFields(dogId) {
     </div>
   `).join('');
   // Adjust height for existing content (oninput doesn't fire on initial render)
-  setTimeout(() => {
-    list.querySelectorAll('textarea').forEach(ta => {
-      ta.style.height = 'auto';
-      ta.style.height = ta.scrollHeight + 'px';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      list.querySelectorAll('textarea').forEach(ta => {
+        ta.style.height = 'auto';
+        ta.style.height = ta.scrollHeight + 'px';
+      });
     });
-  }, 0);
+  });
 }
 
 window.addDogCustomField = function(dogId) {
@@ -3878,7 +3880,7 @@ function showItemViewMode(sec, item, ptype, ds) {
 
 window.toggleViewAccordion = function(header) {
   const item = header.closest('.view-accordion-item');
-  const body = item.querySelector('.accordion-body');
+  const body = item.querySelector(':scope > .accordion-body');
   const arrow = header.querySelector('.accordion-arrow');
   const isOpen = item.dataset.open === 'true';
   if (isOpen) {
@@ -3886,18 +3888,10 @@ window.toggleViewAccordion = function(header) {
     arrow.style.transform = 'rotate(0deg)';
     item.dataset.open = 'false';
   } else {
-    body.style.maxHeight = body.scrollHeight + 'px';
+    // Fixed large value avoids clipping regardless of dynamic content (textareas, nested accordions)
+    body.style.maxHeight = '3000px';
     arrow.style.transform = 'rotate(180deg)';
     item.dataset.open = 'true';
-  }
-  // Propagate height update to any parent accordion(s) so nested items don't get clipped
-  let parent = item.parentElement?.closest('.accordion-body');
-  while (parent) {
-    if (parent.style.maxHeight && parent.style.maxHeight !== '0px') {
-      // Recalculate after a tick so nested DOM heights are settled
-      requestAnimationFrame(() => { parent.style.maxHeight = parent.scrollHeight + 'px'; });
-    }
-    parent = parent.parentElement?.closest('.accordion-body');
   }
 }
 window._calAdd=function(sec,ds,period){
