@@ -390,7 +390,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Alef',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.152</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.153</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -461,13 +461,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.152</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.153</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.152</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.153</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -758,8 +758,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
     <input type="hidden" id="walk-energy" value="">
   </div>
   <div id="walk-per-dog-container"></div>
-  <div class="form-row" id="walk-custom-fields"></div>
-  <button class="btn-ghost btn-sm" onclick="addCustomField('walk')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
+  <div class="form-row"><label>הערות כלליות</label><textarea id="walk-general-note" placeholder="הערות כלליות לכל הטיול..." rows="1" style="resize:none;overflow:hidden;min-height:40px;width:100%;box-sizing:border-box" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea></div>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('walk')">ביטול</button>
     <button class="btn" id="walk-save-btn" onclick="saveWalk()">שמור 🐾</button>
@@ -1529,6 +1528,11 @@ function buildDogSel(cid, multi) {
 const evLabelsWalk = {pee:{icon:'💧',label:'פיפי'},poop:{icon:'💩',label:'קקי'},diarrhea:{icon:'⚠️',label:'שלשול'},vomit:{icon:'🤢',label:'הקאה'},blood:{icon:'🩸',label:'דם'},ok:{icon:'✅',label:'הכל תקין'}};
 let _walkPerDogData = {}; // { dogId: { pee: 0, poop: 0, ..., note: '' } }
 
+const CUSTOM_FIELD_CATEGORIES = [
+  'ריאקטיביות','רכושנות','נביחות','גרגורים','נשיכות','פציעה',
+  'אכילה/ליקוק מהרצפה','הקאה','משיכה','לחץ/חרדה','התנהגות טובה','הקשבה','ציות לפקודות'
+];
+
 function renderWalkPerDogBlocks() {
   const container = document.getElementById('walk-per-dog-container');
   if (!container) return;
@@ -1536,7 +1540,7 @@ function renderWalkPerDogBlocks() {
   // Preserve data for still-selected dogs, init new ones
   const newData = {};
   selectedIds.forEach(id => {
-    newData[id] = _walkPerDogData[id] || {pee:0,poop:0,diarrhea:0,vomit:0,blood:0,ok:0,note:''};
+    newData[id] = _walkPerDogData[id] || {pee:0,poop:0,diarrhea:0,vomit:0,blood:0,ok:0,customFields:[]};
   });
   _walkPerDogData = newData;
 
@@ -1549,6 +1553,7 @@ function renderWalkPerDogBlocks() {
   selectedIds.forEach(dogId => {
     const dog = S.dogs[dogId]; if (!dog) return;
     const data = _walkPerDogData[dogId];
+    if (!data.customFields) data.customFields = [];
     const block = document.createElement('div');
     block.className = 'walk-dog-block';
     block.dataset.dogId = dogId;
@@ -1565,15 +1570,78 @@ function renderWalkPerDogBlocks() {
             </div>
           </div>`).join('')}
       </div>
-      <textarea placeholder="הערה ל${dog.name}..." rows="1" style="resize:none;overflow:hidden;min-height:38px;margin-top:6px;width:100%;box-sizing:border-box;word-wrap:break-word;white-space:pre-wrap" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';_walkPerDogData['${dogId}'].note=this.value">${data.note||''}</textarea>
+      <div class="dog-custom-fields-list" id="dog-cf-${dogId}"></div>
+      <button type="button" class="btn-ghost btn-sm" style="width:100%;justify-content:center;margin-top:8px;font-size:12px" onclick="addDogCustomField('${dogId}')">+ הוסף שדה מותאם ל${dog.name}</button>
     `;
     container.appendChild(block);
     // Mark selected quick-btns
     Object.keys(evLabelsWalk).forEach(key => {
       if (data[key] > 0) block.querySelector(`.quick-btn[data-v="${key}"]`)?.classList.add('selected');
     });
+    // Render existing custom fields for this dog
+    renderDogCustomFields(dogId);
   });
 }
+
+function renderDogCustomFields(dogId) {
+  const list = document.getElementById(`dog-cf-${dogId}`);
+  if (!list) return;
+  const fields = _walkPerDogData[dogId]?.customFields || [];
+  list.innerHTML = fields.map((f, idx) => `
+    <div class="dog-custom-field-item" style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;margin-top:8px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+        <span style="flex:1;font-weight:700;font-size:13px;color:var(--accent2)">${f.category === 'אחר' ? (f.customLabel || 'אחר') : f.category}</span>
+        <button type="button" onclick="removeDogCustomField('${dogId}',${idx})" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:15px;padding:2px">✕</button>
+      </div>
+      <textarea placeholder="פירוט (אופציונלי)..." rows="1" style="resize:none;overflow:hidden;min-height:36px;width:100%;box-sizing:border-box;font-size:13px" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';updateDogCustomFieldDetail('${dogId}',${idx},this.value)">${f.detail||''}</textarea>
+    </div>
+  `).join('');
+}
+
+window.addDogCustomField = function(dogId) {
+  const options = CUSTOM_FIELD_CATEGORIES.map(c=>`<option value="${c}">${c}</option>`).join('');
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9500;display:flex;align-items:center;justify-content:center;padding:20px';
+  ov.innerHTML = `<div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px">
+    <div style="font-family:'Alef',sans-serif;font-size:16px;font-weight:800;margin-bottom:14px">בחרי קטגוריה</div>
+    <select id="cf-cat-select" style="margin-bottom:14px">
+      ${options}
+      <option value="אחר">✏️ אחר (טקסט חופשי)</option>
+    </select>
+    <div id="cf-custom-label-row" style="display:none;margin-bottom:14px">
+      <input type="text" id="cf-custom-label" placeholder="שם הקטגוריה...">
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-ghost" style="flex:1;justify-content:center" onclick="this.closest('div[style*=fixed]').remove()">ביטול</button>
+      <button class="btn" style="flex:1;justify-content:center" id="cf-confirm-btn">הוסף</button>
+    </div>
+  </div>`;
+  document.body.appendChild(ov);
+  const select = ov.querySelector('#cf-cat-select');
+  const customRow = ov.querySelector('#cf-custom-label-row');
+  select.onchange = () => { customRow.style.display = select.value === 'אחר' ? '' : 'none'; };
+  ov.querySelector('#cf-confirm-btn').onclick = () => {
+    const category = select.value;
+    const customLabel = ov.querySelector('#cf-custom-label').value.trim();
+    if (category === 'אחר' && !customLabel) { toast('❗ נא להזין שם קטגוריה'); return; }
+    if (!_walkPerDogData[dogId].customFields) _walkPerDogData[dogId].customFields = [];
+    _walkPerDogData[dogId].customFields.push({ category, customLabel: category==='אחר'?customLabel:null, detail: '' });
+    renderDogCustomFields(dogId);
+    document.body.removeChild(ov);
+  };
+  ov.onclick = e => { if(e.target===ov) document.body.removeChild(ov); };
+};
+
+window.removeDogCustomField = function(dogId, idx) {
+  _walkPerDogData[dogId].customFields.splice(idx, 1);
+  renderDogCustomFields(dogId);
+};
+
+window.updateDogCustomFieldDetail = function(dogId, idx, value) {
+  if (_walkPerDogData[dogId]?.customFields?.[idx]) {
+    _walkPerDogData[dogId].customFields[idx].detail = value;
+  }
+};
 
 window.changeCountPerDog = function(e, dogId, key, delta) {
   e.stopPropagation();
@@ -1601,7 +1669,7 @@ function loadWalkPerDogData(dogsData) {
   _walkPerDogData = {};
   if (!dogsData) return;
   Object.entries(dogsData).forEach(([dogId, dd]) => {
-    const counts = {pee:0,poop:0,diarrhea:0,vomit:0,blood:0,ok:0,note:dd.note||''};
+    const counts = {pee:0,poop:0,diarrhea:0,vomit:0,blood:0,ok:0,customFields: dd.customFields || (dd.note ? [{category:'אחר',customLabel:'הערה',detail:dd.note}] : [])};
     (dd.events||[]).forEach(ev => {
       const key = typeof ev === 'string' ? ev : ev.type;
       const cnt = typeof ev === 'string' ? 1 : (ev.count||1);
@@ -1669,7 +1737,6 @@ function prepM(name) {
     document.querySelectorAll('#walk-period-sel .period-sel-btn').forEach(b => b.classList.remove('sel','sel-red'));
     document.querySelectorAll('[data-e]').forEach(b => b.classList.remove('sel'));
     const dd = document.getElementById('walk-duration-display'); if(dd){dd.textContent='—';dd.style.color='var(--muted)';dd.style.fontWeight='';}
-    const wc = document.getElementById('walk-custom-fields'); if(wc) wc.innerHTML='';
     if (!isEditingExisting) {
       // Only reset these fields for a brand NEW walk, not when editing
       document.getElementById('walk-date').value = date;
@@ -1679,6 +1746,7 @@ function prepM(name) {
       document.getElementById('editing-walk-id').value = '';
       document.getElementById('walk-modal-title').textContent = '🚶 תיעוד טיול';
       document.getElementById('walk-save-btn').textContent = 'שמור 🐾';
+      const gn = document.getElementById('walk-general-note'); if(gn){gn.value='';gn.style.height='auto';}
     }
   }
   if (name === 'skill') {
@@ -1964,6 +2032,7 @@ window.saveWalk = function() {
     const walkers = [...document.querySelectorAll('#walk-walker-sel .dog-sel-btn.sel')].map(b=>b.dataset.walker).filter(Boolean);
     const walker = walkers.join(', ') || currentUsername;
     const energy = document.getElementById('walk-energy').value;
+    const generalNote = document.getElementById('walk-general-note')?.value.trim() || '';
 
     // Build per-dog data structure
     const dogsData = {};
@@ -1971,7 +2040,7 @@ window.saveWalk = function() {
       dogIds.forEach(dogId => {
         dogsData[dogId] = {
           events: getWalkPerDogEvents(dogId),
-          note: ((_walkPerDogData && _walkPerDogData[dogId] && _walkPerDogData[dogId].note) || '').trim()
+          customFields: (_walkPerDogData && _walkPerDogData[dogId] && _walkPerDogData[dogId].customFields) || []
         };
       });
     }
@@ -1985,7 +2054,7 @@ window.saveWalk = function() {
       walker: walker || null,
       energy: energy || null,
       solo: dogIds.length === 1,
-      customFields: getCustomFields('walk-custom-fields')
+      note: generalNote || null
     });
     closeM('walk');
     toast(period==='תאונה' ? '🏠 תאונה תועדה' : '🐾 טיול נשמר!', period==='תאונה'?'#e85454':'#4caf7d');
@@ -2028,11 +2097,14 @@ function renderWalks() {
           const evTags = (dd.events||[]).length
             ? dd.events.map(e => `<span class="tag ${evCls[e.type]||''}">${evLabel[e.type]||e.type}${e.count>1?' &times;'+e.count:''}</span>`).join('')
             : '<span class="tag tag-ok">✅ הכל תקין</span>';
-          const noteHtml = dd.note ? `<div style="font-size:11px;color:var(--muted);margin-top:2px">💬 ${dd.note}</div>` : '';
+          const cfHtml = (dd.customFields||[]).map(f => {
+            const label = f.category === 'אחר' ? (f.customLabel||'אחר') : f.category;
+            return `<div style="font-size:11px;color:var(--muted);margin-top:2px"><b>${label}</b>${f.detail?': '+f.detail:''}</div>`;
+          }).join('');
           return `<div style="margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)">
             <div style="font-size:12px;font-weight:700;color:${d.color};margin-bottom:3px">${dogAvHTML(d,'mini')} ${d.name}</div>
             <div class="tags-row">${evTags}</div>
-            ${noteHtml}
+            ${cfHtml}
           </div>`;
         }).join('');
       } else {
@@ -2545,17 +2617,19 @@ window.editWalk = async function(id) {
     document.getElementById('walk-return-time').value=w.returnTime||'';
     setTimeout(()=>calcWalkDuration(), 100);
     document.getElementById('walk-energy').value=w.energy||'';
+    const gn = document.getElementById('walk-general-note');
+    if (gn) { gn.value = w.note||''; setTimeout(()=>{ if(gn.value){gn.style.height='auto';gn.style.height=gn.scrollHeight+'px';} },50); }
     // Load walkers - AWAIT to avoid race condition with prepM's own buildWalkerSel call
     const savedWalkers = (w.walker||'').split(', ').filter(Boolean);
     await buildWalkerSel(savedWalkers.length ? savedWalkers : null);
 
-    // Load per-dog data: new format (dogsData) or legacy (events+note shared across all dogs)
+    // Load per-dog data: new format (dogsData) or legacy (events shared across all dogs)
     if (w.dogsData) {
       loadWalkPerDogData(w.dogsData);
-    } else if (w.events || w.note) {
-      // Legacy walk: apply same events/note to all dogs for display purposes
+    } else if (w.events) {
+      // Legacy walk: apply same events to all dogs for display purposes
       const legacyData = {};
-      (w.dogIds||[]).forEach(dogId => { legacyData[dogId] = { events: w.events||[], note: w.note||'' }; });
+      (w.dogIds||[]).forEach(dogId => { legacyData[dogId] = { events: w.events||[] }; });
       loadWalkPerDogData(legacyData);
     } else {
       resetWalkPerDogData();
@@ -2596,13 +2670,14 @@ window.saveWalk = function() {
   const walker=walkers.join(', ')||currentUsername;
   const returnTime=document.getElementById('walk-return-time').value;
   const energy=document.getElementById('walk-energy').value;
+  const generalNote = document.getElementById('walk-general-note')?.value.trim() || '';
 
   const dogsData = {};
   if (period !== 'תאונה') {
     dogIds.forEach(dogId => {
       dogsData[dogId] = {
         events: getWalkPerDogEvents(dogId),
-        note: (_walkPerDogData[dogId]?.note || '').trim()
+        customFields: (_walkPerDogData[dogId]?.customFields) || []
       };
     });
   }
@@ -2615,7 +2690,7 @@ window.saveWalk = function() {
     walker:walker||null,
     energy:energy||null,
     solo:dogIds.length===1,
-    customFields: getCustomFields('walk-custom-fields')
+    note: generalNote || null
   });
   document.getElementById('editing-walk-id').value='';
   document.getElementById('walk-modal-title').textContent='🚶 תיעוד טיול';
@@ -3690,7 +3765,19 @@ function showItemViewMode(sec, item, ptype, ds) {
         const evTags = (dd.events||[]).length
           ? dd.events.map(e => `<span class="tag ${evCls[e.type]||''}">${evLabel[e.type]||e.type}${e.count>1?' &times;'+e.count:''}</span>`).join('')
           : '<span class="tag tag-ok">✅ הכל תקין</span>';
-        const hasContent = (dd.events||[]).length > 0 || dd.note;
+        const customFieldsHtml = (dd.customFields||[]).map((f, fi) => {
+          const label = f.category === 'אחר' ? (f.customLabel||'אחר') : f.category;
+          return `
+            <div class="view-accordion-item" data-open="false" style="border:1px solid var(--border);border-radius:10px;margin-top:6px;overflow:hidden">
+              <div onclick="event.stopPropagation();toggleViewAccordion(this)" style="padding:8px 12px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:var(--surface)">
+                <span style="font-weight:600;font-size:13px;color:var(--accent2)">📝 ${label}</span>
+                <span class="accordion-arrow" style="transition:transform 0.2s;font-size:11px">▼</span>
+              </div>
+              <div class="accordion-body" style="max-height:0;overflow:hidden;transition:max-height 0.25s ease">
+                <div style="padding:10px 12px;font-size:13px;color:var(--muted);line-height:1.6">${f.detail || '(ללא פירוט)'}</div>
+              </div>
+            </div>`;
+        }).join('');
         bodyHtml += `
           <div class="view-accordion-item" data-open="false" style="border:1.5px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden">
             <div onclick="toggleViewAccordion(this)" style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;background:var(--surface2)">
@@ -3699,8 +3786,8 @@ function showItemViewMode(sec, item, ptype, ds) {
             </div>
             <div class="accordion-body" style="max-height:0;overflow:hidden;transition:max-height 0.25s ease">
               <div style="padding:12px 14px">
-                <div class="tags-row" style="margin-bottom:${dd.note?'8px':'0'}">${evTags}</div>
-                ${dd.note ? `<div style="font-size:13px;color:var(--muted);line-height:1.6">💬 ${dd.note}</div>` : ''}
+                <div class="tags-row" style="margin-bottom:0">${evTags}</div>
+                ${customFieldsHtml}
               </div>
             </div>
           </div>`;
@@ -3729,6 +3816,9 @@ function showItemViewMode(sec, item, ptype, ds) {
             </div>
           </div>`;
       });
+    }
+    if (item.dogsData && item.note) {
+      bodyHtml += `<div style="margin-top:10px;padding:10px 14px;background:var(--surface2);border-radius:12px;font-size:13px;color:var(--muted);line-height:1.6">💬 <b>הערות כלליות:</b> ${item.note}</div>`;
     }
   }
 
