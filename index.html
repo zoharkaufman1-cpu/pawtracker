@@ -390,7 +390,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Alef',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.157</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.158</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -461,13 +461,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.157</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.158</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.157</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.158</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -1768,22 +1768,29 @@ function prepM(name) {
     const sc = document.getElementById('skill-custom-fields'); if(sc) sc.innerHTML='';
   }
   if (name === 'routine') {
+    const isEditingExisting = document.getElementById('editing-routine-id')?.value;
     buildDogSel('rt-dog-sel',true); initEmojiPicker('rt-emojis','rt-emoji','🍽️');
-    document.getElementById('rt-name').value='';
-    const rtNote = document.getElementById('rt-note'); if(rtNote){ rtNote.value=''; rtNote.style.height='auto'; }
-    const rtEnd = document.getElementById('rt-end-time'); if(rtEnd) rtEnd.value='';
+    if (!isEditingExisting) {
+      document.getElementById('rt-name').value='';
+      const rtNote = document.getElementById('rt-note'); if(rtNote){ rtNote.value=''; rtNote.style.height='auto'; }
+      const rtEnd = document.getElementById('rt-end-time'); if(rtEnd) rtEnd.value='';
+      const rtTimes = document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value='';
+      document.querySelectorAll('#modal-routine [data-day]').forEach(b=>b.classList.remove('sel'));
+      const rc = document.getElementById('routine-custom-fields'); if(rc) rc.innerHTML='';
+      // Reset recurring toggle to "recurring" by default
+      document.querySelectorAll('#modal-routine [data-recur]').forEach(b=>b.classList.remove('sel'));
+      const recurYesBtn = document.querySelector('#modal-routine [data-recur="yes"]'); if(recurYesBtn) recurYesBtn.classList.add('sel');
+      document.getElementById('rt-recurring').value = 'yes';
+      document.getElementById('rt-days-row').style.display = '';
+      document.getElementById('rt-onetime-date-row').style.display = 'none';
+      const rtOnetimeDate = document.getElementById('rt-onetime-date'); if(rtOnetimeDate) rtOnetimeDate.value='';
+      document.getElementById('routine-duplicate-row').style.display = 'none';
+      document.getElementById('routine-modal-title').textContent = '📋 הוסף משימה';
+      document.getElementById('routine-save-btn').textContent = 'הוסף';
+      document.getElementById('editing-routine-id').value = '';
+      window._editingRoutineDs = null;
+    }
     const rtDur = document.getElementById('rt-duration-display'); if(rtDur){rtDur.textContent='—';rtDur.style.color='var(--muted)';rtDur.style.fontWeight='';}
-    const rtTimes = document.getElementById('rt-times-per-day'); if(rtTimes) rtTimes.value='';
-    document.querySelectorAll('#modal-routine [data-day]').forEach(b=>b.classList.remove('sel'));
-    const rc = document.getElementById('routine-custom-fields'); if(rc) rc.innerHTML='';
-    // Reset recurring toggle to "recurring" by default
-    document.querySelectorAll('#modal-routine [data-recur]').forEach(b=>b.classList.remove('sel'));
-    const recurYesBtn = document.querySelector('#modal-routine [data-recur="yes"]'); if(recurYesBtn) recurYesBtn.classList.add('sel');
-    document.getElementById('rt-recurring').value = 'yes';
-    document.getElementById('rt-days-row').style.display = '';
-    document.getElementById('rt-onetime-date-row').style.display = 'none';
-    const rtOnetimeDate = document.getElementById('rt-onetime-date'); if(rtOnetimeDate) rtOnetimeDate.value='';
-    document.getElementById('routine-duplicate-row').style.display = 'none';
   }
   if (name === 'med') { buildDogSelect('med-dog'); initEmojiPicker('med-emojis','med-emoji','💊'); ['med-name','med-note','med-price','med-pay-note'].forEach(i=>{const el=document.getElementById(i);if(el)el.value='';}); document.getElementById('med-given').value=date; document.getElementById('med-next').value=''; document.getElementById('med-payment').value=''; document.getElementById('med-pay-note-row').style.display='none'; }
   if (name === 'dog') {
@@ -2750,8 +2757,8 @@ window.duplicateRoutine = function() {
 window.editRoutine=function(id, ds){
   const r=S.routines[id];if(!r)return;
   window._editingRoutineDs = ds || null;
+  document.getElementById('editing-routine-id').value=id; // set BEFORE prepM so it skips the "new routine" reset
   prepM('routine');
-  document.getElementById('editing-routine-id').value=id;
   document.getElementById('routine-modal-title').textContent='✏️ ערוך משימה';
   document.getElementById('routine-save-btn').textContent='עדכן';
 
