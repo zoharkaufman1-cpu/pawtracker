@@ -390,7 +390,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Alef',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.158</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.159</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -461,13 +461,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.158</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.159</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.158</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.159</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -2822,6 +2822,9 @@ window.addRoutine=function(){
   const newDogNames = [...document.querySelectorAll('#rt-dog-sel .dog-sel-btn.sel')].map(b=>b.textContent.trim());
   const newCustomFields = getCustomFields('routine-custom-fields');
 
+  console.log('[ROUTINE SAVE] editId:', editId, 'editingDs:', editingDs, 'isOneTime:', isOneTime);
+  console.log('[ROUTINE SAVE] existing.note:', JSON.stringify(existing?.note), 'newNote:', JSON.stringify(newNote));
+
   const anyFieldChanged = existing && (
     existing.time !== newTime ||
     (existing.endTime||null) !== newEndTime ||
@@ -2831,16 +2834,23 @@ window.addRoutine=function(){
     JSON.stringify(existing.customFields||null) !== JSON.stringify(newCustomFields)
   );
 
+  console.log('[ROUTINE SAVE] anyFieldChanged:', anyFieldChanged);
+
   if (anyFieldChanged && editingDs && !isOneTime) {
+    console.log('[ROUTINE SAVE] showing confirm dialog');
     showTimeChangeConfirm(editId,
-      () => _saveRoutineEdit(editId), // apply to all occurrences
-      () => _saveRoutineOccurrenceOverride(editId, editingDs, {
-        time: newTime, endTime: newEndTime, name: newName, note: newNote,
-        dogNames: newDogNames, customFields: newCustomFields,
-        emoji: document.getElementById('rt-emoji').value||'🍽️'
-      }) // this occurrence only
+      () => { console.log('[ROUTINE SAVE] user chose ALL occurrences'); _saveRoutineEdit(editId); }, // apply to all occurrences
+      () => {
+        console.log('[ROUTINE SAVE] user chose THIS occurrence only, saving note:', JSON.stringify(newNote));
+        _saveRoutineOccurrenceOverride(editId, editingDs, {
+          time: newTime, endTime: newEndTime, name: newName, note: newNote,
+          dogNames: newDogNames, customFields: newCustomFields,
+          emoji: document.getElementById('rt-emoji').value||'🍽️'
+        });
+      } // this occurrence only
     );
   } else {
+    console.log('[ROUTINE SAVE] saving directly (no confirm needed)');
     _saveRoutineEdit(editId);
   }
 }
