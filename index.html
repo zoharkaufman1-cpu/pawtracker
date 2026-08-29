@@ -390,7 +390,7 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;padding-bottom:40px">
   <div style="font-size:56px;margin-bottom:8px">🐾</div>
   <div style="font-family:'Alef',sans-serif;font-size:26px;font-weight:800;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.15);margin-bottom:2px">PawTracker</div>
-  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.159</div>
+  <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-bottom:4px">v5.160</div>
   <div style="color:rgba(255,255,255,0.85);font-size:13px;margin-bottom:20px">מעקב כלבים משפחתי</div>
 
   <!-- Tab switcher -->
@@ -461,13 +461,13 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
 <!-- SYNC BAR -->
 <div id="sync-bar">
   <span class="sync-dot"></span>
-  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.159</span>
+  <span id="sync-text">מתחבר...</span> <span style="opacity:0.5;font-size:10px">v5.160</span>
 </div>
 
 <div id="sticky-top"><header>
   <div class="logo">
     <span>🐾</span>
-    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.159</div></div>
+    <div><div>PawTracker</div><div class="logo-sub">מעקב כלבים חכם v5.160</div></div>
   </div>
   <div style="display:flex;align-items:center;gap:8px">
     <button onclick="toggleLang()" style="background:rgba(255,255,255,0.25);border:1.5px solid rgba(255,255,255,0.5);border-radius:50px;padding:5px 11px;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit" id="header-lang-btn">🌐 EN</button>
@@ -862,6 +862,9 @@ label{font-size:12px;color:var(--muted);margin-bottom:5px;display:block;font-wei
   <button class="btn-ghost btn-sm" onclick="addCustomField('routine')" style="margin-bottom:12px;width:100%;justify-content:center">+ הוסף שדה מותאם</button>
   <div class="modal-actions" id="routine-duplicate-row" style="display:none;margin-top:0;margin-bottom:10px">
     <button class="btn-ghost" style="width:100%;justify-content:center;font-size:13px" onclick="duplicateRoutine()">📋 שכפל משימה זו עם תאריך/שעה שונים</button>
+  </div>
+  <div class="modal-actions" id="routine-debug-row" style="display:none;margin-top:0;margin-bottom:10px">
+    <button class="btn-ghost" style="width:100%;justify-content:center;font-size:12px;color:var(--muted)" onclick="showRoutineDebugInfo()">🔍 הצג מידע טכני (זמני)</button>
   </div>
   <div class="modal-actions">
     <button class="btn-ghost" onclick="closeM('routine')">ביטול</button>
@@ -2753,6 +2756,21 @@ window.duplicateRoutine = function() {
   toast('📋 שני תאריך/שעה ולחצי הוסף ליצירת עותק', '#4a90d9');
 }
 
+window.showRoutineDebugInfo = function() {
+  const editId = document.getElementById('editing-routine-id').value;
+  const r = S.routines[editId];
+  if (!r) { alert('לא נמצא'); return; }
+  const info = JSON.stringify(r, null, 2);
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  ov.innerHTML = `<div style="background:white;border-radius:16px;padding:16px;width:100%;max-height:80vh;overflow-y:auto">
+    <div style="font-weight:800;margin-bottom:10px">מידע גולמי (${editId})</div>
+    <pre style="font-size:11px;white-space:pre-wrap;word-break:break-all;direction:ltr;text-align:left;background:#f5f5f5;padding:10px;border-radius:8px">${info}</pre>
+    <button class="btn" style="width:100%;justify-content:center;margin-top:10px" onclick="this.closest('div[style*=fixed]').remove()">סגור</button>
+  </div>`;
+  document.body.appendChild(ov);
+};
+
 // ══ EDIT ROUTINE ══
 window.editRoutine=function(id, ds){
   const r=S.routines[id];if(!r)return;
@@ -2803,6 +2821,7 @@ window.editRoutine=function(id, ds){
   const effCustomFields = override && override.customFields ? override.customFields : r.customFields;
   if(effCustomFields) loadCustomFields('routine-custom-fields', effCustomFields);
   document.getElementById('routine-duplicate-row').style.display = '';
+  document.getElementById('routine-debug-row').style.display = '';
   document.getElementById('modal-routine').classList.add('open');
 }
 const _origAddRoutine=window.addRoutine;
